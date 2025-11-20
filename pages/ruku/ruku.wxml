@@ -1,45 +1,30 @@
 <view class="ruku">
   <view class="form-create">
     <van-cell-group>
-      <van-field custom-class="vancellcus" required type="text" label="汉语：" model:value="{{ chinese }}" border="{{false}}" placeholder="input the Chinese here">
+      <van-field custom-class="vancellcus" required type="text" label="汉语：" model:value="{{ chinese }}" border="{{false}}" placeholder="input the Chinese here" readonly="true">
       </van-field>
 
-      <van-field custom-class="vancellcus" required type="text" label="英语：" model:value="{{ english }}" border="{{false}}" placeholder="input the English here">
+      <van-field custom-class="vancellcus" required type="text" label="英语：" model:value="{{ english }}" border="{{false}}" placeholder="input the English here" readonly="true">
       </van-field>
 
       <van-field custom-class="vancellcus" required type="text" label="斯语：" model:value="{{ swahili }}" border="{{false}}" placeholder="input the Swahili here">
       </van-field>
 
-      <van-field custom-class="vancellcus" required type="text" label="中文谐音：" model:value="{{ xieyin }}" border="{{false}}" placeholder="Homophones of Chinese characters">
+      <van-field custom-class="vancellcus" required type="text" label="中文谐音：" model:value="{{ xieyin }}" border="{{false}}" placeholder="Homophones of Chinese characters" readonly="true">
       </van-field>
-
-      <van-field custom-class="vancellcus" required type="text" label="斯语发音：" model:value="{{ fayin }}" border="{{false}}" placeholder="make a Swahili voice record">
-      </van-field>
-
-      <button bindtap="start" class='btn'>开始录音</button>
-      <button bindtap="pause" class='btn'>暂停录音</button>
-      <button bindtap="resume" class='btn'>继续录音</button>
-      <button bindtap="stop" class='btn'>停止录音</button>
-      <button bindtap="play" class='btn'>播放录音</button>
-
-      <view class="uploader-box">
-        <van-uploader bind:delete="deletePortrait" accept="image" deletable="{{ true }}" file-list="{{ portrait }}" max-count="1" bind:after-read="portraitRead" />
-      </view>
-
 
       <view class="custom-label">
-        <text>*</text>
-        场景图片(请上传图片，最多1张)
+        <text>*</text>场景图片
       </view>
       <view class="uploader-box">
         <van-uploader bind:delete="deletePortrait" accept="image" deletable="{{ true }}" file-list="{{ portrait }}" max-count="1" bind:after-read="portraitRead" />
       </view>
+
+      <van-field custom-class="vancellcus" type="text" label="斯语发音：" model:value="{{ fayin }}" readonly="true" border="{{false}}" placeholder="make a Swahili voice">
+      </van-field>
+      <w-record texts="{{texts}}" bind:onEnd="confirmRecord" />
+
     </van-cell-group>
-
-    <van-popup show="{{ showSelectCategoryPopen }}" position="bottom" custom-style="height: 50%;" bind:close="onPopenClose">
-      <van-tree-select items="{{ items }}" main-active-index="{{ mainActiveIndex }}" active-id="{{ activeId }}" bind:click-nav="onClickNav" bind:click-item="onClickItem" />
-    </van-popup>
-
   </view>
   <view class="submit-btn">
     <van-button color="#00A5DD" type="info" size="large" round bindtap="submit">Submit</van-button>

@@ -115,3 +115,7 @@ canvas {
   margin-bottom: 18rpx;
   color: #bbb !important;
 }
+.btn-group{
+  display: flex;
+  
+}
