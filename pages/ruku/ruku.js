@@ -4,79 +4,45 @@ import {
   fileupload,
 } from '../../requests/index'
 
-const recorderManager = wx.getRecorderManager()
-const innerAudioContext = wx.createInnerAudioContext()
-
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    ctid:'',
     chinese: '',
     english: '',
-    swahili: 'Karibu',
+    swahili: '',
     xieyin: '',
     fayin: '',
-
-    portrait: [],
-    portrait_url: [],
-    recordTmpFile:'',
-
-    audioShow:false,
     texts: { 
-      start: "开始录音",
-      stop: "结束录音",
-      continue: "继续录音",
-      reset: "重录",
-      play: "回放",
-      playPause: "暂停",
-      playContinue: "继续",
+      start: "Start Record",
+      stop: "Finish Record",
+      continue: "Continue",
+      reset: "Restore",
+      play: "Play",
+      playPause: "Pause",
+      playContinue: "PlayContinue",
     },
   },
-  portraitRead(event) {
-    const {
-      file
-    } = event.detail;
-    this.data.portrait.push({
-      url: file.url,
-    })
-    console.log("file", file)
-    var that = this
-    fileupload('/web/imageupload/', file.url, 'img',{"ctitem":"1"}).then(res => {
-      // 上传完成需要更新 fileList
-      that.setData({
-        portrait_url: res.img,
-        portrait: this.data.portrait,
-      })
-    })
-  },
-  // 删除头像
-  deletePortrait(obj) {
-    console.log(obj)
-    let img = obj.detail.file.url.split('/').slice(-1)[0]
-    http(`/web/imageupload/?img=${img}`, 'delete').then(res => {
-      console.log("1111", res)
-    })
-    this.data.portrait.shift({
-      url: obj.detail.file.url,
-    })
+  recordEnd(event){
+    console.log(event)
     this.setData({
-      portrait: this.data.portrait,
-      portrait_url: ''
+      fayin:event.detail.tempFilePath
     })
   },
-
   submit() {
     var formData = {
       chinese: this.data.chinese,
       english: this.data.english,
       swahili: this.data.swahili,
       xieyin: this.data.xieyin,
+      status:1
     }
-    http('/web/updatectitem/1/', 'patch', formData).then(res => {
+    fileupload(`/web/updatectitem/${this.data.ctid}/`, this.data.fayin, 'fayin',formData).then(res => {
       console.log("提交成功", res)
       wx.showToast({
-        title: '发布成功',
+        title: '提交成功',
       })
       setTimeout(function () {
         // wx.navigateBack()
@@ -90,6 +56,7 @@ Page({
     http('/web/getctitem/','GET').then(res=>{
         console.log(res)
         this.setData({
+          ctid:res.id,
           chinese: res.chinese,
           english: res.english,
           swahili: res.swahili,
