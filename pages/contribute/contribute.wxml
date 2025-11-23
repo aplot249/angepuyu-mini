@@ -1,0 +1,87 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <view class="header-intro">
+    <text class="h2">新建词条</text>
+    <text class="desc">感谢您的贡献，请确保发音清晰准确</text>
+  </view>
+
+  <!-- 1. 文本信息录入区域 -->
+  <view class="card form-card">
+    <view class="form-group">
+      <view class="label">斯瓦西里语 (Swahili)</view>
+      <input class="input-field" placeholder="输入斯语单词/短语" model:value="{{swahili}}" />
+    </view>
+    <view class="divider"></view>
+    
+    <view class="form-group">
+      <view class="label">英语 (English)</view>
+      <input class="input-field" placeholder="输入对应英语" model:value="{{english}}" />
+    </view>
+    <view class="divider"></view>
+
+    <view class="form-group">
+      <view class="label">中文含义 (Chinese)</view>
+      <input class="input-field" placeholder="输入中文翻译" model:value="{{chinese}}" />
+    </view>
+    <view class="divider"></view>
+
+    <view class="form-group">
+      <view class="label">中文谐音 (Homonym)</view>
+      <input class="input-field" placeholder="例如: 撒鲁机" model:value="{{homonym}}" />
+    </view>
+  </view>
+
+  <!-- 2. 录音控制区域 -->
+  <view class="section-title">语音录制</view>
+  <view class="card record-card {{isRecording ? 'recording-active' : ''}}">
+    
+    <!-- 状态 A: 尚未录制 -->
+    <block wx:if="{{!tempAudioPath && !isRecording}}">
+      <view class="record-placeholder">
+        <view class="mic-circle" bindtap="startRecord">
+          <view class="mic-icon">🎤</view>
+        </view>
+        <text class="hint-text">点击麦克风开始录音</text>
+      </view>
+    </block>
+
+    <!-- 状态 B: 正在录制 -->
+    <block wx:if="{{isRecording}}">
+      <view class="record-status">
+        <view class="wave-anim">
+          <view class="bar"></view><view class="bar"></view><view class="bar"></view><view class="bar"></view><view class="bar"></view>
+        </view>
+        <text class="timer-text">{{recordDuration}}s</text>
+        <view class="stop-btn" bindtap="stopRecord">
+          <view class="stop-icon">⏹</view> 停止录制
+        </view>
+      </view>
+    </block>
+
+    <!-- 状态 C: 已录制完成 -->
+    <block wx:if="{{tempAudioPath && !isRecording}}">
+      <view class="playback-area">
+        <view class="audio-info">
+          <view class="file-icon">🎵</view>
+          <text class="file-name">录音已完成 ({{recordDuration}}s)</text>
+        </view>
+        
+        <view class="control-row">
+          <view class="ctrl-btn play {{isPlaying ? 'playing' : ''}}" bindtap="playRecord">
+            {{isPlaying ? '⏸ 暂停' : '▶️ 试听'}}
+          </view>
+          <view class="ctrl-btn delete" bindtap="reRecord">
+            🗑 重录
+          </view>
+        </view>
+      </view>
+    </block>
+
+  </view>
+
+  <!-- 3. 提交按钮 -->
+  <view class="footer-action">
+    <button class="submit-btn" bindtap="submitForm" hover-class="btn-hover">提交录入</button>
+  </view>
+
+</view>

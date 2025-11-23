@@ -5,7 +5,8 @@
     "pages/wordbook/wordbook",
     "pages/profile/profile",
     "pages/list/list",
-    "pages/purchase/purchase"
+    "pages/purchase/purchase",
+    "pages/contribute/contribute"
   ],
   "window": {
     "backgroundTextStyle": "light",

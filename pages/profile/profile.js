@@ -48,7 +48,9 @@ Page({
   goPurchase() {
     wx.navigateTo({ url: '/pages/purchase/purchase' });
   },
-  
+  navigateToContribute() {
+    wx.navigateTo({ url: '/pages/contribute/contribute' });
+  },
   notImplemented() {
     wx.showToast({ title: '功能开发中', icon: 'none' });
   }
