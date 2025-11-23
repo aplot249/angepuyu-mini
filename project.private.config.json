@@ -23,13 +23,6 @@
   "condition": {
     "miniprogram": {
       "list": [
-        {
-          "name": "pages/ruku/ruku",
-          "pathName": "pages/ruku/ruku",
-          "query": "",
-          "scene": null,
-          "launchMode": "default"
-        }
       ]
     }
   }
