@@ -1,4 +1,4 @@
 {
-  "usingComponents": {
-  }
+  "navigationBarTitleText": "坦桑通 Swahili",
+  "enablePullDownRefresh": false
 }

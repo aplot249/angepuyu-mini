@@ -1,3 +1,4 @@
 {
-  "usingComponents": {}
+  "navigationBarTitleText": "行业分类",
+  "enablePullDownRefresh": false
 }

@@ -13,6 +13,25 @@ Page({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode
     });
+
+    // [特殊处理] 充值页面单独的导航栏逻辑
+    if (app.globalData.isDarkMode) {
+      // 夜间模式：统一黑色风格
+      wx.setNavigationBarColor({
+        frontColor: '#ffffff',
+        backgroundColor: '#1C1917', // Stone 900
+        animation: { duration: 300 }
+      });
+      wx.setBackgroundColor({ backgroundColor: '#1C1917' });
+    } else {
+      // 白天模式：恢复该页面特色的橙色导航栏
+      wx.setNavigationBarColor({
+        frontColor: '#ffffff', // 橙色背景配白字
+        backgroundColor: '#F59E0B', // Amber 500
+        animation: { duration: 300 }
+      });
+      wx.setBackgroundColor({ backgroundColor: '#FAFAF9' });
+    }
   },
 
   buyPoints(e) {
