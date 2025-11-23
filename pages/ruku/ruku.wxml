@@ -20,6 +20,7 @@
     </van-cell-group>
   </view>
   <view class="submit-btn">
-    <van-button color="#00A5DD" type="info" size="large" round bindtap="submit">Submit</van-button>
+    <van-button type="info" size="large" round bindtap="submit">Submit</van-button>
+    <van-button type="warning" size="large" round bindtap="nextWord">Next</van-button>
   </view>
 </view>

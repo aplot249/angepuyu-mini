@@ -1,18 +1,48 @@
 {
   "pages": [
-    "pages/ruku/ruku",
     "pages/index/index",
-    "pages/logs/logs"
+    "pages/category/category",
+    "pages/wordbook/wordbook",
+    "pages/profile/profile",
+    "pages/list/list",
+    "pages/purchase/purchase"
   ],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "坦桑通 Swahili",
+    "navigationBarTextStyle": "black"
   },
-  "componentFramework": "glass-easel",
-  "sitemapLocation": "sitemap.json",
-  "lazyCodeLoading": "requiredComponents",
-  "permission": {
-
+  "tabBar": {
+    "color": "#a8a29e",
+    "selectedColor": "#2DD4BF",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/images/tab-home.png",
+        "selectedIconPath": "/static/images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "text": "分类",
+        "iconPath": "/static/images/tab-home.png",
+        "selectedIconPath": "/static/images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/wordbook/wordbook",
+        "text": "收藏",
+        "iconPath": "/static/images/tab-home.png",
+        "selectedIconPath": "/static/images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "/static/images/tab-home.png",
+        "selectedIconPath": "/static/images/tab-home-active.png"
+      }
+    ]
   }
 }

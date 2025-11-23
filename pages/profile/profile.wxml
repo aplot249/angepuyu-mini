@@ -1,0 +1,65 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <!-- 头部卡片 -->
+  <view class="header-card">
+    <view class="user-info">
+      <view class="avatar">👤</view>
+      <view class="info-text">
+        <view class="nickname">{{userInfo.nickname}}</view>
+        <view class="uid">ID: SW88231</view>
+      </view>
+    </view>
+    
+    <view class="stats-row">
+      <view class="stat-item">
+        <view class="num">{{userInfo.points}}</view>
+        <view class="label">积分</view>
+      </view>
+      <view class="stat-item" bindtap="handleSignIn">
+        <view class="num">{{userInfo.hasSignedIn ? '已签到' : '去签到'}}</view>
+        <view class="label">每日打卡</view>
+      </view>
+      <view class="stat-item" bindtap="goPurchase">
+        <view class="num text-yellow">💎</view>
+        <view class="label">充值</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜单列表 -->
+  <view class="menu-list card">
+    <view class="menu-item" bindtap="handleFontSize">
+      <view class="menu-left">
+        <view class="menu-icon purple">A</view>
+        <text>字体大小</text>
+      </view>
+      <view class="menu-right">
+        <text class="status-text">{{fontSizeLabel}}</text>
+        <text class="arrow">></text>
+      </view>
+    </view>
+
+    <!-- 夜间模式手动切换 -->
+    <view class="menu-item" bindtap="handleDarkMode">
+      <view class="menu-left">
+        <view class="menu-icon blue">🌙</view>
+        <text>夜间模式</text>
+      </view>
+      <view class="menu-right">
+        <!-- 简单的开关UI模拟 -->
+        <view class="toggle-switch {{isDarkMode ? 'on' : 'off'}}">
+          <view class="toggle-circle"></view>
+        </view>
+      </view>
+    </view>
+
+    <view class="menu-item" bindtap="notImplemented">
+      <view class="menu-left">
+        <view class="menu-icon green">💬</view>
+        <text>意见反馈</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+  </view>
+  
+  <view class="footer">Version 1.1.0 Dark Mode</view>
+</view>

@@ -1,49 +1,55 @@
-// index.js
-const defaultAvatarUrl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+const app = getApp();
 
 Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {
-      avatarUrl: defaultAvatarUrl,
-      nickName: '',
-    },
-    hasUserInfo: false,
-    canIUseGetUserProfile: wx.canIUse('getUserProfile'),
-    canIUseNicknameComp: wx.canIUse('input.type.nickname'),
+    fontSizeLevel: 1,
+    isDarkMode: false,
+    banners: [
+      'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600', 
+      'https://images.unsplash.com/photo-1547471080-7541e89a43ca?w=600'
+    ],
+    notices: ["✨ 新手礼包：注册即送50积分！", "🔥 热门：工程词汇表已更新"],
+    dailyWords: [],
+    dailyPhrases: []
   },
-  bindViewTap() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
+
+  onShow() {
+    this.setData({ 
+      fontSizeLevel: app.globalData.fontSizeLevel,
+      isDarkMode: app.globalData.isDarkMode
+    });
+    if(this.data.dailyWords.length === 0) this.shuffleDaily();
   },
-  onChooseAvatar(e) {
-    const { avatarUrl } = e.detail
-    const { nickName } = this.data.userInfo
+
+  shuffleDaily() {
+    const words = [
+      {id:1, swahili:'Saruji', chinese:'水泥', homonym:'撒鲁机'},
+      {id:2, swahili:'Mchanga', chinese:'沙子', homonym:'母畅噶'},
+      {id:3, swahili:'Jambo', chinese:'你好', homonym:'酱爆'},
+      {id:4, swahili:'Asante', chinese:'谢谢', homonym:'阿三忒'}
+    ];
+    this.setData({ dailyWords: words });
+    
     this.setData({
-      "userInfo.avatarUrl": avatarUrl,
-      hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
+      dailyPhrases: [
+        {id:5, swahili:'Habari gani?', chinese:'你好吗？'},
+        {id:6, swahili:'Vaa kofia', chinese:'戴上帽子'}
+      ]
     })
   },
-  onInputChange(e) {
-    const nickName = e.detail.value
-    const { avatarUrl } = this.data.userInfo
-    this.setData({
-      "userInfo.nickName": nickName,
-      hasUserInfo: nickName && avatarUrl && avatarUrl !== defaultAvatarUrl,
-    })
-  },
-  getUserProfile(e) {
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    wx.getUserProfile({
-      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
-        console.log(res)
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    })
-  },
+
+  playAudio(e) {
+    const type = e.currentTarget.dataset.type;
+    const cost = type === 'word' ? 1 : 3;
+    
+    if (app.globalData.userInfo.points < cost) {
+      wx.showToast({ title: '点数不足', icon: 'none' });
+      return;
+    }
+    
+    app.globalData.userInfo.points -= cost;
+    app.saveData();
+    
+    wx.showToast({ title: `播放中 -${cost}点`, icon: 'none' });
+  }
 })

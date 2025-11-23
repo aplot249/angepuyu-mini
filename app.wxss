@@ -1,10 +1,98 @@
-/**app.wxss**/
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+page {
+  /* 默认颜色变量 */
+  --primary: #2DD4BF;
+  --secondary: #FB923C;
+  --bg-color: #FAFAF9;
+  --card-bg: #FFFFFF;
+  --text-main: #44403C;
+  --text-sub: #a8a29e;
+  
+  /* 默认字体大小基准 (对应 lvl-1) */
+  --text-xs: 24rpx;
+  --text-sm: 28rpx;
+  --text-base: 32rpx;
+  --text-lg: 36rpx;
+  --text-xl: 40rpx;
+  --text-2xl: 48rpx;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, sans-serif;
   box-sizing: border-box;
-} 
+}
+
+/* 夜间模式类 */
+.dark-mode {
+  --bg-color: #1C1917;
+  --card-bg: #292524;
+  --text-main: #E7E5E4;
+  --text-sub: #78716c;
+}
+
+/* --- 字体大小分级 (关键修复：全量覆盖所有变量) --- */
+
+/* 0级: 紧凑 */
+.font-lvl-0 { 
+  --text-xs: 22rpx;
+  --text-sm: 26rpx;
+  --text-base: 28rpx;
+  --text-lg: 32rpx;
+  --text-xl: 36rpx;
+  --text-2xl: 44rpx;
+}
+
+/* 1级: 标准 (默认) */
+.font-lvl-1 { 
+  --text-xs: 24rpx;
+  --text-sm: 28rpx;
+  --text-base: 32rpx;
+  --text-lg: 36rpx;
+  --text-xl: 40rpx;
+  --text-2xl: 48rpx;
+}
+
+/* 2级: 大号 (老人模式推荐) */
+.font-lvl-2 { 
+  --text-xs: 28rpx;
+  --text-sm: 32rpx;
+  --text-base: 36rpx;
+  --text-lg: 40rpx;
+  --text-xl: 46rpx;
+  --text-2xl: 56rpx;
+}
+
+/* 3级: 特大 */
+.font-lvl-3 { 
+  --text-xs: 32rpx;
+  --text-sm: 36rpx;
+  --text-base: 40rpx;
+  --text-lg: 46rpx;
+  --text-xl: 52rpx;
+  --text-2xl: 64rpx;
+}
+
+/* 容器样式 */
+.container {
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  padding: 30rpx;
+  transition: background-color 0.3s, color 0.3s;
+  /* 确保容器内的文字继承这些变量，虽然 CSS 变量默认继承，但明确上下文很重要 */
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 30rpx;
+  padding: 30rpx;
+  box-shadow: 0 10rpx 40rpx -10rpx rgba(0,0,0,0.05);
+  margin-bottom: 24rpx;
+  transition: background-color 0.3s;
+}
+
+/* 通用布局 */
+.flex-row { display: flex; align-items: center; }
+.flex-col { display: flex; flex-direction: column; }
+.justify-between { justify-content: space-between; }
+.center { display: flex; align-items: center; justify-content: center; }
+.bold { font-weight: bold; }
+.text-primary { color: var(--primary); }
+.text-secondary { color: var(--secondary); }

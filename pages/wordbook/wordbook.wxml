@@ -1,0 +1,56 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <!-- 顶部搜索与Tab -->
+  <view class="header-section">
+    <view class="search-bar">
+      <view class="search-icon">🔍</view>
+      <input class="search-input" placeholder="搜索我的收藏..." bindinput="onSearchInput" value="{{searchText}}" />
+    </view>
+    <view class="tab-control">
+      <view class="tab-item {{currentTab === 'words' ? 'active' : ''}}" bindtap="switchTab" data-tab="words">单词本</view>
+      <view class="tab-item {{currentTab === 'phrases' ? 'active' : ''}}" bindtap="switchTab" data-tab="phrases">短语集</view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="list-container">
+    <view wx:if="{{paginatedList.length === 0}}" class="empty-state">
+      <view class="empty-icon">📂</view>
+      <text>空空如也，快去收藏吧~</text>
+    </view>
+
+    <block wx:for="{{paginatedList}}" wx:key="id">
+      <view class="card item-card">
+        <view class="checkbox-area" bindtap="toggleCheck" data-id="{{item.id}}">
+          <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
+            <view wx:if="{{item.checked}}" class="check-mark">✓</view>
+          </view>
+        </view>
+        
+        <view class="content-area">
+          <view class="row-top">
+            <text class="swahili">{{item.swahili}}</text>
+            <view class="play-btn" catchtap="playAudio" data-item="{{item}}">🔊</view>
+          </view>
+          <view class="homonym-tag">/ {{item.homonym}} /</view>
+          <view class="chinese">{{item.chinese}}</view>
+        </view>
+      </view>
+    </block>
+
+    <view class="pagination" wx:if="{{totalPages > 1}}">
+      <view class="page-btn {{currentPage === 1 ? 'disabled' : ''}}" bindtap="prevPage">❮</view>
+      <text class="page-info">{{currentPage}} / {{totalPages}}</text>
+      <view class="page-btn {{currentPage === totalPages ? 'disabled' : ''}}" bindtap="nextPage">❯</view>
+    </view>
+    
+    <view style="height: 160rpx;"></view>
+  </scroll-view>
+
+  <view class="fab-group">
+    <view class="fab-btn blue" bindtap="exportDoc">
+      <text>📄</text>
+    </view>
+    <view class="fab-btn teal" bindtap="playStream">
+      <text>▶️</text>
+    </view>
+  </view>
+</view>

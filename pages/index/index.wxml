@@ -1,27 +1,63 @@
-<!--index.wxml-->
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <!-- 轮播图 -->
+  <swiper class="banner-swiper" indicator-dots autoplay circular indicator-active-color="#fff">
+    <block wx:for="{{banners}}" wx:key="*this">
+      <swiper-item>
+        <image src="{{item}}" mode="aspectFill" class="banner-img"></image>
+        <view class="banner-text">
+          <text class="tag">每日精选</text>
+          <text class="title">探索斯瓦西里之美</text>
         </view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <!-- 滚动公告 -->
+  <view class="notice-bar">
+    <view class="icon">📢</view>
+    <swiper class="notice-swiper" autoplay vertical circular>
+      <block wx:for="{{notices}}" wx:key="*this">
+        <swiper-item class="notice-item">{{item}}</swiper-item>
       </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
+    </swiper>
+  </view>
+
+  <!-- 每日单词 -->
+  <view class="section-header">
+    <view>
+      <text class="h2">每日单词</text>
+      <view class="desc">积少成多，每天进步一点点</view>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+    <view class="btn-refresh" bindtap="shuffleDaily">🔄 换一批</view>
+  </view>
+
+  <view class="grid-2">
+    <block wx:for="{{dailyWords}}" wx:key="id">
+      <view class="card word-card" bindtap="playAudio" data-item="{{item}}" data-type="word">
+        <text class="swahili">{{item.swahili}}</text>
+        <view class="homonym">🎵 {{item.homonym}}</view>
+        <view class="chinese">{{item.chinese}}</view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 实用短语 -->
+  <view class="section-header">
+    <view>
+      <text class="h2">实用短语</text>
+      <view class="desc">地道表达，沟通无障碍</view>
     </view>
   </view>
-</scroll-view>
+
+  <view class="phrase-list">
+    <block wx:for="{{dailyPhrases}}" wx:key="id">
+      <view class="card phrase-card" bindtap="playAudio" data-item="{{item}}" data-type="phrase">
+        <view class="flex-col">
+          <text class="swahili-lg">{{item.swahili}}</text>
+          <text class="chinese-sm">{{item.chinese}}</text>
+        </view>
+        <view class="play-icon">🔊</view>
+      </view>
+    </block>
+  </view>
+</view>

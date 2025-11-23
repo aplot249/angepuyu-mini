@@ -1,62 +1,25 @@
-/**index.wxss**/
-page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-.scrollarea {
-  flex: 1;
-  overflow-y: hidden;
-}
+.banner-swiper { height: 380rpx; margin-bottom: 30rpx; border-radius: 30rpx; overflow: hidden; }
+.banner-img { width: 100%; height: 100%; }
+.banner-text { position: absolute; bottom: 30rpx; left: 30rpx; color: #fff; }
+.tag { background: rgba(255,255,255,0.2); padding: 4rpx 12rpx; border-radius: 10rpx; font-size: 24rpx; backdrop-filter: blur(5px); }
+.title { display: block; font-size: 36rpx; font-weight: bold; margin-top: 10rpx; }
 
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #aaa;
-  width: 80%;
-}
+.notice-bar { background: var(--card-bg); padding: 20rpx; border-radius: 20rpx; display: flex; align-items: center; margin-bottom: 30rpx; }
+.notice-swiper { height: 40rpx; flex: 1; margin-left: 20rpx; }
+.notice-item { font-size: var(--text-sm); line-height: 40rpx; color: var(--text-main); }
 
-.userinfo-avatar {
-  overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
+.section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20rpx; }
+.h2 { font-size: var(--text-xl); font-weight: 800; color: var(--text-main); }
+.desc { font-size: var(--text-xs); color: var(--text-sub); }
+.btn-refresh { font-size: var(--text-xs); color: var(--primary); background: #E0F2F1; padding: 8rpx 20rpx; border-radius: 30rpx; }
 
-.usermotto {
-  margin-top: 200px;
-}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20rpx; }
+.word-card { position: relative; overflow: hidden; }
+.swahili { font-size: var(--text-lg); font-weight: bold; display: block; }
+.homonym { font-size: var(--text-xs); color: var(--text-sub); margin: 10rpx 0; }
+.chinese { display: inline-block; background: var(--bg-color); padding: 4rpx 16rpx; border-radius: 20rpx; font-size: var(--text-sm); font-weight: bold; }
 
-.avatar-wrapper {
-  padding: 0;
-  width: 56px !important;
-  border-radius: 8px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-}
-
-.avatar {
-  display: block;
-  width: 56px;
-  height: 56px;
-}
-
-.nickname-wrapper {
-  display: flex;
-  width: 100%;
-  padding: 16px;
-  box-sizing: border-box;
-  border-top: .5px solid rgba(0, 0, 0, 0.1);
-  border-bottom: .5px solid rgba(0, 0, 0, 0.1);
-  color: black;
-}
-
-.nickname-label {
-  width: 105px;
-}
-
-.nickname-input {
-  flex: 1;
-}
+.phrase-card { display: flex; justify-content: space-between; align-items: center; border-left: 8rpx solid var(--secondary); }
+.swahili-lg { font-size: var(--text-base); font-weight: bold; }
+.chinese-sm { font-size: var(--text-sm); color: var(--text-sub); margin-top: 8rpx; }
+.play-icon { width: 60rpx; height: 60rpx; background: #FFF3E0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--secondary); }

@@ -41,7 +41,11 @@
 }
 
 .submit-btn{
-  margin: 60rpx 0;
+  width: 80%;
+  margin: 60rpx auto;
+}
+.submit-btn button{
+  margin:8rpx 0;
 }
 .editor-box{
   border: 1px solid #ebedf0;

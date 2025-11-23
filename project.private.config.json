@@ -19,5 +19,18 @@
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true
   },
-  "libVersion": "3.11.2"
+  "libVersion": "3.11.2",
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/ruku/ruku",
+          "pathName": "pages/ruku/ruku",
+          "query": "",
+          "scene": null,
+          "launchMode": "default"
+        }
+      ]
+    }
+  }
 }

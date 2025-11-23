@@ -31,7 +31,17 @@ Page({
       fayin:event.detail.tempFilePath
     })
   },
+  nextWord(){
+    this.onLoad()
+  },
   submit() {
+    if(!this.data.fayin){
+      wx.showToast({
+        title: 'no voice',
+        icon:'error'
+      })
+      return false
+    }
     var formData = {
       chinese: this.data.chinese,
       english: this.data.english,

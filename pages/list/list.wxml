@@ -1,0 +1,92 @@
+<view class="container list-page font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <!-- 顶部固定区 -->
+  <view class="fixed-header">
+    <input class="main-search" placeholder="🔍 搜索中文、英语或斯瓦西里语" bindinput="onSearch" value="{{keyword}}" />
+    
+    <view class="segment-tab">
+      <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词库</view>
+      <view class="segment-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-idx="1">短语集</view>
+    </view>
+  </view>
+
+  <!-- 滑动内容区 (Swiper实现左右滑动切换Tab) -->
+  <swiper class="content-swiper" current="{{currentTab}}" bindchange="onSwiperChange">
+    
+    <!-- 单词列表 -->
+    <swiper-item>
+      <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMore">
+        <block wx:for="{{wordList}}" wx:key="id">
+          <view class="card detail-card">
+            <view class="card-body">
+              <view class="info-col">
+                <text class="sw-title">{{item.swahili}}</text>
+                <text class="en-sub">English: {{item.english}}</text>
+                <view class="homonym-row">
+                  <text class="badge">谐音</text>
+                  <text class="homonym-text">{{item.homonym}}</text>
+                </view>
+                <text class="cn-main">{{item.chinese}}</text>
+              </view>
+              <!-- 单词显示图片 -->
+              <image class="word-img" src="{{item.image}}" mode="aspectFill"></image>
+            </view>
+            
+            <view class="card-footer">
+              <view class="actions">
+                <view class="btn-pill" bindtap="playAudio" data-item="{{item}}" data-type="word">
+                  <text>🔊 播放</text>
+                </view>
+                <view class="icon-btn {{item.isFav ? 'fav-active' : ''}}" bindtap="toggleFav" data-id="{{item.id}}">
+                  <text>{{item.isFav ? '❤️' : '🤍'}}</text>
+                </view>
+              </view>
+              <view class="feedback-btn" bindtap="onCorrection">纠错</view>
+            </view>
+          </view>
+        </block>
+        <!-- 分页加载提示 -->
+        <view class="loading-tip">
+           <text wx:if="{{hasMoreWords}}">加载中...</text>
+           <text wx:else>--- 到底啦 ---</text>
+        </view>
+      </scroll-view>
+    </swiper-item>
+
+    <!-- 短语列表 -->
+    <swiper-item>
+      <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMore">
+        <block wx:for="{{phraseList}}" wx:key="id">
+          <view class="card detail-card phrase-style">
+            <view class="card-body">
+              <view class="info-col">
+                <text class="sw-title">{{item.swahili}}</text>
+                <text class="en-sub">{{item.english}}</text>
+                <view class="homonym-row">
+                   <text class="homonym-text text-sub">/ {{item.homonym}} /</text>
+                </view>
+                <text class="cn-main text-primary">{{item.chinese}}</text>
+              </view>
+            </view>
+            
+            <view class="card-footer">
+              <view class="actions">
+                <view class="btn-pill orange" bindtap="playAudio" data-item="{{item}}" data-type="phrase">
+                  <text>🔊 朗读</text>
+                </view>
+                <view class="icon-btn {{item.isFav ? 'fav-active' : ''}}" bindtap="toggleFav" data-id="{{item.id}}">
+                  <text>{{item.isFav ? '❤️' : '🤍'}}</text>
+                </view>
+              </view>
+              <view class="feedback-btn" bindtap="onCorrection">纠错</view>
+            </view>
+          </view>
+        </block>
+        <view class="loading-tip">
+           <text wx:if="{{hasMorePhrases}}">加载中...</text>
+           <text wx:else>--- 到底啦 ---</text>
+        </view>
+      </scroll-view>
+    </swiper-item>
+
+  </swiper>
+</view>

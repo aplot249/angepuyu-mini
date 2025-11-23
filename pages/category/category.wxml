@@ -1,0 +1,29 @@
+<view class="page-container flex-row font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <!-- 左侧导航 -->
+  <scroll-view scroll-y class="left-nav">
+    <block wx:for="{{categories}}" wx:key="id">
+      <view class="nav-item {{activeIdx === index ? 'active' : ''}}" bindtap="switchCat" data-index="{{index}}">
+        <view class="indicator" wx:if="{{activeIdx === index}}"></view>
+        <text>{{item.name}}</text>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 右侧内容 -->
+  <scroll-view scroll-y class="right-content">
+    <view class="content-header">
+      <text class="header-line"></text>
+      <text class="header-title">{{categories[activeIdx].name}}</text>
+      <text class="header-line"></text>
+    </view>
+
+    <view class="sub-grid">
+      <block wx:for="{{categories[activeIdx].sub}}" wx:key="*this">
+        <view class="sub-item card" bindtap="goToList" data-sub="{{item}}">
+          <view class="sub-icon text-primary">📂</view>
+          <text class="sub-name">{{item}}</text>
+        </view>
+      </block>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,68 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <!-- 顶部余额卡片 -->
+  <view class="balance-card">
+    <view class="balance-label">当前余额</view>
+    <view class="balance-value">
+      <text class="num">{{userInfo.points}}</text>
+      <text class="unit">点</text>
+    </view>
+    <view class="bg-decoration"></view>
+  </view>
+
+  <!-- 积分规则说明 -->
+  <view class="section-title">获取与消耗规则</view>
+  <view class="card rules-card">
+    <view class="rule-item">
+      <view class="icon green">🎁</view>
+      <text>新用户注册赠送 <text class="highlight">50</text> 点</text>
+    </view>
+    <view class="rule-item">
+      <view class="icon green">📅</view>
+      <text>每日签到奖励 <text class="highlight">20</text> 点</text>
+    </view>
+    <view class="divider"></view>
+    <view class="rule-item">
+      <view class="icon red">🔊</view>
+      <text>单词发音: <text class="highlight-red">-1</text> 点/次</text>
+    </view>
+    <view class="rule-item">
+      <view class="icon red">🗣️</view>
+      <text>短语发音: <text class="highlight-red">-3</text> 点/次</text>
+    </view>
+    <view class="rule-item">
+      <view class="icon red">📄</view>
+      <text>导出文档: <text class="highlight-red">-5</text> 点/词条</text>
+    </view>
+  </view>
+
+  <!-- 充值选项 -->
+  <view class="section-title">点数充值</view>
+  <view class="purchase-list">
+    
+    <!-- 选项 1 -->
+    <view class="card purchase-item" bindtap="buyPoints" data-amount="1000" data-price="28">
+      <view class="item-left">
+        <view class="coin-icon">💰</view>
+        <view class="item-info">
+          <view class="item-title">1000 点数</view>
+          <view class="item-desc">适合短期学习者</view>
+        </view>
+      </view>
+      <view class="price-btn">¥ 28</view>
+    </view>
+
+    <!-- 选项 2 (推荐) -->
+    <view class="card purchase-item recommend" bindtap="buyPoints" data-amount="99999" data-price="50">
+      <view class="recommend-tag">HOT</view>
+      <view class="item-left">
+        <view class="coin-icon infinite">♾️</view>
+        <view class="item-info">
+          <view class="item-title text-purple">无限点数</view>
+          <view class="item-desc">一次购买，终身畅享</view>
+        </view>
+      </view>
+      <view class="price-btn purple">¥ 50</view>
+    </view>
+
+  </view>
+</view>

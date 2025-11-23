@@ -1,0 +1,113 @@
+/* 顶部余额卡片 - 渐变背景 */
+.balance-card {
+  background: linear-gradient(135deg, #F59E0B, #EA580C); /* Amber to Orange */
+  border-radius: 40rpx;
+  padding: 60rpx 40rpx;
+  color: white;
+  margin-bottom: 40rpx;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10rpx 30rpx rgba(234, 88, 12, 0.3);
+}
+
+.balance-label { font-size: var(--text-sm); opacity: 0.9; margin-bottom: 10rpx; }
+.balance-value { display: flex; align-items: baseline; }
+.num { font-size: 80rpx; font-weight: 900; line-height: 1; }
+.unit { font-size: var(--text-base); margin-left: 10rpx; font-weight: bold; }
+
+/* 装饰背景圆 */
+.bg-decoration {
+  position: absolute;
+  top: -50rpx;
+  right: -50rpx;
+  width: 200rpx;
+  height: 200rpx;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  filter: blur(20rpx);
+}
+
+.section-title {
+  font-size: var(--text-lg);
+  font-weight: 800;
+  margin-bottom: 20rpx;
+  padding-left: 10rpx;
+  border-left: 8rpx solid var(--primary);
+  line-height: 1;
+}
+
+/* 规则卡片 */
+.rules-card { padding: 30rpx 40rpx; }
+.rule-item { display: flex; align-items: center; margin-bottom: 20rpx; font-size: var(--text-sm); color: var(--text-main); }
+.rule-item:last-child { margin-bottom: 0; }
+.icon { margin-right: 20rpx; width: 40rpx; text-align: center; }
+.highlight { color: var(--primary); font-weight: bold; margin: 0 6rpx; }
+.highlight-red { color: #EF4444; font-weight: bold; margin: 0 6rpx; }
+.divider { height: 1rpx; background: rgba(0,0,0,0.05); margin: 20rpx 0; }
+
+/* 充值列表 */
+.purchase-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+}
+.purchase-item:active { background: rgba(0,0,0,0.02); transform: scale(0.98); }
+
+.item-left { display: flex; align-items: center; }
+.coin-icon { 
+  width: 80rpx; 
+  height: 80rpx; 
+  background: #FFF7ED; 
+  border-radius: 20rpx; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-size: 40rpx; 
+  margin-right: 30rpx;
+}
+.item-title { font-size: var(--text-lg); font-weight: bold; margin-bottom: 6rpx; }
+.item-desc { font-size: var(--text-xs); color: var(--text-sub); }
+
+.price-btn {
+  background: #292524;
+  color: white;
+  padding: 12rpx 30rpx;
+  border-radius: 20rpx;
+  font-weight: bold;
+  font-size: var(--text-base);
+}
+
+/* 推荐项特殊样式 */
+.purchase-item.recommend {
+  border-color: #E9D5FF; /* Light Purple border */
+  background: linear-gradient(to right, #FAF5FF, var(--card-bg));
+  position: relative;
+  overflow: hidden;
+}
+
+/* 夜间模式适配推荐卡片背景 */
+@media (prefers-color-scheme: dark) {
+  .purchase-item.recommend {
+    background: linear-gradient(to right, #3B0764, var(--card-bg)); /* Dark Purple */
+    border-color: #581C87;
+  }
+}
+
+.recommend-tag {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #EF4444;
+  color: white;
+  font-size: 20rpx;
+  padding: 4rpx 16rpx;
+  border-bottom-left-radius: 16rpx;
+  font-weight: bold;
+}
+
+.coin-icon.infinite { background: #F3E8FF; color: #9333EA; }
+.text-purple { color: #9333EA; }
+.price-btn.purple { background: #9333EA; box-shadow: 0 4rpx 12rpx rgba(147, 51, 234, 0.3); }
