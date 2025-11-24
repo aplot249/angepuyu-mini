@@ -1,0 +1,71 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}} share-page">
+  
+  <!-- 添加 wxml-to-canvas 组件 -->
+  <wxml-to-canvas class="widget" id="widget" width="375" height="667"></wxml-to-canvas>
+
+  <!-- 海报主体区域 (页面预览用) -->
+  <view class="poster-card">
+    <!-- 顶部装饰图 -->
+    <view class="poster-header">
+      <image class="header-bg" src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80" mode="aspectFill"></image>
+      <view class="overlay"></view>
+      <view class="app-branding">
+        <view class="logo-box">🇹🇿</view>
+        <view class="app-name">坦桑通 Swahili</view>
+        <view class="app-slogan">沟通无界 · 闯荡非洲更轻松</view>
+      </view>
+    </view>
+
+    <!-- 核心痛点/简介 -->
+    <view class="intro-section">
+      <text class="highlight-text">专为坦桑尼亚华人打造</text>
+      <text class="sub-text">无论你是工程建设、商务考察还是日常生活，坦桑通都是你最贴心的语言助手。</text>
+    </view>
+
+    <!-- 功能亮点网格 -->
+    <view class="features-grid">
+      <view class="feature-item">
+        <view class="icon-circle teal">📚</view>
+        <view class="feat-title">行业词库</view>
+        <view class="feat-desc">覆盖工程/餐饮/物流等七大行业</view>
+      </view>
+      <view class="feature-item">
+        <view class="icon-circle orange">🗣️</view>
+        <view class="feat-title">真人发音</view>
+        <view class="feat-desc">地道斯语朗读，边听边学不露怯</view>
+      </view>
+      <view class="feature-item">
+        <view class="icon-circle blue">💾</view>
+        <view class="feat-title">离线收藏</view>
+        <view class="feat-desc">一键加入生词本，随时随地复习</view>
+      </view>
+      <view class="feature-item">
+        <view class="icon-circle purple">👓</view>
+        <view class="feat-title">长辈关怀</view>
+        <view class="feat-desc">超大字体+夜间模式，护眼更清晰</view>
+      </view>
+    </view>
+
+    <!-- 底部二维码区域 -->
+    <view class="poster-footer">
+      <view class="qr-placeholder">
+        <image src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tanzania-swahili-app.com" class="qr-img"></image>
+      </view>
+      <view class="scan-tip">
+        <text class="tip-bold">长按识别小程序码</text>
+        <text class="tip-small">即刻开启斯瓦西里语学习之旅</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="action-bar">
+    <button class="btn share-friend" open-type="share">
+      <text>转发给朋友</text>
+    </button>
+    <button class="btn save-img" bindtap="savePoster">
+      <text>保存海报图</text>
+    </button>
+  </view>
+
+</view>

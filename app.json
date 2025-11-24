@@ -6,7 +6,8 @@
     "pages/profile/profile",
     "pages/list/list",
     "pages/purchase/purchase",
-    "pages/contribute/contribute"
+    "pages/contribute/contribute",
+    "pages/share/share"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -45,5 +46,8 @@
         "selectedIconPath": "/static/images/tab-home-active.png"
       }
     ]
+  },
+  "permission": {
+
   }
 }

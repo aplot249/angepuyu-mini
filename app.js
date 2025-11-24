@@ -3,7 +3,7 @@ App({
     userInfo: {
       nickname: "Marafiki",
       points: 100,
-      hasSignedIn: false,
+      hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享
       favorites: []
     },
@@ -16,13 +16,13 @@ App({
     const user = wx.getStorageSync('ts_user');
     const font = wx.getStorageSync('ts_font');
     const dark = wx.getStorageSync('ts_dark'); 
-    
+    // 把user放在全局数据里
     if (user) this.globalData.userInfo = user;
-    
+    // 把字体等级放在全局数据里
     if (font === 0 || font === 1 || font === 2 || font === 3) {
       this.globalData.fontSizeLevel = font;
     }
-    
+    // 把白天黑夜模式状态放在全局数据里
     if (dark === true || dark === false) {
       this.globalData.isDarkMode = dark;
     }

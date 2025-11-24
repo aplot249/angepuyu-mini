@@ -33,9 +33,7 @@ Page({
     isDarkMode: false,
     banners: [
       'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80', // Kilimanjaro
-      'https://images.unsplash.com/photo-1547471080-7541e89a43ca?w=800&q=80', // Wildlife
       'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&q=80', // Zanzibar
-      'https://images.unsplash.com/photo-1605218427368-351816b5b6e5?w=800&q=80'  // City/Construction
     ],
     notices: [
       "✨ 新手礼包：注册即送50积分！", 
@@ -60,8 +58,8 @@ Page({
   shuffleDaily() {
     // 随机抽取4个单词
     const shuffledWords = [...WORD_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
-    // 随机抽取2个短语
-    const shuffledPhrases = [...PHRASE_POOL].sort(() => 0.5 - Math.random()).slice(0, 2);
+    // 随机抽取4个短语
+    const shuffledPhrases = [...PHRASE_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
 
     this.setData({ 
       dailyWords: shuffledWords,
