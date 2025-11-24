@@ -66,7 +66,7 @@ Page({
     let favIds = app.globalData.userInfo.favorites;
     if (!favIds || favIds.length === 0) {
         favIds = [101, 102, 103, 104, 105, 106, 111, 112, 501, 502, 503, 504];
-        app.globalData.userInfo.favorites = favIds; // 临时写入以便演示
+        app.globalData.userInfo.favorites = favIds;
     }
 
     let sourceData = this.data.currentTab === 'words' ? MOCK_DB.words : MOCK_DB.phrases;
@@ -92,11 +92,18 @@ Page({
   },
 
   updatePagination() {
-    const { fullList, currentPage, pageSize } = this.data;
+    const { fullList, currentPage, pageSize, checkedIds } = this.data;
     const start = (currentPage - 1) * pageSize;
     const end = start + pageSize;
+    
+    // 分页时重新计算当前页数据的 checked 状态
+    const pageData = fullList.slice(start, end).map(item => ({
+      ...item,
+      checked: checkedIds.includes(item.id)
+    }));
+
     this.setData({
-      paginatedList: fullList.slice(start, end)
+      paginatedList: pageData
     });
   },
 
@@ -128,17 +135,31 @@ Page({
 
   toggleCheck(e) {
     const id = e.currentTarget.dataset.id;
-    const list = this.data.paginatedList;
-    const idx = list.findIndex(i => i.id === id);
-    
-    const key = `paginatedList[${idx}].checked`;
-    const newVal = !list[idx].checked;
-    this.setData({ [key]: newVal });
-
     let ids = this.data.checkedIds;
-    if (newVal) ids.push(id);
-    else ids = ids.filter(i => i !== id);
+    
+    if (ids.includes(id)) {
+      ids = ids.filter(i => i !== id);
+    } else {
+      ids.push(id);
+    }
+    
     this.setData({ checkedIds: ids });
+    this.updatePagination(); // 刷新当前页视图
+  },
+
+  // [新增] 全选当前列表所有项
+  selectAll() {
+    const allIds = this.data.fullList.map(item => item.id);
+    this.setData({ checkedIds: allIds });
+    this.updatePagination();
+    wx.showToast({ title: '已全选', icon: 'none' });
+  },
+
+  // [新增] 取消全选
+  unselectAll() {
+    this.setData({ checkedIds: [] });
+    this.updatePagination();
+    wx.showToast({ title: '已重置', icon: 'none' });
   },
 
   playAudio(e) {

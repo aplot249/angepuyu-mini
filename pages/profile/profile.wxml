@@ -8,16 +8,25 @@
         <view class="uid">ID: SW88231</view>
       </view>
     </view>
-
+    
     <view class="stats-row">
       <view class="stat-item">
         <view class="num">{{userInfo.points}}</view>
         <view class="label">积分</view>
       </view>
+      
       <view class="stat-item" bindtap="handleSignIn">
-        <view class="num">{{userInfo.hasSignedIn ? '已签到' : '去签到'}}</view>
-        <view class="label">每日打卡</view>
+        <view class="num">{{userInfo.hasSignedIn ? '已签' : '签到'}}</view>
+        <view class="label">每日+20</view>
       </view>
+
+      <!-- [新增] 分享按钮 (使用 button open-type="share") -->
+      <!-- 为了保持样式一致，我们用 button 包裹内容，并去除默认样式 -->
+      <button class="stat-item share-btn" open-type="share" bindtap="handleShareTap">
+        <view class="num text-orange">{{userInfo.hasSharedToday ? '已享' : '分享'}}</view>
+        <view class="label">每日+15</view>
+      </button>
+
       <view class="stat-item" bindtap="goPurchase">
         <view class="num text-yellow">💎</view>
         <view class="label">充值</view>
@@ -51,13 +60,16 @@
         </view>
       </view>
     </view>
+    
+    <!-- [新增] 录音贡献入口 -->
     <view class="menu-item" bindtap="navigateToContribute">
       <view class="menu-left">
-        <view class="menu-icon red">🎙️</view> <!-- 红色图标 -->
+        <view class="menu-icon red">🎙️</view>
         <text>录音贡献</text>
       </view>
       <text class="arrow">></text>
     </view>
+
     <view class="menu-item" bindtap="notImplemented">
       <view class="menu-left">
         <view class="menu-icon green">💬</view>
@@ -66,6 +78,6 @@
       <text class="arrow">></text>
     </view>
   </view>
-
-  <view class="footer">Version 1.1.0 Dark Mode</view>
+  
+  <view class="footer">Version 1.2.0 Share & Earn</view>
 </view>

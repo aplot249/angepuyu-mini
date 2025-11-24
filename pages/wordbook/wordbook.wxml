@@ -11,20 +11,25 @@
     </view>
   </view>
 
+  <!-- 列表内容 -->
   <scroll-view scroll-y class="list-container">
+    <!-- 空状态 -->
     <view wx:if="{{paginatedList.length === 0}}" class="empty-state">
       <view class="empty-icon">📂</view>
       <text>空空如也，快去收藏吧~</text>
     </view>
 
+    <!-- 列表项 -->
     <block wx:for="{{paginatedList}}" wx:key="id">
       <view class="card item-card">
+        <!-- 复选框 -->
         <view class="checkbox-area" bindtap="toggleCheck" data-id="{{item.id}}">
           <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
             <view wx:if="{{item.checked}}" class="check-mark">✓</view>
           </view>
         </view>
         
+        <!-- 内容 -->
         <view class="content-area">
           <view class="row-top">
             <text class="swahili">{{item.swahili}}</text>
@@ -36,21 +41,34 @@
       </view>
     </block>
 
+    <!-- 分页控件 -->
     <view class="pagination" wx:if="{{totalPages > 1}}">
       <view class="page-btn {{currentPage === 1 ? 'disabled' : ''}}" bindtap="prevPage">❮</view>
       <text class="page-info">{{currentPage}} / {{totalPages}}</text>
       <view class="page-btn {{currentPage === totalPages ? 'disabled' : ''}}" bindtap="nextPage">❯</view>
     </view>
     
-    <view style="height: 160rpx;"></view>
+    <!-- 底部占位，防止被悬浮按钮遮挡 -->
+    <view style="height: 380rpx;"></view>
   </scroll-view>
 
+  <!-- 悬浮功能按钮 -->
   <view class="fab-group">
-    <view class="fab-btn blue" bindtap="exportDoc">
-      <text>📄</text>
+    <!-- [新增] 全选按钮 -->
+    <view class="fab-btn purple" bindtap="selectAll" hover-class="btn-hover">
+      <text class="fab-icon">✅</text>
     </view>
-    <view class="fab-btn teal" bindtap="playStream">
-      <text>▶️</text>
+    <!-- [新增] 全不选按钮 -->
+    <view class="fab-btn gray" bindtap="unselectAll" hover-class="btn-hover">
+      <text class="fab-icon">❎</text>
+    </view>
+    
+    <!-- 原有按钮 -->
+    <view class="fab-btn blue" bindtap="exportDoc" hover-class="btn-hover">
+      <text class="fab-icon">📄</text>
+    </view>
+    <view class="fab-btn teal" bindtap="playStream" hover-class="btn-hover">
+      <text class="fab-icon">▶️</text>
     </view>
   </view>
 </view>
