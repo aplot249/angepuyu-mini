@@ -4,12 +4,13 @@ const app = getApp();
 const recorderManager = wx.getRecorderManager();
 // 创建音频上下文
 const innerAudioContext = wx.createInnerAudioContext();
+import { http,fileupload } from '../../requests/index'
 
 Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
-    
+    id:'',
     // 表单字段
     swahili: '',
     english: '',
@@ -23,15 +24,38 @@ Page({
     isPlaying: false,
     
     // 计时器引用
-    timer: null
+    timer: null,
+    recorderName:''
   },
 
   onLoad() {
+    if (wx.getStorageInfoSync().keys.includes("recorderName")){
+      let  name = wx.getStorageSync("recorderName")
+      console.log("name",name)
+      this.setData({
+        recorderName:name
+      })
+    }
+    http('/web/getctitem/','GET').then(res=>{
+        console.log(res)
+        this.setData({
+          id:res.id,
+          homonym:res.xieyin,
+          chinese:res.chinese,
+          english:res.english,
+          swahili:res.swahili
+        })
+    })
     this.setupRecorder();
     this.setupAudioPlayer();
   },
 
   onShow() {
+    if (wx.getStorageInfoSync().keys.includes("recorderName")){
+      this.setData({
+        recorderName:wx.getStorageSync("recorderName")
+      })
+    }
     // 同步全局样式设置
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
@@ -164,30 +188,49 @@ Page({
       }
     });
   },
-
+  nextForm(){
+    this.onLoad()
+  },
   submitForm() {
     const { swahili, english, chinese, homonym, tempAudioPath } = this.data;
 
     // 1. 简单校验
-    if (!swahili || !english || !chinese) {
+    if (!swahili || !english || !chinese ) {
       return wx.showToast({ title: '请填写完整文本信息', icon: 'none' });
     }
+    if (!this.data.recorderName ) {
+      return wx.showToast({ title: 'Please input your name then administrator can distinguish', icon: 'none' });
+    }
+    wx.setStorageSync('recorderName', this.data.recorderName)
     if (!tempAudioPath) {
       return wx.showToast({ title: '请录制语音', icon: 'none' });
     }
+    console.log('recorderName',this.data.recorderName)
+    let formData = {
+      xieyin:this.data.homonym,
+      chinese:this.data.chinese,
+      english:this.data.english,
+      swahili:this.data.swahili,
+      status:'1',
+      recorderName:wx.getStorageSync('recorderName'),
+    }
 
-    // 2. 模拟提交过程
     wx.showLoading({ title: '正在上传...', mask: true });
-
-    setTimeout(() => {
+    fileupload(`/web/updatectitem/${this.data.id}/`,this.data.tempAudioPath,'fayin',formData).then(res=>{
+      console.log('res',res)
       wx.hideLoading();
-      
+      // wx.showLoading({ title: '正在上传...', mask: fa });
+    })
+    // 2. 模拟提交过程
+
+    // setTimeout(() => {
+      // wx.hideLoading();
       // 模拟成功
-      wx.showToast({
-        title: '提交成功',
-        icon: 'success',
-        duration: 2000
-      });
+      // wx.showToast({
+      //   title: '提交成功',
+      //   icon: 'success',
+      //   duration: 2000
+      // });
 
       // 3. 重置表单或返回上一页
       setTimeout(() => {
@@ -197,12 +240,12 @@ Page({
           swahili: '', english: '', chinese: '', homonym: '',
           tempAudioPath: '', recordDuration: 0
         });
-        
+        this.onLoad()
         // 选项 B: 返回
         // wx.navigateBack();
       }, 1500);
       
-    }, 1500);
+    // }, 1500);
   },
 
   cleanUp() {

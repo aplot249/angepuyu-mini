@@ -18,10 +18,10 @@
     </view>
 
     <view class="sub-grid">
-      <block wx:for="{{categories[activeIdx].sub}}" wx:key="*this">
-        <view class="sub-item card" bindtap="goToList" data-sub="{{item}}">
+      <block wx:for="{{categories[activeIdx].sublingyu}}" wx:key="*this">
+        <view class="sub-item card" bindtap="goToList" data-subid="{{item.id}}" data-subname="{{item.name}}">
           <view class="sub-icon text-primary">📂</view>
-          <text class="sub-name">{{item}}</text>
+          <text class="sub-name">{{item.name}}</text>
         </view>
       </block>
     </view>

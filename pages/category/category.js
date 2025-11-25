@@ -1,4 +1,5 @@
 const app = getApp();
+import { http } from '../../requests/index'
 
 Page({
   data: {
@@ -60,6 +61,12 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
+    http('/web/lingyu/','GET').then(res=>{
+        console.log(res)
+        this.setData({
+          categories:res
+        })
+    })
   },
 
   switchCat(e) {
@@ -69,9 +76,10 @@ Page({
   },
 
   goToList(e) {
-    const subCategory = e.currentTarget.dataset.sub;
+    const subid = e.currentTarget.dataset.subid;
+    const subname = e.currentTarget.dataset.subname;
     wx.navigateTo({
-      url: `/pages/list/list?sub=${encodeURIComponent(subCategory)}`
+      url: `/pages/list/list?subid=${subid}&subname=${subname}`
     });
   }
 })

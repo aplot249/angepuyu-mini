@@ -1,5 +1,5 @@
 const app = getApp();
-
+import { http } from '../../requests/index'
 // 真实场景模拟数据池
 const WORDS_DB = [
   { swahili: 'Saruji', english: 'Cement', chinese: '水泥', homonym: '撒鲁机', image: 'https://images.unsplash.com/photo-1518709414768-a8c79b06dbaa?auto=format&fit=crop&w=150&q=80' },
@@ -40,6 +40,8 @@ Page({
     fontSizeLevel: 1,
     isDarkMode: false,
     subCategory: '',
+    subid:'',
+    subname:'',
     keyword: '',
     currentTab: 0, 
     wordList: [],
@@ -48,15 +50,27 @@ Page({
     pagePhrase: 1,
     hasMoreWords: true,
     hasMorePhrases: true,
-    pageSize: 6 // 每页加载6条
+    pageSize: 6, // 每页加载6条
+
+    wordsCount:'',
+    phraseCount:''
   },
 
   onLoad(options) {
-    if(options.sub) {
-      this.setData({ subCategory: options.sub });
-      wx.setNavigationBarTitle({ title: options.sub });
-    }
-    this.fetchData();
+      this.setData({ 
+        subCategory: options.sub,
+        subid: options.subid,
+        subname: options.subname,
+      });
+      wx.setNavigationBarTitle({ title: options.subname });
+      // this.fetchData();
+      http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}`,'GET').then(res=>{
+        console.log("res",res)
+        this.setData({
+          wordsCount:res.count,
+          wordList:res.results
+        })
+      })
   },
 
   onShow() {
@@ -90,6 +104,7 @@ Page({
       id: 50000 + startP + index, // 生成唯一ID
       isFav: false
     }));
+
 
     this.setData({
       wordList: [...this.data.wordList, ...newWords],
@@ -139,6 +154,18 @@ Page({
 
   onSwiperChange(e) {
     this.setData({ currentTab: e.detail.current });
+    http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}`,'GET').then(res=>{
+      console.log("res",res)
+      if(this.data.currentTab == '0'){
+        this.setData({
+          wordList:res.results
+        })
+      }else{
+        this.setData({
+          phraseList:res.results
+        })
+      }
+    })
   },
 
   loadMore() {
@@ -186,3 +213,4 @@ Page({
     wx.showToast({ title: '反馈已提交', icon: 'success' });
   }
 })
+

@@ -92,8 +92,7 @@ Page({
     wx.navigateTo({ url: '/pages/share/share' });
   },
   notImplemented() {
-    // wx.showToast({ title: '功能开发中', icon: 'none' });
-    wx.navigateTo({ url: '/pages/share/share' });
+    wx.showToast({ title: '功能开发中', icon: 'none' });
   }
 
 })

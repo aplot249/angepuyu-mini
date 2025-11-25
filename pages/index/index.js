@@ -1,5 +1,5 @@
 const app = getApp();
-
+import { http } from '../../requests/index';
 // 模拟一个较大的每日推荐词库
 const WORD_POOL = [
   {id:1, swahili:'Saruji', chinese:'水泥', homonym:'撒鲁机'},
@@ -44,6 +44,17 @@ Page({
     dailyWords: [],
     dailyPhrases: []
   },
+  onLoad(){
+    // http('/web/index/',"GET").then(res=>{
+    //     console.log(res)
+    //     this.setData({
+    //       notices:res.noticeBar,
+    //       banners:res.carousel,
+    //       dailyWords:res.tuijianWords,
+    //       dailyPhrases:res.tuijianPhrases,
+    //     })
+    // })
+  },
 
   onShow() {
     this.setData({ 
@@ -51,22 +62,29 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-
     if(this.data.dailyWords.length === 0) this.shuffleDaily();
   },
 
   shuffleDaily() {
-    // 随机抽取4个单词
-    const shuffledWords = [...WORD_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
-    // 随机抽取4个短语
-    const shuffledPhrases = [...PHRASE_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
+    http('/web/index/',"GET").then(res=>{
+      console.log(res)
+      this.setData({
+        notices:res.noticeBar,
+        banners:res.carousel,
+        dailyWords:res.tuijianWords,
+        dailyPhrases:res.tuijianPhrases,
+      })
+  })
 
-    this.setData({ 
-      dailyWords: shuffledWords,
-      dailyPhrases: shuffledPhrases
-    });
-    
-    wx.showToast({ title: '已更新', icon: 'none' });
+  //   // 随机抽取4个单词
+  //   const shuffledWords = [...WORD_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
+  //   // 随机抽取4个短语
+  //   const shuffledPhrases = [...PHRASE_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
+  //   this.setData({ 
+  //     dailyWords: shuffledWords,
+  //     dailyPhrases: shuffledPhrases
+  //   });
+  //   wx.showToast({ title: '已更新', icon: 'none' });
   },
 
   playAudio(e) {
