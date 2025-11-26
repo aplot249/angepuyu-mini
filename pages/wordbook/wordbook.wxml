@@ -1,69 +1,106 @@
-<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
-  <!-- 顶部搜索与Tab -->
-  <view class="header-section">
+<view class="container list-page font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <!-- 顶部固定区 (搜索 + Tab) -->
+  <view class="fixed-header">
     <view class="search-bar">
       <view class="search-icon">🔍</view>
       <input class="search-input" placeholder="搜索我的收藏..." bindinput="onSearchInput" value="{{searchText}}" />
     </view>
-    <view class="tab-control">
-      <view class="tab-item {{currentTab === 'words' ? 'active' : ''}}" bindtap="switchTab" data-tab="words">单词本</view>
-      <view class="tab-item {{currentTab === 'phrases' ? 'active' : ''}}" bindtap="switchTab" data-tab="phrases">短语集</view>
+    
+    <view class="segment-tab">
+      <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词本</view>
+      <view class="segment-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-idx="1">短语集</view>
     </view>
   </view>
 
-  <!-- 列表内容 -->
-  <scroll-view scroll-y class="list-container">
-    <!-- 空状态 -->
-    <view wx:if="{{paginatedList.length === 0}}" class="empty-state">
-      <view class="empty-icon">📂</view>
-      <text>空空如也，快去收藏吧~</text>
-    </view>
-
-    <!-- 列表项 -->
-    <block wx:for="{{paginatedList}}" wx:key="id">
-      <view class="card item-card">
-        <!-- 复选框 -->
-        <view class="checkbox-area" bindtap="toggleCheck" data-id="{{item.id}}">
-          <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
-            <view wx:if="{{item.checked}}" class="check-mark">✓</view>
-          </view>
-        </view>
-        
-        <!-- 内容 -->
-        <view class="content-area">
-          <view class="row-top">
-            <text class="swahili">{{item.swahili}}</text>
-            <view class="play-btn" catchtap="playAudio" data-item="{{item}}">🔊</view>
-          </view>
-          <view class="homonym-tag">/ {{item.homonym}} /</view>
-          <view class="chinese">{{item.chinese}}</view>
-        </view>
-      </view>
-    </block>
-
-    <!-- 分页控件 -->
-    <view class="pagination" wx:if="{{totalPages > 1}}">
-      <view class="page-btn {{currentPage === 1 ? 'disabled' : ''}}" bindtap="prevPage">❮</view>
-      <text class="page-info">{{currentPage}} / {{totalPages}}</text>
-      <view class="page-btn {{currentPage === totalPages ? 'disabled' : ''}}" bindtap="nextPage">❯</view>
-    </view>
+  <!-- 滑动内容区 -->
+  <swiper class="content-swiper" current="{{currentTab}}" bindchange="onSwiperChange">
     
-    <!-- 底部占位，防止被悬浮按钮遮挡 -->
-    <view style="height: 380rpx;"></view>
-  </scroll-view>
+    <!-- 1. 单词列表 -->
+    <swiper-item>
+      <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMoreWords">
+        <!-- 空状态 -->
+        <view wx:if="{{wordList.length === 0}}" class="empty-state">
+          <view class="empty-icon">📂</view>
+          <text>还没有收藏单词哦~</text>
+        </view>
 
-  <!-- 悬浮功能按钮 -->
+        <block wx:for="{{wordList}}" wx:key="id">
+          <view class="card item-card" bindtap="toggleCheck" data-id="{{item.id}}" data-type="word">
+            <!-- 复选框 -->
+            <view class="checkbox-area">
+              <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
+                <view wx:if="{{item.checked}}" class="check-mark">✓</view>
+              </view>
+            </view>
+            
+            <!-- 内容 (复用 List 样式但简化) -->
+            <view class="content-area">
+              <view class="row-top">
+                <text class="swahili">{{item.swahili}}</text>
+                <!-- 阻止冒泡，避免点击播放时触发勾选 -->
+                <view class="play-btn" catchtap="playAudio" data-item="{{item}}">🔊</view>
+              </view>
+              <view class="homonym-tag">/ {{item.xieyin}} /</view>
+              <view class="chinese">{{item.chinese}}</view>
+            </view>
+          </view>
+        </block>
+
+        <!-- 加载提示 -->
+        <view class="loading-tip" wx:if="{{wordList.length > 0}}">
+           <text wx:if="{{hasMoreWords}}">加载中...</text>
+           <text wx:else>--- 到底啦 ---</text>
+        </view>
+        <!-- 底部垫高，防遮挡 -->
+        <view style="height: 200rpx;"></view>
+      </scroll-view>
+    </swiper-item>
+
+    <!-- 2. 短语列表 -->
+    <swiper-item>
+      <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMorePhrases">
+        <view wx:if="{{phraseList.length === 0}}" class="empty-state">
+          <view class="empty-icon">📂</view>
+          <text>还没有收藏短语哦~</text>
+        </view>
+
+        <block wx:for="{{phraseList}}" wx:key="id">
+          <view class="card item-card phrase-style" bindtap="toggleCheck" data-id="{{item.id}}" data-type="phrase">
+            <view class="checkbox-area">
+              <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
+                <view wx:if="{{item.checked}}" class="check-mark">✓</view>
+              </view>
+            </view>
+            
+            <view class="content-area">
+              <view class="row-top">
+                <text class="swahili">{{item.swahili}}</text>
+                <view class="play-btn orange" catchtap="playAudio" data-item="{{item}}">🔊</view>
+              </view>
+              <view class="chinese text-secondary">{{item.chinese}}</view>
+            </view>
+          </view>
+        </block>
+
+        <view class="loading-tip" wx:if="{{phraseList.length > 0}}">
+           <text wx:if="{{hasMorePhrases}}">加载中...</text>
+           <text wx:else>--- 到底啦 ---</text>
+        </view>
+        <view style="height: 200rpx;"></view>
+      </scroll-view>
+    </swiper-item>
+
+  </swiper>
+
+  <!-- 悬浮功能按钮 (保持不变) -->
   <view class="fab-group">
-    <!-- [新增] 全选按钮 -->
     <view class="fab-btn purple" bindtap="selectAll" hover-class="btn-hover">
       <text class="fab-icon">✅</text>
     </view>
-    <!-- [新增] 全不选按钮 -->
     <view class="fab-btn gray" bindtap="unselectAll" hover-class="btn-hover">
       <text class="fab-icon">❎</text>
     </view>
-    
-    <!-- 原有按钮 -->
     <view class="fab-btn blue" bindtap="exportDoc" hover-class="btn-hover">
       <text class="fab-icon">📄</text>
     </view>

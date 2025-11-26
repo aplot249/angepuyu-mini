@@ -1,9 +1,11 @@
-.header-section {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+/* 复用部分 List 页面布局逻辑 */
+.list-page { padding: 0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+.fixed-header {
   background: var(--bg-color);
-  padding-bottom: 20rpx;
+  padding: 20rpx 30rpx;
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.03);
+  z-index: 20;
 }
 
 .search-bar {
@@ -15,42 +17,60 @@
   margin-bottom: 20rpx;
   box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.02);
 }
-.search-input { margin-left: 20rpx; font-size: var(--text-sm); width: 100%; color: var(--text-main); }
+.search-icon { margin-right: 10rpx; }
+.search-input { font-size: var(--text-sm); width: 100%; color: var(--text-main); }
 
-.tab-control {
+/* Tab 样式 */
+.segment-tab {
   display: flex;
-  background: rgba(0,0,0,0.03); /* 轻微背景区分 */
+  background: #f3f4f6; /* 浅灰底 */
   border-radius: 20rpx;
-  padding: 8rpx;
+  padding: 6rpx;
 }
-.tab-item {
+.dark-mode .segment-tab { background: #374151; }
+
+.segment-item {
   flex: 1;
   text-align: center;
-  padding: 16rpx 0;
+  padding: 14rpx 0;
   font-size: var(--text-sm);
   color: var(--text-sub);
   border-radius: 16rpx;
+  font-weight: bold;
   transition: all 0.3s;
 }
-.tab-item.active {
+.segment-item.active {
   background: var(--card-bg);
   color: var(--primary);
-  font-weight: bold;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
 }
+/* 短语Tab激活时用橙色 */
+.segment-item.active:nth-child(2) { color: var(--secondary); }
 
-.list-container { height: calc(100vh - 240rpx); }
 
+/* Swiper 内容区 */
+.content-swiper { flex: 1; height: 0; }
+.scroll-area { height: 100%; padding: 20rpx 30rpx; box-sizing: border-box; }
+
+/* 卡片样式 */
 .item-card {
   display: flex;
-  align-items: flex-start;
+  align-items: flex-start; /* 顶部对齐 */
   border: 1rpx solid rgba(0,0,0,0.02);
+  padding: 30rpx;
 }
+.phrase-style { border-left: 8rpx solid var(--secondary); }
 
-.checkbox-area { padding: 10rpx 20rpx 10rpx 0; }
+/* 复选框区域 */
+.checkbox-area { 
+  padding: 0 20rpx 0 0; 
+  display: flex; 
+  align-items: center;
+  height: 100%; /* 垂直居中复选框 */
+}
 .custom-checkbox {
-  width: 40rpx;
-  height: 40rpx;
+  width: 44rpx;
+  height: 44rpx;
   border-radius: 50%;
   border: 4rpx solid #e5e7eb;
   display: flex;
@@ -62,22 +82,30 @@
   background: var(--primary);
   border-color: var(--primary);
 }
-.check-mark { color: white; font-size: 24rpx; font-weight: bold; }
+.phrase-style .custom-checkbox.checked {
+  background: var(--secondary);
+  border-color: var(--secondary);
+}
+.check-mark { color: white; font-size: 28rpx; font-weight: bold; }
 
+/* 内容区域 */
 .content-area { flex: 1; }
-.row-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8rpx; }
+.row-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10rpx; }
 .swahili { font-size: var(--text-lg); font-weight: 800; color: var(--text-main); }
+
 .play-btn { 
-  width: 60rpx; 
-  height: 60rpx; 
+  width: 64rpx; 
+  height: 64rpx; 
   background: rgba(45, 212, 191, 0.1); 
   border-radius: 50%; 
   display: flex; 
   align-items: center; 
   justify-content: center; 
-  font-size: 30rpx;
+  font-size: 32rpx;
   color: var(--primary);
+  flex-shrink: 0; /* 防止被挤压 */
 }
+.play-btn.orange { background: rgba(251, 146, 60, 0.1); color: var(--secondary); }
 
 .homonym-tag {
   display: inline-block;
@@ -91,6 +119,7 @@
 }
 .chinese { font-size: var(--text-sm); font-weight: bold; color: var(--text-main); opacity: 0.9; }
 
+/* 空状态 */
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -100,21 +129,9 @@
 }
 .empty-icon { font-size: 80rpx; margin-bottom: 20rpx; background: var(--card-bg); padding: 40rpx; border-radius: 50%; }
 
-.pagination { display: flex; justify-content: center; align-items: center; margin-top: 40rpx; }
-.page-btn {
-  width: 80rpx;
-  height: 80rpx;
-  background: var(--card-bg);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
-  font-size: 30rpx;
-}
-.page-btn.disabled { opacity: 0.3; }
-.page-info { margin: 0 40rpx; font-size: var(--text-sm); font-weight: bold; color: var(--text-sub); }
+.loading-tip { text-align: center; padding: 30rpx; color: var(--text-sub); font-size: var(--text-xs); }
 
+/* 浮动按钮组 */
 .fab-group {
   position: fixed;
   bottom: 60rpx;
@@ -122,7 +139,7 @@
   display: flex;
   flex-direction: column;
   gap: 30rpx;
-  z-index: 50; /* 确保层级高 */
+  z-index: 50;
 }
 .fab-btn {
   width: 100rpx;
@@ -135,14 +152,9 @@
   transition: transform 0.1s;
 }
 .fab-icon { font-size: 40rpx; }
-
-/* 按钮点击效果 */
 .btn-hover { transform: scale(0.9); opacity: 0.9; }
 
-/* 颜色变体 */
 .fab-btn.blue { background: linear-gradient(135deg, #60A5FA, #3B82F6); color: white; }
 .fab-btn.teal { background: linear-gradient(135deg, #2DD4BF, #10B981); color: white; }
-/* [新增] 全选 - 紫色 */
 .fab-btn.purple { background: linear-gradient(135deg, #A78BFA, #8B5CF6); color: white; }
-/* [新增] 全不选 - 灰色 */
 .fab-btn.gray { background: linear-gradient(135deg, #D1D5DB, #9CA3AF); color: white; }

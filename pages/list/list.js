@@ -5,16 +5,12 @@ Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
-    subCategory: '',
     subid:'',
     subname:'',
     keyword: '',
     currentTab: 0, 
     wordList: [],
     phraseList: [],
-
-    wordListS: [],
-    phraseListS: [],
 
     pageWord: 1,
     pagePhrase: 1,
@@ -24,13 +20,11 @@ Page({
     wordsCount:'',
     phraseCount:'',
     wordsTotalPageNum:'',
-    phraseTotalPageNum:'',
-    favList : []
+    phraseTotalPageNum:''
   },
 
   onLoad(options) {
       this.setData({ 
-        subCategory: options.sub,
         subid: options.subid,
         subname: options.subname,
       });
