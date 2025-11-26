@@ -36,8 +36,8 @@
                 <view class="btn-pill" bindtap="playAudio" data-item="{{item}}" data-type="word">
                   <text>🔊 播放</text>
                 </view>
-                <view class="icon-btn {{item.isFav ? 'fav-active' : ''}}" bindtap="toggleFav" data-id="{{item.id}}">
-                  <text>{{item.isFav ? '❤️' : '🤍'}}</text>
+                <view class="icon-btn {{item.isFav ? 'fav-active' : ''}}" bindtap="toggleFav" data-id="{{item.id}}" data-check="{{item.checked}}">
+                  <text>{{item.checked ? '❤️' : '🤍'}}</text>
                 </view>
               </view>
               <view class="feedback-btn" bindtap="onCorrection">纠错</view>
@@ -74,7 +74,7 @@
                   <text>🔊 朗读</text>
                 </view>
                 <view class="icon-btn {{item.isFav ? 'fav-active' : ''}}" bindtap="toggleFav" data-id="{{item.id}}">
-                  <text>{{item.isFav ? '❤️' : '🤍'}}</text>
+                  <text>{{item.checked ? '❤️' : '🤍'}}</text>
                 </view>
               </view>
               <view class="feedback-btn" bindtap="onCorrection">纠错</view>

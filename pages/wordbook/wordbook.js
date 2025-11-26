@@ -1,5 +1,5 @@
 const app = getApp();
-
+import {http} from '../../requests/index'
 // 模拟一个更充实的数据库
 const MOCK_DB = {
   words: [
@@ -63,14 +63,15 @@ Page({
 
   loadFavorites() {
     // 模拟：如果全局没有收藏，默认收藏一些ID以供展示
-    let favIds = app.globalData.userInfo.favorites;
-    if (!favIds || favIds.length === 0) {
-        favIds = [101, 102, 103, 104, 105, 106, 111, 112, 501, 502, 503, 504];
-        app.globalData.userInfo.favorites = favIds;
-    }
+    let favIds = wx.getStorageSync('favorites');
+    console.log('favIds',favIds)
+    // if (!favIds || favIds.length === 0) {
+    //     favIds = [101, 102, 103, 104, 105, 106, 111, 112, 501, 502, 503, 504];
+    //     app.globalData.userInfo.favorites = favIds;
+    // }
 
     let sourceData = this.data.currentTab === 'words' ? MOCK_DB.words : MOCK_DB.phrases;
-    let list = sourceData.filter(item => favIds.includes(item.id)).map(item => ({
+    let list = sourceData.map(item => ({
       ...item,
       checked: this.data.checkedIds.includes(item.id)
     }));

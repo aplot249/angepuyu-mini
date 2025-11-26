@@ -4,14 +4,20 @@
     <view class="user-info">
       <view class="avatar">👤</view>
       <view class="info-text">
-        <view class="nickname">{{userInfo.nickname}}</view>
-        <view class="uid">ID: SW88231</view>
+        <view wx:if="{{isLogin}}">
+          <view class="nickname">{{userInfo.nickname}}</view>
+          <view class="uid">ID: {{userInfo.UID}}</view>
+          <button class="loginBtn" bind:tap="logout">退出登录</button>
+        </view>
+        <view wx:else="{{isLogin}}">
+          <button class="loginBtn" bind:tap="getUserProfile">授权登录</button>
+        </view>
       </view>
     </view>
     
     <view class="stats-row">
       <view class="stat-item">
-        <view class="num">{{userInfo.points}}</view>
+        <view class="num">{{userInfo.jifen}}</view>
         <view class="label">积分</view>
       </view>
       
