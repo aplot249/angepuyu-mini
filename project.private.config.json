@@ -24,11 +24,18 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/list/list",
+          "pathName": "pages/list/list",
+          "query": "subid=2&subname=%E8%A7%81%E9%9D%A2%E9%97%AE%E5%80%99",
+          "scene": null,
+          "launchMode": "default"
+        },
+        {
           "name": "pages/contribute/contribute",
           "pathName": "pages/contribute/contribute",
           "query": "",
-          "scene": null,
-          "launchMode": "default"
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

@@ -46,14 +46,19 @@ Page({
     currentTab: 0, 
     wordList: [],
     phraseList: [],
+
+    wordListS: [],
+    phraseListS: [],
+
     pageWord: 1,
     pagePhrase: 1,
     hasMoreWords: true,
     hasMorePhrases: true,
     pageSize: 6, // 每页加载6条
-
     wordsCount:'',
-    phraseCount:''
+    phraseCount:'',
+    wordsTotalPageNum:'',
+    phraseTotalPageNum:'',
   },
 
   onLoad(options) {
@@ -63,12 +68,26 @@ Page({
         subname: options.subname,
       });
       wx.setNavigationBarTitle({ title: options.subname });
-      // this.fetchData();
-      http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}`,'GET').then(res=>{
+
+      http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}&page=1&search=${this.data.keyword}`,'GET').then(res=>{
         console.log("res",res)
         this.setData({
-          wordsCount:res.count,
-          wordList:res.results
+          wordsCount:res.count, //总数
+          wordsTotalPageNum:res.totalPageNum, //总页数
+          pageSize:res.page_size,
+          pageWord:1,
+          wordList:[...this.data.wordList,...res.results]  //这次列表
+        })
+      })
+
+      http(`/web/ctiemBySub/?subid=${options.subid}&wp=1&page=1&search=${this.data.keyword}`,'GET').then(res=>{
+        console.log("res",res)
+        this.setData({
+          phraseCount:res.count, //总数
+          phraseTotalPageNum:res.totalPageNum, //总页数
+          pageSize:res.page_size,
+          hasMorePhrases:this.data.pagePhrase < res.totalPageNum,
+          phraseList:[...this.data.phraseList,...res.results]  //这次列表
         })
       })
   },
@@ -83,36 +102,51 @@ Page({
   },
 
   fetchData() {
-    // 单词分页加载
-    const startW = (this.data.pageWord - 1) * this.data.pageSize;
-    const endW = startW + this.data.pageSize;
-    const newWordsRaw = WORDS_DB.slice(startW, endW);
+    // 单词分页加载，确定每次区间，切片截取数据
+    // const startW = (this.data.pageWord - 1) * this.data.pageSize;
+    // const endW = startW + this.data.pageSize;
+    // //切片截取数据 
+    // const newWordsRaw = WORDS_DB.slice(startW, endW);
+    // const newWords = newWordsRaw.map((item, index) => ({
+    //   ...item,
+    //   id: 10000 + startW + index, // 生成唯一ID
+    //   isFav: false
+    // }));
+
+    // // 短语分页加载
+    // const startP = (this.data.pagePhrase - 1) * this.data.pageSize;
+    // const endP = startP + this.data.pageSize;
+    // const newPhrasesRaw = PHRASES_DB.slice(startP, endP);
+    // const newPhrases = newPhrasesRaw.map((item, index) => ({
+    //   ...item,
+    //   id: 50000 + startP + index, // 生成唯一ID
+    //   isFav: false
+    // }));
     
-    const newWords = newWordsRaw.map((item, index) => ({
-      ...item,
-      id: 10000 + startW + index, // 生成唯一ID
-      isFav: false
-    }));
+    if(this.data.currentTab == 0) {  //是单词
+      http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}&page=${this.data.pageWord}&search=${this.data.keyword}`,'GET').then(res=>{
+        console.log("res",res)
+        this.setData({
+          wordsCount:res.count, //总数
+          wordsTotalPageNum:res.totalPageNum, //总页数
+          pageSize:res.page_size,
+          hasMoreWords:this.data.pageWord < res.totalPageNum,
+          wordList:[...this.data.wordList,...res.results]  //这次列表
+        })
+      })
+    }else{  //是短语
+      http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}&page=${this.data.pagePhrase}&search=${this.data.keyword}`,'GET').then(res=>{
+        console.log("res",res)
+        this.setData({
+          phraseCount:res.count, //总数
+          phraseTotalPageNum:res.totalPageNum, //总页数
+          pageSize:res.page_size,
+          hasMorePhrases:this.data.pagePhrase < res.totalPageNum,
+          phraseList:[...this.data.phraseList,...res.results]  //这次列表
+        })
+      })
+    }
 
-    // 短语分页加载
-    const startP = (this.data.pagePhrase - 1) * this.data.pageSize;
-    const endP = startP + this.data.pageSize;
-    const newPhrasesRaw = PHRASES_DB.slice(startP, endP);
-
-    const newPhrases = newPhrasesRaw.map((item, index) => ({
-      ...item,
-      id: 50000 + startP + index, // 生成唯一ID
-      isFav: false
-    }));
-
-
-    this.setData({
-      wordList: [...this.data.wordList, ...newWords],
-      phraseList: [...this.data.phraseList, ...newPhrases],
-      hasMoreWords: endW < WORDS_DB.length,
-      hasMorePhrases: endP < PHRASES_DB.length
-    });
-    
     this.refreshFavStatus();
   },
 
@@ -132,19 +166,14 @@ Page({
 
   onSearch(e) {
     const val = e.detail.value.toLowerCase();
-    this.setData({ keyword: val });
-    
-    // 简单的前端过滤演示 (实际应重置列表并调用后端)
-    if (val) {
-        const filteredW = WORDS_DB.filter(i => i.chinese.includes(val) || i.swahili.toLowerCase().includes(val)).map((item, idx) => ({...item, id: 9000+idx, isFav: false}));
-        const filteredP = PHRASES_DB.filter(i => i.chinese.includes(val) || i.swahili.toLowerCase().includes(val)).map((item, idx) => ({...item, id: 8000+idx, isFav: false}));
-        this.setData({ wordList: filteredW, phraseList: filteredP, hasMoreWords: false, hasMorePhrases: false });
-        this.refreshFavStatus();
-    } else {
-        // 清空搜索恢复初始状态
-        this.setData({ wordList: [], phraseList: [], pageWord: 1, pagePhrase: 1, hasMoreWords: true, hasMorePhrases: true });
-        this.fetchData();
-    }
+    this.setData({ 
+      keyword: val,
+      wordList:[],
+      phraseList:[],
+      pageWord: 1, 
+      pagePhrase: 1
+    });
+    this.fetchData()
   },
 
   switchTab(e) {
@@ -153,25 +182,21 @@ Page({
   },
 
   onSwiperChange(e) {
-    this.setData({ currentTab: e.detail.current });
-    http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}`,'GET').then(res=>{
-      console.log("res",res)
-      if(this.data.currentTab == '0'){
-        this.setData({
-          wordList:res.results
-        })
-      }else{
-        this.setData({
-          phraseList:res.results
-        })
-      }
-    })
+    this.setData({ 
+      currentTab: e.detail.current,
+      keyword: this.data.keyword,
+      wordList:[],
+      phraseList:[],
+      pageWord: 1, 
+      pagePhrase: 1
+    });
+    this.fetchData()
   },
 
   loadMore() {
     if(this.data.currentTab === 0) {
-      if(!this.data.hasMoreWords) return;
-      this.setData({ pageWord: this.data.pageWord + 1 });
+      if(!this.data.hasMoreWords) return; //确实没有了，就不做操作
+      this.setData({ pageWord: this.data.pageWord + 1 }); //否则页码加1，获取数据
       this.fetchData();
     } else {
       if(!this.data.hasMorePhrases) return;
@@ -204,6 +229,7 @@ Page({
       wx.showToast({ title: '已收藏', icon: 'success' });
     }
     
+    //收藏是全局的
     app.globalData.userInfo.favorites = favs;
     app.saveData();
     this.refreshFavStatus();

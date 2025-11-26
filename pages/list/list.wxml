@@ -23,12 +23,12 @@
                 <text class="en-sub">English: {{item.english}}</text>
                 <view class="homonym-row">
                   <text class="badge">谐音</text>
-                  <text class="homonym-text">{{item.homonym}}</text>
+                  <text class="homonym-text">{{item.xieyin}}</text>
                 </view>
                 <text class="cn-main">{{item.chinese}}</text>
               </view>
               <!-- 单词显示图片 -->
-              <image class="word-img" src="{{item.image}}" mode="aspectFill"></image>
+              <image class="word-img" src="{{item.portrait}}" mode="aspectFill"></image>
             </view>
             
             <view class="card-footer">
@@ -62,7 +62,7 @@
                 <text class="sw-title">{{item.swahili}}</text>
                 <text class="en-sub">{{item.english}}</text>
                 <view class="homonym-row">
-                   <text class="homonym-text text-sub">/ {{item.homonym}} /</text>
+                   <text class="homonym-text text-sub">/ {{item.xieyin}} /</text>
                 </view>
                 <text class="cn-main text-primary">{{item.chinese}}</text>
               </view>
