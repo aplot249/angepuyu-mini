@@ -25,6 +25,7 @@ Page({
     phraseCount:'',
     wordsTotalPageNum:'',
     phraseTotalPageNum:'',
+    favList : []
   },
 
   onLoad(options) {
@@ -51,7 +52,7 @@ Page({
       })
 
       http(`/web/ctiemBySub/?subid=${options.subid}&wp=1&page=1&search=${this.data.keyword}`,'GET').then(res=>{
-        console.log("res",res)
+        console.log("res111111111111111111",res)
         let favIds = wx.getStorageSync('favorites');
         let list = res.results.map(item => ({
           ...item,
@@ -187,11 +188,41 @@ Page({
     if (op){ //已收藏，那就是取消收藏
       http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
           console.log('delete',res)
+          let ll = wx.getStorageSync('favorites')
+          ll.splice(ll.indexOf(id),1)
+          wx.setStorageSync('favorites', ll)
+          if(this.data.currentTab == 0){
+            this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['checked'] = false
+            this.setData({
+              wordList:this.data.wordList
+            })
+          }else{
+            this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['checked'] = false
+            this.setData({
+              phraseList:this.data.phraseList
+            })
+          }
+
       })
     }else{ //新建收藏
       http('/web/favourite/','POST',{"ctitem":id}).then(res=>{
-        console.log(res)
+        // console.log(this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['checked'])
+        let ll = wx.getStorageSync('favorites')
+        ll.push(id)
+        wx.setStorageSync('favorites', ll)
+        if(this.data.currentTab == 0){
+          this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['checked'] = true
+          this.setData({
+            wordList:this.data.wordList
+          })
+        }else{
+          this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['checked'] = true
+          this.setData({
+            phraseList:this.data.phraseList
+          })
+        }
       })
+      
     }
     let favs = app.globalData.userInfo.favorites || [];
     const index = favs.indexOf(id);

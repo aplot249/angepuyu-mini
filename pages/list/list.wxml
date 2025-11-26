@@ -73,7 +73,7 @@
                 <view class="btn-pill orange" bindtap="playAudio" data-item="{{item}}" data-type="phrase">
                   <text>🔊 朗读</text>
                 </view>
-                <view class="icon-btn {{item.isFav ? 'fav-active' : ''}}" bindtap="toggleFav" data-id="{{item.id}}">
+                <view class="icon-btn {{item.isFav ? 'fav-active' : ''}}" bindtap="toggleFav" data-id="{{item.id}}" data-check="{{item.checked}}">
                   <text>{{item.checked ? '❤️' : '🤍'}}</text>
                 </view>
               </view>

@@ -15,10 +15,10 @@ function request(url, method = 'POST', data = {}) {
       header: header,
       method: method,
       data: data,
-      timeout: '5000',
+      timeout: '8000',
       success: res => {
         wx.hideLoading()
-        console.log(res.data.status)
+        // console.log(res.data.status)
         // token过期提跳转
         if (res.statusCode == 403) {
           wx.clearStorageSync()
