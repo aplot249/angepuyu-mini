@@ -1,7 +1,7 @@
 App({
   globalData: {
     userInfo: {
-      nickname: "Marafiki",
+      nickname: "Marafiki", //默认值
       points: 100,
       hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享

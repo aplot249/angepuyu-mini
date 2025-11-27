@@ -96,15 +96,4 @@
   box-shadow: 0 10rpx 30rpx rgba(45, 212, 191, 0.4);
   border: none;
 }
-.next-btn{
-  margin: 20rpx auto;
-  background: linear-gradient(135deg, var(--primary), #33bb77);
-  color: white;
-  border-radius: 30rpx;
-  font-weight: bold;
-  font-size: var(--text-lg);
-  padding: 10rpx 0; /* button padding fix */
-  box-shadow: 0 10rpx 30rpx rgba(45, 212, 191, 0.4);
-  border: none;
-}
 .btn-hover { transform: scale(0.98); opacity: 0.9; }

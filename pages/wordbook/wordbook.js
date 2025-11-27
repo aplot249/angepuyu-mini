@@ -62,7 +62,7 @@ Page({
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     
-    let myFav = JSON.stringify(wx.getStorageSync('favorites'))
+    let myFav = JSON.stringify(app.globalData.userInfo.favorites)
     http(`/web/ctiemByFav/?page=1`,'POST',{"q":myFav,'wp':'0'}).then(res=>{
       console.log(res)
       let list = res.results.map(item => ({
@@ -96,7 +96,7 @@ Page({
   // 加载数据核心逻辑
   loadFavorites(type) {
     if (type == 'word') {
-      let myFav = JSON.stringify(wx.getStorageSync('favorites'))
+      let myFav = JSON.stringify(app.globalData.userInfo.favorites)
       http(`/web/ctiemByFav/?page=${this.data.pageWord}&search=${this.data.searchText}`,'POST',{"q":myFav,'wp':'0'}).then(res=>{
         console.log(res)
         let list = res.results.map(item => ({
@@ -113,7 +113,7 @@ Page({
         })
       })
     } else {
-      let myFav = JSON.stringify(wx.getStorageSync('favorites'))
+      let myFav = JSON.stringify(app.globalData.userInfo.favorites)
       http(`/web/ctiemByFav/?page=${this.data.pagePhrase}&search=${this.data.searchText}`,'POST',{"q":myFav,'wp':'1'}).then(res=>{
         console.log(res)
         let list = res.results.map(item => ({
@@ -213,6 +213,17 @@ Page({
     wx.showToast({ title: '当前页全选', icon: 'none' });
   },
 
+  onHide () { 
+    this.setData({
+      wordList: [], 
+      phraseList: [], 
+      pageWord: 1, 
+      pagePhrase: 1,
+      hasMoreWords: true, 
+      hasMorePhrases: true
+    });
+  },
+  
   // 全不选 (重置所有)
   unselectAll() {
     this.setData({ checkedIds: [] });

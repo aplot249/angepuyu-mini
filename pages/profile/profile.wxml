@@ -1,23 +1,46 @@
 <view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
   <!-- 头部卡片 -->
   <view class="header-card">
-    <view class="user-info">
-      <view class="avatar">👤</view>
-      <view class="info-text">
-        <view wx:if="{{isLogin}}">
-          <view class="nickname">{{userInfo.nickname}}</view>
+    
+    <block wx:if="{{userInfo.isLoggedIn}}">
+      <!-- [新增] 退出登录按钮 -->
+      <view class="logout-btn" bindtap="handleLogout">退出</view>
+
+      <!-- 已登录状态 -->
+      <view class="user-info">
+        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+          <view class="edit-badge">📷</view>
+        </button>
+        
+        <view class="info-text">
+          <view class="nickname-row" bindtap="onEditNickname">
+             <view class="nickname">{{userInfo.nickname?userInfo.nickname:'请编辑昵称'}}</view>
+             <view class="edit-icon">✎</view>
+          </view>
           <view class="uid">ID: {{userInfo.UID}}</view>
-          <button class="loginBtn" bind:tap="logout">退出登录</button>
-        </view>
-        <view wx:else="{{isLogin}}">
-          <button class="loginBtn" bind:tap="getUserProfile">授权登录</button>
         </view>
       </view>
-    </view>
+    </block>
+
+    <block wx:else>
+      <!-- 未登录状态 -->
+      <view class="login-wrapper" bindtap="handleLogin">
+        <view class="avatar-placeholder">
+           <text class="placeholder-icon">👤</text>
+        </view>
+        <view class="login-info">
+          <text class="login-title">点击登录账户</text>
+          <text class="login-desc">同步学习进度与收藏</text>
+        </view>
+        <view class="login-arrow">></view>
+      </view>
+    </block>
     
+    <!-- 统计数据栏 -->
     <view class="stats-row">
       <view class="stat-item">
-        <view class="num">{{userInfo.jifen}}</view>
+        <view class="num">{{userInfo.isLoggedIn ? userInfo.points:'/'}}</view>
         <view class="label">积分</view>
       </view>
       
@@ -26,8 +49,6 @@
         <view class="label">每日+20</view>
       </view>
 
-      <!-- [新增] 分享按钮 (使用 button open-type="share") -->
-      <!-- 为了保持样式一致，我们用 button 包裹内容，并去除默认样式 -->
       <button class="stat-item share-btn" open-type="share" bindtap="handleShareTap">
         <view class="num text-orange">{{userInfo.hasSharedToday ? '已享' : '分享'}}</view>
         <view class="label">每日+15</view>
@@ -53,21 +74,18 @@
       </view>
     </view>
 
-    <!-- 夜间模式手动切换 -->
     <view class="menu-item" bindtap="handleDarkMode">
       <view class="menu-left">
         <view class="menu-icon blue">🌙</view>
         <text>夜间模式</text>
       </view>
       <view class="menu-right">
-        <!-- 简单的开关UI模拟 -->
         <view class="toggle-switch {{isDarkMode ? 'on' : 'off'}}">
           <view class="toggle-circle"></view>
         </view>
       </view>
     </view>
     
-    <!-- [新增] 录音贡献入口 -->
     <view class="menu-item" bindtap="navigateToContribute">
       <view class="menu-left">
         <view class="menu-icon red">🎙️</view>
@@ -76,15 +94,16 @@
       <text class="arrow">></text>
     </view>
 
-    <view class="menu-item" bindtap="navigateToPoster">
+    <view class="menu-item" bindtap="navigateToPrivacy">
       <view class="menu-left">
-        <view class="menu-icon green">💬</view>
-        <text>海报宣传</text>
+        <view class="menu-icon gray">🔒</view>
+        <text>隐私协议</text>
       </view>
       <text class="arrow">></text>
     </view>
 
-    <view class="menu-item" bindtap="notImplemented">
+    <!-- [修改] 绑定新的弹窗方法 -->
+    <view class="menu-item" bindtap="showFeedback">
       <view class="menu-left">
         <view class="menu-icon green">💬</view>
         <text>意见反馈</text>
@@ -93,5 +112,26 @@
     </view>
   </view>
   
-  <view class="footer">Version 1.2.0 Share & Earn</view>
+  <view class="footer">Version 1.3.1 Feedback Added</view>
+
+  <!-- [新增] 意见反馈弹窗 -->
+  <view class="modal-mask" wx:if="{{showFeedbackModal}}" bindtap="hideFeedback">
+    <view class="modal-container" catchtap="return">
+      <view class="modal-title">意见反馈</view>
+      <textarea 
+        class="feedback-input" 
+        placeholder="请输入您的宝贵建议，帮助我们做得更好..." 
+        placeholder-class="input-placeholder"
+        bindinput="onFeedbackInput"
+        value="{{feedbackContent}}"
+        maxlength="200"
+        disable-default-padding="true"
+      ></textarea>
+      <view class="char-count">{{feedbackLen}}/200</view>
+      <view class="modal-btns">
+        <view class="btn-cancel" bindtap="hideFeedback">取消</view>
+        <view class="btn-submit" bindtap="submitFeedback">提交</view>
+      </view>
+    </view>
+  </view>
 </view>

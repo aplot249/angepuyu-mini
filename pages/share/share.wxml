@@ -1,33 +1,31 @@
 <view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}} share-page">
   
-  <!-- 添加 wxml-to-canvas 组件 -->
-  <wxml-to-canvas class="widget" id="widget" width="375" height="667"></wxml-to-canvas>
+  <!-- 原生 Canvas 2D 組件，用於生成圖片 -->
+  <canvas type="2d" id="posterCanvas"></canvas>
 
-  <!-- 海报主体区域 (页面预览用) -->
+  <!-- HTML 海報預覽區域 -->
   <view class="poster-card">
-    <!-- 顶部装饰图 -->
     <view class="poster-header">
       <image class="header-bg" src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80" mode="aspectFill"></image>
       <view class="overlay"></view>
       <view class="app-branding">
-        <view class="logo-box">🇹🇿</view>
+        <!-- Logo -->
+        <image class="logo-box" src="https://placehold.co/200x200/ffffff/2DD4BF?text=LOGO"></image>
         <view class="app-name">坦坦斯语Swahili</view>
         <view class="app-slogan">沟通无界 · 闯荡坦桑更轻松</view>
       </view>
     </view>
 
-    <!-- 核心痛点/简介 -->
     <view class="intro-section">
       <text class="highlight-text">专为坦桑尼亚华人打造</text>
-      <text class="sub-text">无论你是工程建设、商务考察还是日常生活，坦桑通都是你最贴心的语言助手。</text>
+      <text class="sub-text">无论你做工程建设、商务考察还是日常生活，坦坦斯语都是你最贴心的语言助手。</text>
     </view>
 
-    <!-- 功能亮点网格 -->
     <view class="features-grid">
       <view class="feature-item">
         <view class="icon-circle teal">📚</view>
         <view class="feat-title">行业词库</view>
-        <view class="feat-desc">覆盖工程/餐饮/物流等七大行业</view>
+        <view class="feat-desc">覆盖工程/餐饮/物流等多个行业</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle orange">🗣️</view>
@@ -36,7 +34,7 @@
       </view>
       <view class="feature-item">
         <view class="icon-circle blue">💾</view>
-        <view class="feat-title">离线收藏</view>
+        <view class="feat-title">词语收藏</view>
         <view class="feat-desc">一键加入生词本，随时随地复习</view>
       </view>
       <view class="feature-item">
@@ -46,7 +44,6 @@
       </view>
     </view>
 
-    <!-- 底部二维码区域 -->
     <view class="poster-footer">
       <view class="qr-placeholder">
         <image src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tanzania-swahili-app.com" class="qr-img"></image>
@@ -58,7 +55,6 @@
     </view>
   </view>
 
-  <!-- 底部操作按钮 -->
   <view class="action-bar">
     <button class="btn share-friend" open-type="share">
       <text>转发给朋友</text>

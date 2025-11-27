@@ -29,9 +29,8 @@ Page({
         subname: options.subname,
       });
       wx.setNavigationBarTitle({ title: options.subname });
-
       http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}&page=1&search=${this.data.keyword}`,'GET').then(res=>{
-        let favIds = wx.getStorageSync('favorites');
+        let favIds = app.globalData.userInfo.favorites  // 'favorites');
         let list = res.results.map(item => ({
           ...item,
           checked: favIds.includes(item.id)
@@ -46,8 +45,8 @@ Page({
       })
 
       http(`/web/ctiemBySub/?subid=${options.subid}&wp=1&page=1&search=${this.data.keyword}`,'GET').then(res=>{
-        console.log("res111111111111111111",res)
-        let favIds = wx.getStorageSync('favorites');
+        console.log("res11",res)
+        let favIds = app.globalData.userInfo.favorites  // 'favorites');
         let list = res.results.map(item => ({
           ...item,
           checked: favIds.includes(item.id)
@@ -75,7 +74,7 @@ Page({
     if(this.data.currentTab == 0) {  //是单词
       http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}&page=${this.data.pageWord}&search=${this.data.keyword}`,'GET').then(res=>{
         console.log("res",res)
-        let favIds = wx.getStorageSync('favorites');
+        let favIds = app.globalData.userInfo.favorites  // 'favorites');
         let list = res.results.map(item => ({
           ...item,
           checked: favIds.includes(item.id)
@@ -91,7 +90,7 @@ Page({
     }else{  //是短语
       http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}&page=${this.data.pagePhrase}&search=${this.data.keyword}`,'GET').then(res=>{
         console.log("res",res)
-        let favIds = wx.getStorageSync('favorites');
+        let favIds = app.globalData.userInfo.favorites  // 'favorites');
         let list = res.results.map(item => ({
           ...item,
           checked: favIds.includes(item.id)
@@ -105,7 +104,6 @@ Page({
         })
       })
     }
-
     this.refreshFavStatus();
   },
 
@@ -118,7 +116,6 @@ Page({
       }));
       this.setData({ [listKey]: list });
     };
-
     updateList('wordList');
     updateList('phraseList');
   },
@@ -181,10 +178,10 @@ Page({
     console.log("op",op,id)
     if (op){ //已收藏，那就是取消收藏
       http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
-          console.log('delete',res)
-          let ll = wx.getStorageSync('favorites')
-          ll.splice(ll.indexOf(id),1)
-          wx.setStorageSync('favorites', ll)
+          let favIds = app.globalData.userInfo.favorites  // 'favorites');
+          favIds.splice(favIds.indexOf(id),1)
+          app.globalData.userInfo.favorites = favIds
+          app.saveData()
           if(this.data.currentTab == 0){
             this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['checked'] = false
             this.setData({
@@ -200,10 +197,12 @@ Page({
       })
     }else{ //新建收藏
       http('/web/favourite/','POST',{"ctitem":id}).then(res=>{
-        // console.log(this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['checked'])
-        let ll = wx.getStorageSync('favorites')
-        ll.push(id)
-        wx.setStorageSync('favorites', ll)
+        let favIds = app.globalData.userInfo.favorites  // 'favorites');
+        favIds.push(id)
+        console.log('favIDS',favIds)
+        app.globalData.userInfo.favorites = favIds
+        app.saveData()
+
         if(this.data.currentTab == 0){
           this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['checked'] = true
           this.setData({
@@ -220,9 +219,6 @@ Page({
     }
     let favs = app.globalData.userInfo.favorites || [];
     const index = favs.indexOf(id);
-    // http('/web/favourite/','POST',{"ctitem":id}).then(res=>{
-    //   console.log(res)
-    // })
     this.refreshFavStatus();
   },
 

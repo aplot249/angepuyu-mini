@@ -1,0 +1,31 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <view class="privacy-content card">
+    <view class="title">隐私保护指引</view>
+    <view class="update-time">更新日期：2025年11月27日</view>
+    
+    <view class="section">
+      <view class="h3">1. 引言</view>
+      <text class="p">欢迎使用坦桑通 Swahili（以下简称“本软件”）。我们非常重视您的隐私保护和个人信息安全。本隐私保护指引将帮助您了解我们如何收集、使用和存储您的个人信息。</text>
+    </view>
+
+    <view class="section">
+      <view class="h3">2. 我们收集的信息</view>
+      <text class="p">为了提供更好的服务，我们可能会收集以下信息：</text>
+      <text class="li">• 您的用户昵称、头像（用于个人中心展示）。</text>
+      <text class="li">• 您的学习记录、收藏词条（用于同步学习进度）。</text>
+      <text class="li">• 录音数据（仅当您使用“录音贡献”功能时，且需您主动授权麦克风权限）。</text>
+    </view>
+
+    <view class="section">
+      <view class="h3">3. 信息的使用</view>
+      <text class="p">我们承诺不会将您的个人信息用于本指引未列明的其他用途。您的信息仅用于：</text>
+      <text class="li">• 提供个性化的学习服务。</text>
+      <text class="li">• 优化软件功能和用户体验。</text>
+    </view>
+
+    <view class="section">
+      <view class="h3">4. 联系我们</view>
+      <text class="p">如您对本隐私协议有任何疑问，请通过“我的-意见反馈”联系我们。</text>
+    </view>
+  </view>
+</view>

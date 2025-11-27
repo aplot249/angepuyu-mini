@@ -4,7 +4,7 @@
 .fixed-header {
   background: var(--bg-color);
   padding: 20rpx 30rpx;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.03);
+  box-shadow: 0 4rpx 10rpx rgba(141, 110, 99, 0.05);
   z-index: 20;
 }
 
@@ -15,19 +15,20 @@
   display: flex;
   align-items: center;
   margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.02);
+  box-shadow: 0 4rpx 20rpx rgba(141, 110, 99, 0.05);
+  border: 1rpx solid rgba(254, 201, 157, 0.3); /* 微弱的蜜桃色边框 */
 }
-.search-icon { margin-right: 10rpx; }
+.search-icon { margin-right: 10rpx; color: var(--text-sub); }
 .search-input { font-size: var(--text-sm); width: 100%; color: var(--text-main); }
 
 /* Tab 样式 */
 .segment-tab {
   display: flex;
-  background: #f3f4f6; /* 浅灰底 */
+  background: #EFEBE9; /* 暖灰底 */
   border-radius: 20rpx;
   padding: 6rpx;
 }
-.dark-mode .segment-tab { background: #374151; }
+.dark-mode .segment-tab { background: #3E2723; }
 
 .segment-item {
   flex: 1;
@@ -41,11 +42,11 @@
 }
 .segment-item.active {
   background: var(--card-bg);
-  color: var(--primary);
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+  color: var(--secondary); /* 激活色改为珊瑚色 */
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
 }
-/* 短语Tab激活时用橙色 */
-.segment-item.active:nth-child(2) { color: var(--secondary); }
+/* 短语Tab激活时用稍深一点的颜色 */
+.segment-item.active:nth-child(2) { color: #BF360C; }
 
 
 /* Swiper 内容区 */
@@ -55,8 +56,8 @@
 /* 卡片样式 */
 .item-card {
   display: flex;
-  align-items: flex-start; /* 顶部对齐 */
-  border: 1rpx solid rgba(0,0,0,0.02);
+  align-items: flex-start; 
+  border: 1rpx solid rgba(254, 201, 157, 0.2); /* 极淡的蜜桃色边框 */
   padding: 30rpx;
 }
 .phrase-style { border-left: 8rpx solid var(--secondary); }
@@ -66,20 +67,20 @@
   padding: 0 20rpx 0 0; 
   display: flex; 
   align-items: center;
-  height: 100%; /* 垂直居中复选框 */
+  height: 100%;
 }
 .custom-checkbox {
   width: 44rpx;
   height: 44rpx;
   border-radius: 50%;
-  border: 4rpx solid #e5e7eb;
+  border: 4rpx solid #D7CCC8; /* 暖灰色边框 */
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
 }
 .custom-checkbox.checked {
-  background: var(--primary);
+  background: var(--primary); /* 蜜桃色 */
   border-color: var(--primary);
 }
 .phrase-style .custom-checkbox.checked {
@@ -96,20 +97,20 @@
 .play-btn { 
   width: 64rpx; 
   height: 64rpx; 
-  background: rgba(45, 212, 191, 0.1); 
+  background: #FFF3E0; /* 淡橙色背景 */
   border-radius: 50%; 
   display: flex; 
   align-items: center; 
   justify-content: center; 
   font-size: 32rpx;
-  color: var(--primary);
-  flex-shrink: 0; /* 防止被挤压 */
+  color: #FF8A65; /* 珊瑚色图标 */
+  flex-shrink: 0; 
 }
-.play-btn.orange { background: rgba(251, 146, 60, 0.1); color: var(--secondary); }
+.play-btn.orange { background: #FBE9E7; color: #D84315; }
 
 .homonym-tag {
   display: inline-block;
-  background: rgba(0,0,0,0.03);
+  background: #EFEBE9;
   padding: 4rpx 12rpx;
   border-radius: 8rpx;
   font-size: var(--text-xs);
@@ -127,11 +128,11 @@
   margin-top: 100rpx;
   opacity: 0.5;
 }
-.empty-icon { font-size: 80rpx; margin-bottom: 20rpx; background: var(--card-bg); padding: 40rpx; border-radius: 50%; }
+.empty-icon { font-size: 80rpx; margin-bottom: 20rpx; background: var(--card-bg); padding: 40rpx; border-radius: 50%; color: #FFCCBC; }
 
 .loading-tip { text-align: center; padding: 30rpx; color: var(--text-sub); font-size: var(--text-xs); }
 
-/* 浮动按钮组 */
+/* 浮动按钮组 - 暖色调改造 */
 .fab-group {
   position: fixed;
   bottom: 60rpx;
@@ -148,13 +149,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10rpx 30rpx rgba(0,0,0,0.15);
+  box-shadow: 0 10rpx 30rpx rgba(141, 110, 99, 0.2);
   transition: transform 0.1s;
 }
 .fab-icon { font-size: 40rpx; }
 .btn-hover { transform: scale(0.9); opacity: 0.9; }
 
-.fab-btn.blue { background: linear-gradient(135deg, #60A5FA, #3B82F6); color: white; }
-.fab-btn.teal { background: linear-gradient(135deg, #2DD4BF, #10B981); color: white; }
-.fab-btn.purple { background: linear-gradient(135deg, #A78BFA, #8B5CF6); color: white; }
-.fab-btn.gray { background: linear-gradient(135deg, #D1D5DB, #9CA3AF); color: white; }
+/* 颜色变体：改为暖色系搭配 */
+/* 导出：改为暖黄色 */
+.fab-btn.blue { background: linear-gradient(135deg, #FFD54F, #FFB300); color: white; } 
+/* 播放：改为蜜桃色 */
+.fab-btn.teal { background: linear-gradient(135deg, #FFCCBC, #FF8A65); color: white; } 
+/* 全选：改为暖粉色 */
+.fab-btn.purple { background: linear-gradient(135deg, #F48FB1, #EC407A); color: white; }
+/* 全不选：暖灰色 */
+.fab-btn.gray { background: linear-gradient(135deg, #BCAAA4, #8D6E63); color: white; }

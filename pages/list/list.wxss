@@ -3,7 +3,7 @@
 .fixed-header {
   background: var(--bg-color);
   padding: 20rpx 30rpx;
-  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.03);
+  box-shadow: 0 4rpx 10rpx rgba(141, 110, 99, 0.05);
   z-index: 20;
 }
 
@@ -15,11 +15,12 @@
   font-size: var(--text-sm);
   margin-bottom: 20rpx;
   color: var(--text-main);
+  border: 1rpx solid rgba(254, 201, 157, 0.3);
 }
 
 .segment-tab {
   display: flex;
-  background: #f3f4f6; /* 浅灰底 */
+  background: #EFEBE9;
   border-radius: 20rpx;
   padding: 6rpx;
 }
@@ -34,19 +35,18 @@
 }
 .segment-item.active {
   background: var(--card-bg);
-  color: var(--primary);
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+  color: var(--secondary);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
 }
-/* 短语Tab激活时用橙色 */
-.segment-item.active:nth-child(2) { color: var(--secondary); }
+.segment-item.active:nth-child(2) { color: #BF360C; }
 
-.content-swiper { flex: 1; height: 0; /* 必须设置以便flex生效 */ }
+.content-swiper { flex: 1; height: 0; }
 .scroll-area { height: 100%; padding: 20rpx 30rpx; box-sizing: border-box; }
 
 .detail-card {
   position: relative;
   overflow: hidden;
-  border: 1rpx solid rgba(0,0,0,0.02);
+  border: 1rpx solid rgba(254, 201, 157, 0.2);
 }
 .phrase-style { border-left: 8rpx solid var(--secondary); }
 
@@ -57,18 +57,18 @@
 .en-sub { font-size: var(--text-xs); color: var(--text-sub); font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 16rpx; }
 
 .homonym-row { display: flex; align-items: center; margin-bottom: 16rpx; }
-.badge { background: #f3f4f6; color: #9ca3af; font-size: 20rpx; padding: 2rpx 8rpx; border-radius: 6rpx; margin-right: 10rpx; }
+.badge { background: #EFEBE9; color: #8D6E63; font-size: 20rpx; padding: 2rpx 8rpx; border-radius: 6rpx; margin-right: 10rpx; }
 .homonym-text { font-size: var(--text-sm); color: var(--text-sub); font-family: sans-serif; }
 
-.cn-main { font-size: var(--text-lg); font-weight: bold; color: var(--primary); }
-.text-primary { color: var(--primary); }
+.cn-main { font-size: var(--text-lg); font-weight: bold; color: var(--secondary); }
+.text-primary { color: var(--secondary); }
 
-.word-img { width: 140rpx; height: 140rpx; border-radius: 20rpx; background: #f3f4f6; }
+.word-img { width: 140rpx; height: 140rpx; border-radius: 20rpx; background: #EFEBE9; }
 
 .card-footer {
   margin-top: 30rpx;
   padding-top: 20rpx;
-  border-top: 1rpx dashed rgba(0,0,0,0.05);
+  border-top: 1rpx dashed rgba(141, 110, 99, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,17 +76,19 @@
 
 .actions { display: flex; align-items: center; gap: 20rpx; }
 .btn-pill {
-  background: rgba(45, 212, 191, 0.1);
-  color: var(--primary);
+  background: #FFF3E0;
+  color: #FF8A65;
   padding: 10rpx 30rpx;
   border-radius: 40rpx;
   font-size: var(--text-xs);
   font-weight: bold;
 }
-.btn-pill.orange { background: rgba(251, 146, 60, 0.1); color: var(--secondary); }
+.btn-pill.orange { background: #FBE9E7; color: #D84315; }
 
 .icon-btn { font-size: 40rpx; padding: 10rpx; transition: transform 0.2s; }
 .icon-btn:active { transform: scale(0.8); }
+/* 收藏后的心形颜色 */
+.fav-active text { color: #FF5252; } 
 
 .feedback-btn { font-size: var(--text-xs); color: var(--text-sub); text-decoration: underline; }
 

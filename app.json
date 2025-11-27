@@ -7,7 +7,8 @@
     "pages/list/list",
     "pages/purchase/purchase",
     "pages/contribute/contribute",
-    "pages/share/share"
+    "pages/share/share",
+    "pages/privacy/privacy"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -24,30 +25,32 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "/static/images/tab-home.png",
-        "selectedIconPath": "/static/images/tab-home-active.png"
+        "iconPath": "/static/images/home.png",
+        "selectedIconPath": "/static/images/home-active.png"
       },
       {
         "pagePath": "pages/category/category",
-        "text": "分类",
-        "iconPath": "/static/images/tab-home.png",
-        "selectedIconPath": "/static/images/tab-home-active.png"
+        "text": "行业分类",
+        "iconPath": "/static/images/category.png",
+        "selectedIconPath": "/static/images/category-active.png"
       },
       {
         "pagePath": "pages/wordbook/wordbook",
-        "text": "收藏",
-        "iconPath": "/static/images/tab-home.png",
-        "selectedIconPath": "/static/images/tab-home-active.png"
+        "text": "单词本",
+        "iconPath": "/static/images/dictionary.png",
+        "selectedIconPath": "/static/images/dictionary-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的",
-        "iconPath": "/static/images/tab-home.png",
-        "selectedIconPath": "/static/images/tab-home-active.png"
+        "text": "个人中心",
+        "iconPath": "/static/images/mine.png",
+        "selectedIconPath": "/static/images/mine-active.png"
       }
     ]
   },
   "permission": {
 
-  }
+  },
+    "darkmode": true,
+    "themeLocation": "theme.json"
 }

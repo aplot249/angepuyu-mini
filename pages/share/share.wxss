@@ -1,6 +1,6 @@
 .share-page {
   padding: 30rpx;
-  background-color: #f3f4f6; /* 浅灰背景衬托海报 */
+  background-color: #FFF3E0; /* 暖色背景 */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -8,15 +8,17 @@
 }
 
 .dark-mode.share-page {
-  background-color: #111827;
+  background-color: #2D2420;
 }
 
-/* 隐藏 Canvas 组件，防止干扰布局 */
-.widget {
-  position: absolute;
+/* 原生 Canvas 2D 隱藏樣式 */
+#posterCanvas {
+  position: fixed;
   top: -9999px;
   left: 0;
-  z-index: -1;
+  width: 375px;
+  height: 667px;
+  z-index: -999;
 }
 
 /* 海报主体 */
@@ -26,14 +28,14 @@
   background: white;
   border-radius: 40rpx;
   overflow: hidden;
-  box-shadow: 0 20rpx 60rpx rgba(0,0,0,0.1);
+  box-shadow: 0 20rpx 60rpx rgba(141, 110, 99, 0.15);
   margin-bottom: 40rpx;
   display: flex;
   flex-direction: column;
 }
 
 .dark-mode .poster-card {
-  background: #1F2937;
+  background: #3E2723;
 }
 
 /* 顶部视觉图 */
@@ -56,22 +58,21 @@
 .overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(to bottom, rgba(45, 212, 191, 0.8), rgba(13, 148, 136, 0.9)); /* Teal Gradient */
+  /* 暖色叠加层：蜜桃色 */
+  background: linear-gradient(to bottom, rgba(254, 201, 157, 0.8), rgba(255, 138, 101, 0.85)); 
   mix-blend-mode: multiply;
 }
 
-.app-branding { position: relative; z-index: 10; }
+.app-branding { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; }
 .logo-box {
-  font-size: 80rpx;
-  background: white;
   width: 140rpx; height: 140rpx;
-  border-radius: 40rpx;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 20rpx;
-  box-shadow: 0 10rpx 20rpx rgba(0,0,0,0.2);
+  border-radius: 30rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 10rpx 20rpx rgba(0,0,0,0.1);
+  background-color: #fff;
 }
-.app-name { font-size: 40rpx; font-weight: 900; letter-spacing: 2rpx; margin-bottom: 10rpx; text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.2); }
-.app-slogan { font-size: 24rpx; opacity: 0.9; letter-spacing: 1rpx; font-weight: 300; }
+.app-name { font-size: 40rpx; font-weight: 900; letter-spacing: 2rpx; margin-bottom: 10rpx; text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1); color: white; }
+.app-slogan { font-size: 24rpx; opacity: 0.95; letter-spacing: 1rpx; font-weight: 400; color: #FFF3E0; }
 
 /* 简介文字 */
 .intro-section { padding: 40rpx 40rpx 20rpx; text-align: center; }
@@ -79,15 +80,15 @@
   display: block; 
   font-size: 32rpx; 
   font-weight: 800; 
-  color: var(--primary); 
+  color: #FF7043; /* 深珊瑚色 */
   margin-bottom: 16rpx; 
 }
 .sub-text { 
   font-size: 26rpx; 
-  color: #6B7280; 
+  color: #8D6E63; /* 浅棕 */
   line-height: 1.6; 
 }
-.dark-mode .sub-text { color: #9CA3AF; }
+.dark-mode .sub-text { color: #BCAAA4; }
 
 /* 功能网格 */
 .features-grid {
@@ -98,12 +99,12 @@
 }
 
 .feature-item {
-  background: #F9FAFB;
+  background: #FFF8F3; /* 极淡蜜桃 */
   border-radius: 20rpx;
   padding: 24rpx;
   text-align: center;
 }
-.dark-mode .feature-item { background: #374151; }
+.dark-mode .feature-item { background: #4E342E; }
 
 .icon-circle {
   width: 80rpx; height: 80rpx;
@@ -112,31 +113,27 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 36rpx;
 }
-.icon-circle.teal { background: #CCFBF1; color: #0D9488; }
-.icon-circle.orange { background: #FFEDD5; color: #EA580C; }
-.icon-circle.blue { background: #DBEAFE; color: #2563EB; }
-.icon-circle.purple { background: #F3E8FF; color: #9333EA; }
-
-.dark-mode .icon-circle.teal { background: rgba(20, 184, 166, 0.2); }
-.dark-mode .icon-circle.orange { background: rgba(249, 115, 22, 0.2); }
-.dark-mode .icon-circle.blue { background: rgba(59, 130, 246, 0.2); }
-.dark-mode .icon-circle.purple { background: rgba(168, 85, 247, 0.2); }
+/* 改为暖色系图标背景 */
+.icon-circle.teal { background: #E0F2F1; color: #00695C; } /* 保持一点冷色对比 */
+.icon-circle.orange { background: #FBE9E7; color: #D84315; }
+.icon-circle.blue { background: #FFF3E0; color: #EF6C00; } /* 改为暖橙 */
+.icon-circle.purple { background: #F3E5F5; color: #8E24AA; }
 
 .feat-title { font-size: 28rpx; font-weight: bold; margin-bottom: 8rpx; color: var(--text-main); }
-.feat-desc { font-size: 22rpx; color: #9CA3AF; line-height: 1.4; }
+.feat-desc { font-size: 22rpx; color: var(--text-sub); line-height: 1.4; }
 
 /* 底部二维码 */
 .poster-footer {
   padding: 30rpx 40rpx 50rpx;
   display: flex;
   align-items: center;
-  border-top: 2rpx dashed #E5E7EB;
+  border-top: 2rpx dashed #D7CCC8;
 }
-.dark-mode .poster-footer { border-top-color: #374151; }
+.dark-mode .poster-footer { border-top-color: #5D4037; }
 
 .qr-placeholder {
   width: 140rpx; height: 140rpx;
-  background: #f3f4f6;
+  background: #FFF8F3;
   border-radius: 10rpx;
   padding: 10rpx;
   margin-right: 30rpx;
@@ -163,17 +160,17 @@
   font-weight: bold;
   height: 90rpx;
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 10rpx 20rpx rgba(0,0,0,0.1);
+  box-shadow: 0 10rpx 20rpx rgba(141, 110, 99, 0.1);
   border: none;
 }
 .btn::after { border: none; }
 
 .share-friend {
   background: white;
-  color: var(--primary);
-  border: 2rpx solid var(--primary);
+  color: #FF7043;
+  border: 2rpx solid #FF7043;
 }
 .save-img {
-  background: var(--primary);
-  color: white;
+  background: linear-gradient(135deg, #FEC99D, #FF7043);
+  color: #5D4037;
 }

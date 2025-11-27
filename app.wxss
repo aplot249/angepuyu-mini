@@ -1,13 +1,22 @@
 page {
-  /* 默认颜色变量 */
-  --primary: #2DD4BF;
-  --secondary: #FB923C;
-  --bg-color: #FAFAF9;
-  --card-bg: #FFFFFF;
-  --text-main: #44403C;
-  --text-sub: #a8a29e;
+  /* --- 新版暖色调主题 (Cozy Peach Theme) --- */
   
-  /* 默认字体大小基准 (对应 lvl-1) */
+  /* 主色调：蜜桃杏色 #FEC99D */
+  --primary: #FEC99D; 
+  /* 次色调：珊瑚暖橙 (用于深色强调) */
+  --secondary: #FF8A65; 
+  
+  /* 背景色：极淡的米杏色，比纯白更护眼 */
+  --bg-color: #FFF8F3; 
+  /* 卡片背景：纯白 */
+  --card-bg: #FFFFFF; 
+  
+  /* 文字颜色：深暖棕色 (比纯黑更柔和) */
+  --text-main: #5D4037; 
+  /* 次级文字：浅棕灰 */
+  --text-sub: #A1887F;
+  
+  /* 字体大小基准 (对应 lvl-1) */
   --text-xs: 24rpx;
   --text-sm: 28rpx;
   --text-base: 32rpx;
@@ -19,55 +28,23 @@ page {
   box-sizing: border-box;
 }
 
-/* 夜间模式类 */
+/* 夜间模式类 - 暖色调的夜间模式 (深咖色系) */
 .dark-mode {
-  --bg-color: #1C1917;
-  --card-bg: #292524;
-  --text-main: #E7E5E4;
-  --text-sub: #78716c;
+  --bg-color: #1E1B1A; /* 深咖啡黑 */
+  --card-bg: #2D2420;   /* 深暖灰 */
+  --text-main: #EFEBE9; /* 暖白 */
+  --text-sub: #8D6E63;  /* 浅咖色 */
+  
+  /* 夜间模式下主色稍微调暗一点，或者保持高亮 */
+  --primary: #FFAB91; 
+  --secondary: #FFCCBC;
 }
 
-/* --- 字体大小分级 (关键修复：全量覆盖所有变量) --- */
-
-/* 0级: 紧凑 */
-.font-lvl-0 { 
-  --text-xs: 22rpx;
-  --text-sm: 26rpx;
-  --text-base: 28rpx;
-  --text-lg: 32rpx;
-  --text-xl: 36rpx;
-  --text-2xl: 44rpx;
-}
-
-/* 1级: 标准 (默认) */
-.font-lvl-1 { 
-  --text-xs: 24rpx;
-  --text-sm: 28rpx;
-  --text-base: 32rpx;
-  --text-lg: 36rpx;
-  --text-xl: 40rpx;
-  --text-2xl: 48rpx;
-}
-
-/* 2级: 大号 (老人模式推荐) */
-.font-lvl-2 { 
-  --text-xs: 28rpx;
-  --text-sm: 32rpx;
-  --text-base: 36rpx;
-  --text-lg: 40rpx;
-  --text-xl: 46rpx;
-  --text-2xl: 56rpx;
-}
-
-/* 3级: 特大 */
-.font-lvl-3 { 
-  --text-xs: 32rpx;
-  --text-sm: 36rpx;
-  --text-base: 40rpx;
-  --text-lg: 46rpx;
-  --text-xl: 52rpx;
-  --text-2xl: 64rpx;
-}
+/* --- 字体大小分级 (保持不变) --- */
+.font-lvl-0 { --text-xs: 22rpx; --text-sm: 26rpx; --text-base: 28rpx; --text-lg: 32rpx; --text-xl: 36rpx; --text-2xl: 44rpx; }
+.font-lvl-1 { --text-xs: 24rpx; --text-sm: 28rpx; --text-base: 32rpx; --text-lg: 36rpx; --text-xl: 40rpx; --text-2xl: 48rpx; }
+.font-lvl-2 { --text-xs: 28rpx; --text-sm: 32rpx; --text-base: 36rpx; --text-lg: 40rpx; --text-xl: 46rpx; --text-2xl: 56rpx; }
+.font-lvl-3 { --text-xs: 32rpx; --text-sm: 36rpx; --text-base: 40rpx; --text-lg: 46rpx; --text-xl: 52rpx; --text-2xl: 64rpx; }
 
 /* 容器样式 */
 .container {
@@ -76,14 +53,13 @@ page {
   color: var(--text-main);
   padding: 30rpx;
   transition: background-color 0.3s, color 0.3s;
-  /* 确保容器内的文字继承这些变量，虽然 CSS 变量默认继承，但明确上下文很重要 */
 }
 
 .card {
   background: var(--card-bg);
   border-radius: 30rpx;
   padding: 30rpx;
-  box-shadow: 0 10rpx 40rpx -10rpx rgba(0,0,0,0.05);
+  box-shadow: 0 8rpx 30rpx rgba(141, 110, 99, 0.08); /* 阴影改为暖色调 */
   margin-bottom: 24rpx;
   transition: background-color 0.3s;
 }
