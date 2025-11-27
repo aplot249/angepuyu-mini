@@ -1,5 +1,7 @@
 .header-card {
-  background: linear-gradient(135deg, #2DD4BF, #059669);
+  /* background: linear-gradient(135deg, #2DD4BF, #059669); */
+  background: linear-gradient(135deg, #FEC99D, #EEBD96);
+  
   padding: 40rpx;
   border-radius: 30rpx;
   color: white;
