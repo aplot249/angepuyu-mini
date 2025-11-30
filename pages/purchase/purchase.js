@@ -13,9 +13,17 @@ Page({
     isLoop: false, // 控制轮询开关
     waitTimes: 0, // 记录轮询次数
     maxWait: 10, // 最大轮询次数
-    timerId: null // 存储定时器ID
+    timerId: null, // 存储定时器ID
+    priceList:[]
   },
-
+  onLoad(){
+    http('/web/pricelist/','get').then(res=>{
+        console.log(res)
+        this.setData({
+          priceList:res
+        })
+    })
+  },
   onShow() {
     this.setData({
       userInfo: app.globalData.userInfo,
@@ -54,12 +62,13 @@ Page({
   buyPoints(e) {
     const {
       amount,
-      price
+      price,
+      desp
     } = e.currentTarget.dataset;
     const isUnlimited = parseInt(amount) > 10000;
 
     const content = isUnlimited ?
-      `确认支付 ¥${price} 购买无限点数？` :
+      `确认支付 ¥${price} 购买 ${amount} 点数？` :
       `确认支付 ¥${price} 购买 ${amount} 点数？`;
 
     let that = this
@@ -72,7 +81,7 @@ Page({
           wx.showLoading({
             title: '支付中...'
           });
-          http('/web/pay/', 'get').then(res => {
+          http('/web/pay/', 'post',{"price":price,"points":amount,"desp":desp}).then(res => {
             if (res.code === 0) {
               const payment = res.payment;
               this.setData({"prepay_id":payment.prepay_id})
@@ -118,16 +127,21 @@ Page({
       this.stopLooping();
       return;
     }
-
+    let that = this
     http(`/web/transcation/${this.data.prepay_id}/`,'get').then(res=>{
       this.setData({
         waitTimes: newWait
       });
-      if(res.status = '1'){
-        console.log('拿到数据，停止轮询');
+      if(res.status == '1'){
+        console.log('拿到数据，停止轮询',res)
         this.stopLooping();
         wx.showToast({
           title: '支付成功',
+        })
+        app.globalData.userInfo.points = app.globalData.userInfo.points+res.points
+        app.saveData()
+        this.setData({
+          userInfo:this.data.userInfo
         })
       }else{
         const timerId = setTimeout(() => this.autoUpdate(), 1000);
@@ -144,7 +158,7 @@ Page({
       isLoop: true,
       waitTimes: 0
     });
-    const timerId = setTimeout(() => this.autoUpdate(), 300);
+    const timerId = setTimeout(() => this.autoUpdate(), 1000);
     this.setData({
       timerId
     });
@@ -161,12 +175,6 @@ Page({
         timerId: null
       });
     }
-  },
-
-  // 生命周期函数
-  onShow() {
-    // 页面显示时开始轮询
-    // this.startLooping();
   },
 
   onHide() {
