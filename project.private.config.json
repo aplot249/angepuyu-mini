@@ -24,11 +24,18 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/profile/profile",
-          "pathName": "pages/profile/profile",
+          "name": "pages/purchase/purchase",
+          "pathName": "pages/purchase/purchase",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/profile/profile",
+          "pathName": "pages/profile/profile",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/wordbook/wordbook",

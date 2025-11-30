@@ -1,7 +1,9 @@
-// const baseHOST = 'http://127.0.0.1:8000'
-const baseHOST = 'https://siyu.jsxinlingdi.com'
+const baseHOST = 'http://127.0.0.1:8000'
+// const baseHOST = 'https://siyu.jsxinlingdi.com'
 // const baseHOST = 'http://192.168.0.67:8000'
 const baseImgUrl = baseHOST + '/media'
+
+const app = getApp();
 
 function request(url, method = 'POST', data = {}) {
   let header = {
@@ -19,25 +21,22 @@ function request(url, method = 'POST', data = {}) {
       timeout: '8000',
       success: res => {
         wx.hideLoading()
-        // console.log(res.data.status)
-        // token过期提跳转
         if (res.statusCode == 403) {
+          reject(res.data)
           wx.clearStorageSync()
           wx.reLaunch({
-            url: '/pages/ruku/ruku',
+            url: '/pages/profile/profile',
           })
-          reject(res.data)
         }
         if (res.statusCode == 429) {
-          reject(res)
-        }
-        // 用户名或密码错误
-        if (res.data.status == 401) {
-          reject(res)
+          reject(res.data)
         }
         // 返回的事json
         resolve(res.data)
       }
+    },err=>{
+        wx.hideLoading()
+        reject(err.data)
     })
   })
 }
@@ -60,18 +59,22 @@ function fileupload(url,filePath,name,formData={}) {
         wx.hideLoading()
         // token过期提跳转
         if (res.statusCode == 403) {
-          wx.clearStorageSync()
-          wx.reLaunch({
-            url: '/pages/ruku/ruku',
+          wx.showToast({
+            title: '请先登录',
           })
+          wx.switchTab({
+            url: '/pages/profile/profile',
+          })
+          app.globalData.userInfo.isLoggedIn = false;
+          wx.clearStorageSync()
           // 返回的是字符串
-          reject(JSON.parse(res.data))
-        }
+          reject(JSON.parse(res.data)
+          )}
         if (res.statusCode == 429) {
           reject(res)
         }
         resolve(JSON.parse(res.data))
-      }
+      },
     })
   })
 }

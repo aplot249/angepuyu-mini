@@ -175,8 +175,11 @@ Page({
     app.globalData.userInfo.points += 20;
     app.globalData.userInfo.hasSignedIn = true;
     app.saveData();
-    this.setData({ userInfo: app.globalData.userInfo });
-    wx.showToast({ title: '签到成功 +20', icon: 'success' });
+    http('/user/userinfo/','post',{"points":app.globalData.userInfo.points}).then(res=>{
+      console.log('res0000000',res)
+      this.setData({ userInfo: app.globalData.userInfo });
+      wx.showToast({ title: '签到成功 +20', icon: 'success' });
+    })
   },
 
   handleShareTap() {
@@ -189,9 +192,10 @@ Page({
     app.globalData.userInfo.hasSharedToday = true;
     app.saveData();
     this.setData({ userInfo: app.globalData.userInfo });
-    setTimeout(() => {
-        wx.showToast({ title: '分享奖励 +15', icon: 'success' });
-    }, 500);
+    http('/user/userinfo/','post',{"points":app.globalData.userInfo.points}).then(res=>{
+      this.setData({ userInfo: app.globalData.userInfo });
+      wx.showToast({ title: '分享奖励 +15', icon: 'success' });
+    })
   },
 
   onShareAppMessage() {

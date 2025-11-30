@@ -2,7 +2,7 @@ App({
   globalData: {
     userInfo: {
       nickname: "Marafiki", //默认值
-      points: 100,
+      points: 0,
       hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享
       favorites: []
@@ -16,7 +16,7 @@ App({
     const user = wx.getStorageSync('ts_user');
     const font = wx.getStorageSync('ts_font');
     const dark = wx.getStorageSync('ts_dark'); 
-    // 把user放在全局数据里
+    // 读取本地storage的数据，并把user放在全局数据里，如果没有也不会报错。
     if (user) this.globalData.userInfo = user;
     // 把字体等级放在全局数据里
     if (font === 0 || font === 1 || font === 2 || font === 3) {
@@ -37,7 +37,7 @@ App({
   // [新增] 检查是否需要重置每日任务状态
   checkDailyReset() {
     const todayStr = new Date().toDateString(); // 获取当前日期字符串 (e.g. "Mon Nov 24 2025")
-    const lastDate = wx.getStorageSync('ts_last_active_date');
+    const lastDate = wx.getStorageSync('ts_last_active_date');  //上次日期
 
     if (lastDate !== todayStr) {
       // 是新的一天，重置状态

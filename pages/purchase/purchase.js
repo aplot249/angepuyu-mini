@@ -1,4 +1,5 @@
 const app = getApp();
+import {http} from '../../requests/index'
 
 Page({
   data: {
@@ -50,19 +51,82 @@ Page({
         if (res.confirm) {
           wx.showLoading({ title: '支付中...' });
           
-          setTimeout(() => {
-            wx.hideLoading();
-            if (isUnlimited) {
-              app.globalData.userInfo.points = 999999;
-            } else {
-              app.globalData.userInfo.points += parseInt(amount);
-            }
-            app.saveData();
-            this.setData({ userInfo: app.globalData.userInfo });
+          // setTimeout(() => {
+          //   wx.hideLoading();
+          //   if (isUnlimited) {
+          //     app.globalData.userInfo.points = 999999;
+          //   } else {
+          //     app.globalData.userInfo.points += parseInt(amount);
+          //   }
+          //   app.saveData();
+          //   this.setData({ userInfo: app.globalData.userInfo });
             
-            wx.showToast({ title: '充值成功', icon: 'success', duration: 2000 });
-            setTimeout(() => { wx.navigateBack(); }, 1500);
-          }, 1000);
+          //   wx.showToast({ title: '充值成功', icon: 'success', duration: 2000 });
+          //   setTimeout(() => { wx.navigateBack(); }, 1500);
+          // }, 1000);
+
+          http('/web/pay/','get').then(res=>{
+            if (res.code === 0) {
+              const payment = res.payment;
+              // 调起微信支付
+              wx.requestPayment({
+                timeStamp: payment.timeStamp,
+                nonceStr: payment.nonceStr,
+                package: payment.package,
+                signType: payment.signType,
+                paySign: payment.paySign,
+                success: (payRes) => {
+                  console.log('支付成功', payRes);
+                  // 支付成功后的逻辑
+                },
+                fail: (err) => {
+                  console.error('支付失败', err);
+                  // 支付失败或用户取消的逻辑
+                }
+              });
+            } else {
+              console.error('获取支付参数失败', res.message);
+            }
+          },err=>{
+            console.error('请求后端接口失败', err);
+          })
+
+          // wx.request({
+          //   url: 'https://你的域名.com/pay/',
+          //   method: 'GET',
+          //   data: {
+          //     code: loginRes.code
+          //   },
+          //   success: (res) => {
+          //     if (res.data.code === 0) {
+          //       const payment = res.data.payment;
+          //       // 调起微信支付
+          //       wx.requestPayment({
+          //         timeStamp: payment.timeStamp,
+          //         nonceStr: payment.nonceStr,
+          //         package: payment.package,
+          //         signType: payment.signType,
+          //         paySign: payment.paySign,
+          //         success: (payRes) => {
+          //           console.log('支付成功', payRes);
+          //           // 支付成功后的逻辑
+          //         },
+          //         fail: (err) => {
+          //           console.error('支付失败', err);
+          //           // 支付失败或用户取消的逻辑
+          //         }
+          //       });
+          //     } else {
+          //       console.error('获取支付参数失败', res.data.message);
+          //     }
+          //   },
+          //   fail: (err) => {
+          //     console.error('请求后端接口失败', err);
+          //   }
+          // });
+          
+
+
         }
       }
     });

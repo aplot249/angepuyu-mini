@@ -42,21 +42,20 @@ Page({
           pageWord:1,
           wordList:[...this.data.wordList,...list]  //这次列表
         })
-      })
-
-      http(`/web/ctiemBySub/?subid=${options.subid}&wp=1&page=1&search=${this.data.keyword}`,'GET').then(res=>{
-        console.log("res11",res)
-        let favIds = app.globalData.userInfo.favorites  // 'favorites');
-        let list = res.results.map(item => ({
-          ...item,
-          checked: favIds.includes(item.id)
-        }));
-        this.setData({
-          phraseCount:res.count, //总数
-          phraseTotalPageNum:res.totalPageNum, //总页数
-          pageSize:res.page_size,
-          hasMorePhrases:this.data.pagePhrase < res.totalPageNum,
-          phraseList:[...this.data.phraseList,...list]  //这次列表
+        http(`/web/ctiemBySub/?subid=${options.subid}&wp=1&page=1&search=${this.data.keyword}`,'GET').then(res=>{
+          console.log("res11",res)
+          let favIds = app.globalData.userInfo.favorites  // 'favorites');
+          let list = res.results.map(item => ({
+            ...item,
+            checked: favIds.includes(item.id)
+          }));
+          this.setData({
+            phraseCount:res.count, //总数
+            phraseTotalPageNum:res.totalPageNum, //总页数
+            pageSize:res.page_size,
+            hasMorePhrases:this.data.pagePhrase < res.totalPageNum,
+            phraseList:[...this.data.phraseList,...list]  //这次列表
+          })
         })
       })
   },
