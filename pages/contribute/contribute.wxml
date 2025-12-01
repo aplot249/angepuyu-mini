@@ -7,10 +7,10 @@
 
   <!-- 1. 文本信息录入区域 -->
   <view class="card form-card">
-    <view class="form-group">
+    <!-- <view class="form-group">
       <view class="label">Your name</view>
       <input class="input-field" placeholder="input your name" model:value="{{recorderName}}" />
-    </view>
+    </view> -->
     <view class="form-group">
       <view class="label">斯瓦西里语 (Swahili)</view>
       <input class="input-field" placeholder="输入斯语单词/短语" model:value="{{swahili}}" />

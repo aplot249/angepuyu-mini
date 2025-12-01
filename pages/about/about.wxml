@@ -1,0 +1,88 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <!-- 顶部标语区域 -->
+  <view class="banner-area">
+    <image class="banner-bg" src="/static/images/bg.png" mode="aspectFill"></image>
+    <view class="banner-overlay"></view>
+    <view class="banner-content">
+      <view class="app-logo">🇹🇿</view>
+      <text class="banner-title">用代码助力坦桑华人发展</text>
+      <!-- <text class="banner-subtitle">Connecting Cultures with Code</text> -->
+    </view>
+  </view>
+
+  <!-- 开发者简介 -->
+  <view class="card section-card">
+    <view class="section-header">
+      <text class="icon">👨‍💻</text>
+      <text class="title">开发者简介</text>
+    </view>
+    <view class="content-text">
+      大家好，我是这款软件的开发者Three。目前在坦桑尼亚工作，深知语言障碍给同胞带来的不便。作为一名热爱编程的工程人，利用业余时间开发了这款《坦坦斯语》，希望能为大家在非洲的工作、生活提供一些便利。
+    </view>
+  </view>
+
+  <!-- 开发初心 -->
+  <view class="card section-card">
+    <view class="section-header">
+      <text class="icon">🌱</text>
+      <text class="title">开发初心</text>
+    </view>
+    <view class="content-text">
+      在坦桑工作、生活，语言是我们一道难题。华人在坦桑从事各种行业，我想到搜集整理各行各业的常用单词、短语汇集到一起。
+    </view>
+    <view class="content-text mt-20">
+      我想做一个<b>“实用”</b>的斯语工具，削弱语法层面的难度，注重实用性，说出来让当地人听得懂。特别是为了照顾年长的同胞，还特意设计了<b>大字体和真人发音</b>功能。
+    </view>
+  </view>
+
+  <!-- 软件功能与规划 -->
+  <view class="card section-card">
+    <view class="section-header">
+      <text class="icon">🚀</text>
+      <text class="title">功能与规划</text>
+    </view>
+    
+    <view class="sub-section">
+      <view class="sub-title badge-green">✅ 现有功能</view>
+      <view class="feature-list">
+        <view class="feat-item"><text class="dot">•</text>行业分类词库（工程/清关/机械/生活等）</view>
+        <view class="feat-item"><text class="dot">•</text>真人发音 & 单词本收藏</view>
+        <view class="feat-item"><text class="dot">•</text>长辈关怀模式（超大字体/夜间模式）</view>
+        <view class="feat-item"><text class="dot">•</text>语音串读、导出文档打印</view>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="sub-section">
+      <view class="sub-title badge-blue">📅 未来规划</view>
+      <view class="feature-list">
+        <view class="feat-item"><text class="dot">•</text>放置斯语教学视频</view>
+        <view class="feat-item"><text class="dot">•</text>中文-斯语翻译</view>
+        <!-- <view class="feat-item"><text class="dot">•</text>支持用户上传词条，共建社区词库</view> -->
+      </view>
+    </view>
+  </view>
+
+  <!-- 特别鸣谢 -->
+  <view class="card section-card">
+    <view class="section-header">
+      <text class="icon">❤️</text>
+      <text class="title">特别鸣谢</text>
+    </view>
+    <view class="content-text">
+      <view class="view">感谢朋友对我熬夜写代码的包容与支持；</view>
+      <view class="view">感谢坦桑尼亚**商会提供的支持；</view>
+      <view class="view">感谢达累斯萨拉姆大学孔子学院提供的支持；</view>
+      <view class="view"><b>最感谢</b>的是正在使用这款软件的<b>您</b>，您的每一次反馈都是我更新的动力！</view>
+    </view>
+    <view class="footer-sign">
+      —— 2025.12 于 坦桑 达累斯萨拉姆
+    </view>
+  </view>
+
+  <view class="page-footer">
+    <button class="contact-btn" open-type="contact">联系开发者</button>
+  </view>
+</view>

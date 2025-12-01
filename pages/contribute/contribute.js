@@ -25,17 +25,9 @@ Page({
     
     // 计时器引用
     timer: null,
-    recorderName:''
   },
 
   onLoad() {
-    if (wx.getStorageInfoSync().keys.includes("recorderName")){
-      let  name = wx.getStorageSync("recorderName")
-      console.log("name",name)
-      this.setData({
-        recorderName:name
-      })
-    }
     http('/web/getctitem/','GET').then(res=>{
         console.log(res)
         this.setData({
@@ -51,11 +43,6 @@ Page({
   },
 
   onShow() {
-    if (wx.getStorageInfoSync().keys.includes("recorderName")){
-      this.setData({
-        recorderName:wx.getStorageSync("recorderName")
-      })
-    }
     // 同步全局样式设置
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
@@ -198,21 +185,15 @@ Page({
     if (!swahili || !english || !chinese ) {
       return wx.showToast({ title: '请填写完整文本信息', icon: 'none' });
     }
-    if (!this.data.recorderName ) {
-      return wx.showToast({ title: 'Please input your name then administrator can distinguish', icon: 'none' });
-    }
-    wx.setStorageSync('recorderName', this.data.recorderName)
     if (!tempAudioPath) {
       return wx.showToast({ title: '请录制语音', icon: 'none' });
     }
-    console.log('recorderName',this.data.recorderName)
     let formData = {
       xieyin:this.data.homonym,
       chinese:this.data.chinese,
       english:this.data.english,
       swahili:this.data.swahili,
       status:'1',
-      recorderName:wx.getStorageSync('recorderName'),
     }
 
     wx.showLoading({ title: '正在上传...', mask: true });

@@ -85,7 +85,7 @@
 }
 .btn-pill.orange { background: #FBE9E7; color: #D84315; }
 
-.icon-btn { font-size: 40rpx; padding: 10rpx; transition: transform 0.2s; }
+.icon-btn {font-size: var(--text-xs); padding: 10rpx; transition: transform 0.2s; }
 .icon-btn:active { transform: scale(0.8); }
 /* 收藏后的心形颜色 */
 .fav-active text { color: #FF5252; } 

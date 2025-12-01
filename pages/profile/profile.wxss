@@ -155,6 +155,7 @@
 .menu-icon.green { color: #43A047; background: #E8F5E9; }
 .menu-icon.red { color: #D84315; background: #FBE9E7; }
 .menu-icon.gray { color: #5D4037; background: #D7CCC8; }
+.menu-icon.orange { color: #E65100; background: #FFE0B2; } /* [新增] 橙色图标 */
 
 .status-text { font-size: var(--text-sm); color: var(--text-sub); margin-right: 10rpx; }
 .arrow { color: #D7CCC8; font-size: var(--text-sm); }

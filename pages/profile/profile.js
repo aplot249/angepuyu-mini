@@ -57,7 +57,9 @@ Page({
         }
       })
   },
-
+  navigateToAbout() {
+    wx.navigateTo({ url: '/pages/about/about' });
+  },
   // [新增] 退出登录
   handleLogout() {
     wx.showModal({
@@ -144,18 +146,23 @@ Page({
 
   submitFeedback() {
     const content = this.data.feedbackContent.trim();
+    console.log(content)
     if (!content) {
       return wx.showToast({ title: '请输入内容', icon: 'none' });
     }
     
     // 模拟提交
     wx.showLoading({ title: '提交中...' });
-    
-    setTimeout(() => {
-      wx.hideLoading();
-      this.setData({ showFeedbackModal: false });
+    http('/web/feedback/','post',{"content":content}).then(res=>{
+      console.log('res',res)
       wx.showToast({ title: '感谢您的反馈', icon: 'success' });
-    }, 1000);
+      this.setData({ showFeedbackModal: false });
+    })
+    // setTimeout(() => {
+    //   wx.hideLoading();
+    //   this.setData({ showFeedbackModal: false });
+    //   wx.showToast({ title: '感谢您的反馈', icon: 'success' });
+    // }, 1000);
   },
 
   // --- 其他功能 ---

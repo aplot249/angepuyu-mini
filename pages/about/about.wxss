@@ -1,0 +1,145 @@
+/* 顶部 Banner */
+.banner-area {
+  height: 360rpx;
+  position: relative;
+  margin: -30rpx -30rpx 40rpx -30rpx; /* 抵消 container padding */
+  border-bottom-left-radius: 40rpx;
+  border-bottom-right-radius: 40rpx;
+  overflow: hidden;
+  box-shadow: 0 10rpx 30rpx rgba(254, 201, 157, 0.4);
+}
+
+.banner-bg { width: 100%; height: 100%; position: absolute; }
+.banner-overlay {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  /* 暖色叠加层 */
+  background: linear-gradient(to bottom, rgba(254, 201, 157, 0.7), rgba(255, 138, 101, 0.9));
+  mix-blend-mode: multiply;
+}
+
+/* 夜间模式下 Banner 稍微暗一点 */
+.dark-mode .banner-overlay {
+  background: linear-gradient(to bottom, rgba(100, 50, 30, 0.8), rgba(60, 30, 20, 0.9));
+}
+
+.banner-content {
+  position: relative; z-index: 10;
+  height: 100%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: #fff;
+}
+
+.app-logo { 
+  font-size: 80rpx; 
+  margin-bottom: 20rpx; 
+  background: rgba(255,255,255,0.2); 
+  width: 120rpx; height: 120rpx; 
+  border-radius: 30rpx; 
+  display: flex; align-items: center; justify-content: center; 
+  backdrop-filter: blur(5px); 
+}
+
+/* [修改] 使用变量控制字体大小 */
+.banner-title { 
+  font-size: var(--text-2xl); /* 原 44rpx */
+  font-weight: 900; 
+  letter-spacing: 2rpx; 
+  margin-bottom: 10rpx; 
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.2); 
+  text-align: center;
+  padding: 0 20rpx;
+}
+.banner-subtitle { 
+  font-size: var(--text-xs); /* 原 24rpx */
+  opacity: 0.9; 
+  letter-spacing: 1rpx; 
+  font-family: monospace; 
+}
+
+/* 卡片样式复用与增强 */
+.section-card {
+  margin-bottom: 30rpx;
+  /* 默认亮色模式下的边框 */
+  border: 1rpx solid rgba(254, 201, 157, 0.2);
+}
+
+/* [新增] 夜间模式下卡片边框颜色调整 */
+.dark-mode .section-card {
+  border-color: rgba(255, 255, 255, 0.05);
+  background: var(--card-bg);
+}
+
+.section-header {
+  display: flex; align-items: center;
+  margin-bottom: 24rpx;
+  border-bottom: 2rpx dashed rgba(141, 110, 99, 0.1);
+  padding-bottom: 20rpx;
+}
+.dark-mode .section-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.icon { font-size: var(--text-xl); margin-right: 16rpx; } /* 原 40rpx */
+.title { font-size: var(--text-lg); font-weight: bold; color: var(--text-main); } /* 原 34rpx */
+
+.content-text {
+  font-size: var(--text-base); /* 原 28rpx */
+  color: var(--text-main);
+  line-height: 1.8;
+  opacity: 0.9;
+  text-align: justify;
+}
+.mt-20 { margin-top: 20rpx; }
+b { color: var(--secondary); font-weight: bold; margin: 0 4rpx; }
+
+/* 功能列表样式 */
+.sub-section { margin: 10rpx 0; }
+.sub-title {
+  display: inline-block;
+  font-size: var(--text-xs); /* 原 24rpx */
+  font-weight: bold;
+  padding: 6rpx 16rpx;
+  border-radius: 10rpx;
+  margin-bottom: 16rpx;
+}
+.badge-green { background: #E0F2F1; color: #00695C; }
+.badge-blue { background: #E3F2FD; color: #1565C0; }
+
+/* 夜间模式下 Badge 颜色微调 */
+.dark-mode .badge-green { background: #1B5E20; color: #E8F5E9; }
+.dark-mode .badge-blue { background: #0D47A1; color: #E3F2FD; }
+
+.feature-list { padding-left: 10rpx; }
+.feat-item {
+  font-size: var(--text-base); /* 原 28rpx */
+  color: var(--text-main);
+  margin-bottom: 12rpx;
+  display: flex; align-items: flex-start;
+}
+.dot { color: var(--secondary); margin-right: 12rpx; font-weight: bold; }
+
+.divider { height: 2rpx; background: rgba(0,0,0,0.05); margin: 30rpx 0; }
+.dark-mode .divider { background: rgba(255,255,255,0.1); }
+
+/* 底部签名 */
+.footer-sign {
+  margin-top: 30rpx;
+  text-align: right;
+  font-size: var(--text-xs); /* 原 24rpx */
+  color: var(--text-sub);
+  font-style: italic;
+}
+
+/* 底部按钮 */
+.page-footer { padding: 40rpx 0 60rpx; text-align: center; }
+.contact-btn {
+  background: var(--card-bg);
+  color: var(--secondary);
+  border: 2rpx solid var(--secondary);
+  border-radius: 40rpx;
+  font-size: var(--text-base); /* 原 30rpx */
+  font-weight: bold;
+  width: 60%;
+  box-shadow: 0 6rpx 16rpx rgba(255, 138, 101, 0.1);
+}

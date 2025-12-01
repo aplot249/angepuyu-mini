@@ -8,6 +8,7 @@
     "pages/purchase/purchase",
     "pages/contribute/contribute",
     "pages/share/share",
+    "pages/about/about",
     "pages/privacy/privacy"
   ],
   "window": {

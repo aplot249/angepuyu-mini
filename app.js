@@ -3,6 +3,7 @@ App({
     userInfo: {
       nickname: "Marafiki", //默认值
       points: 0,
+      isRecorder:false,
       hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享
       favorites: []
@@ -12,6 +13,36 @@ App({
   },
 
   onLaunch() {
+      // 如果代码发布新版本，小程序里自动提示更新
+      if (wx.canIUse('getUpdateManager')) {
+        const updateManager = wx.getUpdateManager();
+        updateManager.onCheckForUpdate(res => {
+          if (res.hasUpdate) {
+            updateManager.onUpdateReady(() => { // 新包下载完成
+              wx.showModal({
+                title: '更新提示',
+                content: '新版本已就绪，点击重启体验',
+                showCancel: false,
+                success: res => res.confirm && updateManager.applyUpdate() // 强制重启应用新版
+              });
+            });
+            updateManager.onUpdateFailed(() => { // 下载失败
+              wx.showModal({
+                title: '更新失败',
+                content: '请删除小程序后重新搜索打开',
+                showCancel: false
+              });
+            });
+          }
+        });
+      } else { // 兼容低版本基础库（<1.9.90）
+        wx.showModal({
+          title: '提示',
+          content: '当前微信版本过低，请升级后重试',
+          success: res => res.confirm && wx.updateWeChatApp() // 跳转微信更新
+        });
+      }
+      
     // 读取本地存储
     const user = wx.getStorageSync('ts_user');
     const font = wx.getStorageSync('ts_font');
