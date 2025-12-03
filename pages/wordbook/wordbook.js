@@ -7,47 +7,47 @@ Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
-
     currentTab: 0, // 0: Words, 1: Phrases
     searchText: '',
-
     // 数据列表
     wordList: [],
     phraseList: [],
-
     // 分页状态 (用于模拟无限加载)
     pageWord: 1,
     pagePhrase: 1,
     hasMoreWords: true,
     hasMorePhrases: true,
     pageSize: 6,
-
     wordsCount: '',
     phraseCount: '',
     wordsTotalPageNum: '',
     phraseTotalPageNum: '',
-
     // 选中的ID集合 (跨Tab共享)
     checkedIds: []
   },
-  onLoad(){
-    this.initData()
-  },
+  // onLoad(){
+  //   this.initData()
+  // },
+
   onShow() {
     this.setData({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-  },
 
-  initData(){
-    let that = this
-    let myFav = JSON.stringify(app.globalData.userInfo.favorites)
+    this.setData({
+      wordList: [],
+      phraseList: [],
+      pageWord: 1,
+      pagePhrase: 1,
+    })
+    let myFav = JSON.stringify(app.globalData.userInfo.favorites) || []
     http(`/web/ctiemByFav/?page=1`, 'POST', {
       "q": myFav,
       'wp': '0'
-    }).then(res => {
+    }).then(
+      res => {
         console.log(res)
         let list = res.results.map(item => ({
           ...item,
@@ -111,7 +111,10 @@ Page({
                               icon: 'none'
                             });
                             wx.setStorageSync('token', res.token)
-                            that.onLoad()
+                            wx.reLaunch({
+                              url: '/pages/wordbook/wordbook',
+                            })
+                            // that.onLoad()
                           })
                         }
                       })
@@ -125,8 +128,99 @@ Page({
     })
   },
 
+  // initData(){
+  //   // console.log('fffffffff')
+  //   let that = this
+  //   let myFav = JSON.stringify(app.globalData.userInfo.favorites)
+  //   http(`/web/ctiemByFav/?page=1`, 'POST', {
+  //     "q": myFav,
+  //     'wp': '0'
+  //   }).then(res => {
+  //       console.log(res)
+  //       let list = res.results.map(item => ({
+  //         ...item,
+  //         checked: false
+  //       }));
+  //       this.setData({
+  //         wordList: [...this.data.wordList, ...list],
+  //         pageSize: res.page_size,
+  //         wordsCount: res.count,
+  //         wordsTotalPageNum: res.totalPageNum,
+  //       })
+  //       http(`/web/ctiemByFav/?page=1`, 'POST', {
+  //         "q": myFav,
+  //         'wp': '1'
+  //       }).then(res => {
+  //         let list = res.results.map(item => ({
+  //           ...item,
+  //           checked: false
+  //         }));
+  //         this.setData({
+  //           phraseList: [...this.data.phraseList, ...list],
+  //           pageSize: res.page_size,
+  //           phraseCount: res.count,
+  //           phraseTotalPageNum: res.totalPageNum,
+  //         })
+  //       })
+  //     },
+  //     err => {
+  //       console.log('err', err.detail)
+  //       if (err.detail == 'JWT Token已过期！' || err.detail == '身份认证信息未提供。') {
+  //         wx.showModal({
+  //             title: '请先登录，才能进行后续操作',
+  //             confirmText: "确认登录",
+  //             success: (res) => {
+  //               if (res.confirm) {
+  //                 wx.getUserProfile({
+  //                   desc: '需微信授权登录',
+  //                   success: (res) => {
+  //                     wx.showToast({
+  //                       title: '正在登录...',
+  //                       icon: "none"
+  //                     })
+  //                     wx.login({
+  //                       timeout: 8000,
+  //                       success: r => {
+  //                         console.log(r.code)
+  //                         http('/user/openid/', 'post', {
+  //                           code: r.code,
+  //                           gender: res.userInfo.gender,
+  //                           wxnickname: res.userInfo.nickName,
+  //                         }).then(res => {
+  //                           console.log('登录信息：', res)
+  //                           const newInfo = {
+  //                             ...res.user,
+  //                             isLoggedIn: true,
+  //                           };
+  //                           app.globalData.userInfo = newInfo;
+  //                           app.saveData();
+  //                           wx.showToast({
+  //                             title: '登录成功',
+  //                             icon: 'none'
+  //                           });
+  //                           wx.setStorageSync('token', res.token)
+  //                           wx.reLaunch({
+  //                             url: '/pages/wordbook/wordbook',
+  //                           })
+  //                           // that.onLoad()
+  //                         })
+  //                       }
+  //                     })
+  //                   }
+  //                 })
+  //               }
+  //             }
+  //           }
+  //         )
+  //       }
+  //   })
+  // },
+
+
   // 加载数据核心逻辑
+  
   loadFavorites(type) {
+    let that = this
     if (type == 'word') {
       let myFav = JSON.stringify(app.globalData.userInfo.favorites)
       http(`/web/ctiemByFav/?page=${this.data.pageWord}&search=${this.data.searchText}`, 'POST', {

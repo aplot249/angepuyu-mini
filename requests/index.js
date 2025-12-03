@@ -11,7 +11,7 @@ function request(url, method = 'POST', data = {}) {
   }
   var URL = baseHOST + url
 
-  wx.showLoading()
+  // wx.showLoading()
   return new Promise((resolve, reject) => {
     wx.request({
       url: URL,
@@ -20,13 +20,13 @@ function request(url, method = 'POST', data = {}) {
       data: data,
       timeout: '8000',
       success: res => {
-        wx.hideLoading()
+        // wx.hideLoading()
         if (res.statusCode == 403) {
           reject(res.data)
           wx.clearStorageSync()
-          wx.reLaunch({
-            url: '/pages/profile/profile',
-          })
+          // wx.reLaunch({
+          //   url: '/pages/profile/profile',
+          // })
         }
         if (res.statusCode == 429) {
           reject(res.data)
@@ -35,7 +35,7 @@ function request(url, method = 'POST', data = {}) {
         resolve(res.data)
       }
     },err=>{
-        wx.hideLoading()
+        // wx.hideLoading()
         reject(err.data)
     })
   })
@@ -46,7 +46,7 @@ function fileupload(url,filePath,name,formData={}) {
     'Authorization': wx.getStorageSync('token') ? 'JWT ' + wx.getStorageSync('token') : {}
   }
   var URL = baseHOST + url
-  wx.showLoading()
+  // wx.showLoading()
   return new Promise((resolve, reject) => {
     wx.uploadFile({
       url: URL,
@@ -56,7 +56,7 @@ function fileupload(url,filePath,name,formData={}) {
       formData: formData,
       timeout: '5000',
       success: res => {
-        wx.hideLoading()
+        // wx.hideLoading()
         // token过期提跳转
         if (res.statusCode == 403) {
           wx.showToast({

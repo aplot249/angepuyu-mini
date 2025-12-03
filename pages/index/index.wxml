@@ -35,7 +35,7 @@
     <block wx:for="{{dailyWords}}" wx:key="id">
       <view class="card word-card" bindtap="playAudio" data-item="{{item}}" data-type="word">
         <text class="swahili">{{item.swahili}}</text>
-        <view class="homonym">🎵 {{item.homonym}}</view>
+        <view class="homonym">🔊 {{item.homonym}}</view>
         <view class="chinese">{{item.chinese}}</view>
       </view>
     </block>

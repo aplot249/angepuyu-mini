@@ -57,9 +57,11 @@ Page({
         }
       })
   },
+
   navigateToAbout() {
     wx.navigateTo({ url: '/pages/about/about' });
   },
+
   // [新增] 退出登录
   handleLogout() {
     wx.showModal({
@@ -76,7 +78,7 @@ Page({
             // nickname: "Marafiki", 
             // avatarUrl: "" 
           };
-          
+          wx.setStorageSync('token', '')
           this.setData({ userInfo: newInfo });
           app.globalData.userInfo = newInfo;
           app.saveData();
@@ -145,6 +147,9 @@ Page({
   },
 
   submitFeedback() {
+    if (!this.data.userInfo.isLoggedIn) {
+      return wx.showToast({ title: '请先登录', icon: 'none' });
+    }
     const content = this.data.feedbackContent.trim();
     console.log(content)
     if (!content) {
@@ -232,10 +237,16 @@ Page({
   },
 
   goPurchase() {
+    if (!this.data.userInfo.isLoggedIn) {
+      return wx.showToast({ title: '请先登录', icon: 'none' });
+    }
     wx.navigateTo({ url: '/pages/purchase/purchase' });
   },
 
   navigateToContribute() {
+    if (!this.data.userInfo.isLoggedIn) {
+      return wx.showToast({ title: '请先登录', icon: 'none' });
+    }
     wx.navigateTo({ url: '/pages/contribute/contribute' });
   },
   

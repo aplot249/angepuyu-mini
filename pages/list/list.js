@@ -30,7 +30,7 @@ Page({
       });
       wx.setNavigationBarTitle({ title: options.subname });
       http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}&page=1&search=${this.data.keyword}`,'GET').then(res=>{
-        let favIds = app.globalData.userInfo.favorites  // 'favorites');
+        let favIds = app.globalData.userInfo.favorites || []  // 'favorites');
         let list = res.results.map(item => ({
           ...item,
           checked: favIds.includes(item.id)
@@ -44,7 +44,7 @@ Page({
         })
         http(`/web/ctiemBySub/?subid=${options.subid}&wp=1&page=1&search=${this.data.keyword}`,'GET').then(res=>{
           console.log("res11",res)
-          let favIds = app.globalData.userInfo.favorites  // 'favorites');
+          let favIds = app.globalData.userInfo.favorites || [] // 'favorites');
           let list = res.results.map(item => ({
             ...item,
             checked: favIds.includes(item.id)
@@ -192,16 +192,16 @@ Page({
               phraseList:this.data.phraseList
             })
           }
-
       })
     }else{ //新建收藏
+      // 在这里判断有没有登录，没有登录的话就要登录。登录后再执行新建操作。
+
       http('/web/favourite/','POST',{"ctitem":id}).then(res=>{
-        let favIds = app.globalData.userInfo.favorites  // 'favorites');
+        let favIds = app.globalData.userInfo.favorites || [] // 'favorites');
         favIds.push(id)
         console.log('favIDS',favIds)
         app.globalData.userInfo.favorites = favIds
         app.saveData()
-
         if(this.data.currentTab == 0){
           this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['checked'] = true
           this.setData({
@@ -213,7 +213,56 @@ Page({
             phraseList:this.data.phraseList
           })
         }
-      })
+      },
+      err=>{
+        console.log('err', err.detail)
+        if (err.detail == 'JWT Token已过期！' || err.detail == '身份认证信息未提供。') {
+          wx.showModal({
+              title: '请先登录，才能进行后续操作',
+              confirmText: "确认登录",
+              success: (res) => {
+                if (res.confirm) {
+                  wx.getUserProfile({
+                    desc: '需微信授权登录',
+                    success: (res) => {
+                      wx.showToast({
+                        title: '正在登录...',
+                        icon: "none"
+                      })
+                      wx.login({
+                        timeout: 8000,
+                        success: r => {
+                          console.log(r.code)
+                          http('/user/openid/', 'post', {
+                            code: r.code,
+                            gender: res.userInfo.gender,
+                            wxnickname: res.userInfo.nickName,
+                          }).then(res => {
+                            console.log('登录信息：', res)
+                            const newInfo = {
+                              ...res.user,
+                              isLoggedIn: true,
+                            };
+                            app.globalData.userInfo = newInfo;
+                            app.saveData();
+                            wx.showToast({
+                              title: '登录成功',
+                              icon: 'none'
+                            });
+                            wx.setStorageSync('token', res.token)
+                            that.onLoad()
+                          })
+                        }
+                      })
+                    }
+                  })
+                }
+              }
+            }
+          )
+        }
+      }
+      )
       
     }
     let favs = app.globalData.userInfo.favorites || [];

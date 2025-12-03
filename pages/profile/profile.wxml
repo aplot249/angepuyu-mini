@@ -97,7 +97,7 @@
     <view class="menu-item" bindtap="navigateToAbout">
       <view class="menu-left">
         <view class="menu-icon orange">👨‍💻</view>
-        <text>关于开发者</text>
+        <text>关于软件</text>
       </view>
       <text class="arrow">></text>
     </view>
@@ -120,7 +120,7 @@
     </view>
   </view>
   
-  <view class="footer">Version 1.3.1 Feedback Added</view>
+  <view class="footer">Version 1.0.0</view>
 
   <!-- [新增] 意见反馈弹窗 -->
   <view class="modal-mask" wx:if="{{showFeedbackModal}}" bindtap="hideFeedback">

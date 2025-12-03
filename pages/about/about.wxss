@@ -90,7 +90,8 @@
   opacity: 0.9;
   text-align: justify;
 }
-.mt-20 { margin-top: 20rpx; }
+.mt-20 { margin-top: 20rpx;}
+.tid{text-indent:2em;}
 b { color: var(--secondary); font-weight: bold; margin: 0 4rpx; }
 
 /* 功能列表样式 */
