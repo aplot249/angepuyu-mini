@@ -16,17 +16,28 @@
   align-items: center;
   margin-bottom: 20rpx;
   box-shadow: 0 4rpx 20rpx rgba(141, 110, 99, 0.05);
-  border: 1rpx solid rgba(254, 201, 157, 0.3); /* 微弱的蜜桃色边框 */
+  border: 2rpx solid rgba(254, 201, 157, 0.3);
 }
 .search-icon { margin-right: 10rpx; color: var(--text-sub); }
 .search-input { font-size: var(--text-sm); width: 100%; color: var(--text-main); }
 
+.study-time-bar {
+  display: flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  color: var(--text-sub);
+  margin-bottom: 20rpx;
+  padding-left: 10rpx;
+}
+.time-icon { margin-right: 8rpx; }
+.time-val { font-weight: bold; color: var(--secondary); margin-left: 8rpx; }
+
 /* Tab 样式 */
 .segment-tab {
   display: flex;
-  background: #EFEBE9; /* 暖灰底 */
+  background: #EFEBE9;
   border-radius: 20rpx;
-  padding: 6rpx;
+  padding: 8rpx;
 }
 .dark-mode .segment-tab { background: #3E2723; }
 
@@ -42,83 +53,228 @@
 }
 .segment-item.active {
   background: var(--card-bg);
-  color: var(--secondary); /* 激活色改为珊瑚色 */
+  color: var(--secondary);
   box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
 }
-/* 短语Tab激活时用稍深一点的颜色 */
 .segment-item.active:nth-child(2) { color: #BF360C; }
-
 
 /* Swiper 内容区 */
 .content-swiper { flex: 1; height: 0; }
 .scroll-area { height: 100%; padding: 20rpx 30rpx; box-sizing: border-box; }
 
-/* 卡片样式 */
+/* --- 卡片通用容器 --- */
 .item-card {
   display: flex;
   align-items: flex-start; 
-  border: 1rpx solid rgba(254, 201, 157, 0.2); /* 极淡的蜜桃色边框 */
+  background: var(--card-bg);
+  border-radius: 30rpx;
   padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 8rpx 24rpx rgba(141, 110, 99, 0.08);
+  border: 1rpx solid rgba(254, 201, 157, 0.2);
 }
-.phrase-style { border-left: 8rpx solid var(--secondary); }
 
 /* 复选框区域 */
 .checkbox-area { 
   padding: 0 20rpx 0 0; 
   display: flex; 
   align-items: center;
-  height: 100%;
+  height: auto;
+  align-self: stretch; /* 让复选框区域高度撑满，方便垂直居中 */
+  justify-content: center;
 }
 .custom-checkbox {
   width: 44rpx;
   height: 44rpx;
   border-radius: 50%;
-  border: 4rpx solid #D7CCC8; /* 暖灰色边框 */
+  border: 4rpx solid #D7CCC8;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
 }
 .custom-checkbox.checked {
-  background: var(--primary); /* 蜜桃色 */
+  background: var(--primary);
   border-color: var(--primary);
 }
-.phrase-style .custom-checkbox.checked {
+.phrase-layout .custom-checkbox.checked {
   background: var(--secondary);
   border-color: var(--secondary);
 }
 .check-mark { color: white; font-size: 28rpx; font-weight: bold; }
 
-/* 内容区域 */
-.content-area { flex: 1; }
-.row-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10rpx; }
-.swahili { font-size: var(--text-lg); font-weight: 800; color: var(--text-main); }
+/* 右侧内容容器 */
+.card-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Word Layout 样式 (复用 List) --- */
+.word-layout .card-main {
+  display: flex;
+  margin-bottom: 20rpx;
+}
+
+.word-img {
+  width: 160rpx; /* 稍微调小一点适配左侧有checkbox的情况 */
+  height: 160rpx;
+  border-radius: 24rpx;
+  margin-left: 20rpx;
+  background-color: #FFF3E0;
+  border: 2rpx solid rgba(254, 201, 157, 0.3);
+  flex-shrink: 0;
+}
+
+.info-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.row-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.sw-text {
+  font-size: var(--text-xl);
+  font-weight: 900;
+  color: var(--text-main);
+  line-height: 1.2;
+}
 
 .play-btn { 
   width: 64rpx; 
   height: 64rpx; 
-  background: #FFF3E0; /* 淡橙色背景 */
+  background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
   border-radius: 50%; 
   display: flex; 
   align-items: center; 
   justify-content: center; 
   font-size: 32rpx;
-  color: #FF8A65; /* 珊瑚色图标 */
+  color: #FF7043;
   flex-shrink: 0; 
+  margin-left: 10rpx;
+  box-shadow: 0 4rpx 10rpx rgba(255, 112, 67, 0.2);
 }
-.play-btn.orange { background: #FBE9E7; color: #D84315; }
+.play-btn:active { transform: scale(0.9); }
 
-.homonym-tag {
-  display: inline-block;
-  background: #EFEBE9;
-  padding: 4rpx 12rpx;
-  border-radius: 8rpx;
-  font-size: var(--text-xs);
-  color: var(--text-sub);
-  margin-bottom: 12rpx;
-  font-family: monospace;
+.homonym-box {
+  display: flex; align-items: center;
+  margin: 10rpx 0;
+  background: #FFF8F3;
+  padding: 6rpx 12rpx;
+  border-radius: 12rpx;
+  align-self: flex-start;
 }
-.chinese { font-size: var(--text-sm); font-weight: bold; color: var(--text-main); opacity: 0.9; }
+.tag {
+  font-size: 20rpx;
+  background: #FFCCBC;
+  color: #BF360C;
+  padding: 2rpx 8rpx;
+  border-radius: 6rpx;
+  margin-right: 10rpx;
+  font-weight: bold;
+}
+.hm-text {
+  font-size: var(--text-base);
+  color: #5D4037;
+  font-weight: bold;
+}
+
+.trans-box { display: flex; flex-direction: column; }
+.cn-text {
+  font-size: var(--text-lg);
+  font-weight: 900;
+  color: var(--secondary);
+  margin-bottom: 4rpx;
+}
+.en-text {
+  font-size: var(--text-sm);
+  color: var(--text-sub);
+  font-style: italic;
+}
+
+/* --- Phrase Layout 样式 --- */
+.phrase-layout { border-left: 8rpx solid var(--secondary); }
+
+.phrase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20rpx;
+}
+
+.sw-sentence {
+  font-size: var(--text-xl);
+  font-weight: 900;
+  color: var(--text-main);
+  line-height: 1.4;
+  width: 85%;
+  word-wrap: break-word;
+}
+
+.play-btn.large { width: 70rpx; height: 70rpx; font-size: 36rpx; }
+
+.homonym-row {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 20rpx;
+  background: #FFF8F3;
+  padding: 10rpx 20rpx;
+  border-radius: 16rpx;
+}
+.hm-sentence {
+  font-size: var(--text-base);
+  color: #5D4037;
+  font-weight: bold;
+  margin-left: 14rpx;
+}
+
+.meaning-col {
+  display: flex; flex-direction: column;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx dashed rgba(141, 110, 99, 0.1);
+  margin-bottom: 20rpx;
+}
+.cn-sentence {
+  font-size: var(--text-lg);
+  font-weight: bold;
+  color: var(--secondary);
+  margin-bottom: 8rpx;
+}
+.en-sentence {
+  font-size: var(--text-sm);
+  color: var(--text-sub);
+}
+
+/* --- 底部操作栏 --- */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 10rpx;
+}
+
+.action-fav {
+  display: flex;
+  align-items: center;
+  background: #FBE9E7;
+  padding: 10rpx 24rpx;
+  border-radius: 30rpx;
+}
+.fav-icon { font-size: 32rpx; margin-right: 10rpx; }
+.fav-label { font-size: var(--text-sm); font-weight: bold; color: #D84315; }
+
+.action-fix { padding: 10rpx; }
+.action-fix text {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  text-decoration: underline;
+}
 
 /* 空状态 */
 .empty-state {
@@ -132,7 +288,7 @@
 
 .loading-tip { text-align: center; padding: 30rpx; color: var(--text-sub); font-size: var(--text-xs); }
 
-/* 浮动按钮组 - 暖色调改造 */
+/* 浮动按钮组 */
 .fab-group {
   position: fixed;
   bottom: 60rpx;
@@ -155,12 +311,7 @@
 .fab-icon { font-size: 40rpx; }
 .btn-hover { transform: scale(0.9); opacity: 0.9; }
 
-/* 颜色变体：改为暖色系搭配 */
-/* 导出：改为暖黄色 */
 .fab-btn.blue { background: linear-gradient(135deg, #FFD54F, #FFB300); color: white; } 
-/* 播放：改为蜜桃色 */
 .fab-btn.teal { background: linear-gradient(135deg, #FFCCBC, #FF8A65); color: white; } 
-/* 全选：改为暖粉色 */
 .fab-btn.purple { background: linear-gradient(135deg, #F48FB1, #EC407A); color: white; }
-/* 全不选：暖灰色 */
 .fab-btn.gray { background: linear-gradient(135deg, #BCAAA4, #8D6E63); color: white; }

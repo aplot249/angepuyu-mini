@@ -109,6 +109,11 @@ Page({
           }, err => {
             console.error('请求后端接口失败', err);
           })
+        }else{
+          wx.showToast({
+            title: '已取消支付',
+            icon:'none'
+          })
         }
       }
     });

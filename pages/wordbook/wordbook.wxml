@@ -1,12 +1,18 @@
 <view class="container list-page font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
   
-  <!-- 顶部固定区 (搜索 + Tab) -->
+  <!-- 顶部固定区 (搜索 + Tab + 学习时长) -->
   <view class="fixed-header">
     <view class="search-bar">
       <view class="search-icon">🔍</view>
       <input class="search-input" placeholder="搜索我的收藏..." bindinput="onSearchInput" value="{{searchText}}" />
     </view>
     
+    <view class="study-time-bar">
+       <text class="time-icon">⏱</text>
+       <text>累计复习时长: </text>
+       <text class="time-val">{{studyTimeDisplay}}</text>
+    </view>
+
     <view class="segment-tab">
       <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词本</view>
       <view class="segment-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-idx="1">短语集</view>
@@ -19,40 +25,69 @@
     <!-- 1. 单词列表 -->
     <swiper-item>
       <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMoreWords">
-        <!-- 空状态 -->
         <view wx:if="{{wordList.length === 0}}" class="empty-state">
           <view class="empty-icon">📂</view>
           <text>还没有收藏单词哦~</text>
         </view>
 
         <block wx:for="{{wordList}}" wx:key="id">
-          <view class="card item-card" bindtap="toggleCheck" data-id="{{item.id}}" data-type="word">
-            <!-- 复选框 -->
+          <!-- 绑定点击卡片切换选中状态 -->
+          <view class="card item-card word-layout" bindtap="toggleCheck" data-id="{{item.id}}" data-type="word">
+            
+            <!-- 复选框区域 (保持在最左侧) -->
             <view class="checkbox-area">
               <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
                 <view wx:if="{{item.checked}}" class="check-mark">✓</view>
               </view>
             </view>
             
-            <!-- 内容 (复用 List 样式但简化) -->
-            <view class="content-area">
-              <view class="row-top">
-                <text class="swahili">{{item.swahili}}</text>
-                <!-- 阻止冒泡，避免点击播放时触发勾选 -->
-                <view class="play-btn" catchtap="playAudio" data-item="{{item}}">🔊</view>
+            <!-- 卡片内容主体 (Flex 1 撑满右侧) -->
+            <view class="card-content-wrapper">
+              <view class="card-main">
+                <!-- 左侧：核心信息 -->
+                <view class="info-col">
+                  <view class="row-flex">
+                    <text class="sw-text">{{item.swahili}}</text>
+                    <!-- 播放按钮 (阻止冒泡，避免触发勾选) -->
+                    <view class="play-btn" catchtap="playAudio" data-item="{{item}}">🔊</view>
+                  </view>
+                  
+                  <view class="homonym-box">
+                    <text class="tag">谐音</text>
+                    <text class="hm-text">{{item.homonym}}</text>
+                  </view>
+
+                  <view class="trans-box">
+                    <text class="cn-text">{{item.chinese}}</text>
+                    <text class="en-text">{{item.english || ''}}</text>
+                  </view>
+                </view>
+
+                <!-- 右侧：场景图片 (非必须，有图才显示) -->
+                <image wx:if="{{item.image}}" class="word-img" src="{{item.image}}" mode="aspectFill" lazy-load></image>
               </view>
-              <view class="homonym-tag">/ {{item.xieyin}} /</view>
-              <view class="chinese">{{item.chinese}}</view>
+
+              <!-- 底部操作栏 -->
+              <view class="card-footer">
+                <!-- 收藏按钮 (在单词本中默认是已收藏状态) -->
+                <view class="action-fav" catchtap="toggleFav" data-id="{{item.id}}"> <!-- 预留 toggleFav 逻辑 -->
+                  <text class="fav-icon active">❤️</text>
+                  <text class="fav-label active">已收藏</text>
+                </view>
+                
+                <view class="action-fix" catchtap="notImplemented">
+                  <text>纠错反馈</text>
+                </view>
+              </view>
             </view>
+
           </view>
         </block>
 
-        <!-- 加载提示 -->
         <view class="loading-tip" wx:if="{{wordList.length > 0}}">
            <text wx:if="{{hasMoreWords}}">加载中...</text>
            <text wx:else>--- 到底啦 ---</text>
         </view>
-        <!-- 底部垫高，防遮挡 -->
         <view style="height: 200rpx;"></view>
       </scroll-view>
     </swiper-item>
@@ -66,20 +101,45 @@
         </view>
 
         <block wx:for="{{phraseList}}" wx:key="id">
-          <view class="card item-card phrase-style" bindtap="toggleCheck" data-id="{{item.id}}" data-type="phrase">
+          <view class="card item-card phrase-layout" bindtap="toggleCheck" data-id="{{item.id}}" data-type="phrase">
+            
             <view class="checkbox-area">
               <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
                 <view wx:if="{{item.checked}}" class="check-mark">✓</view>
               </view>
             </view>
             
-            <view class="content-area">
-              <view class="row-top">
-                <text class="swahili">{{item.swahili}}</text>
-                <view class="play-btn orange" catchtap="playAudio" data-item="{{item}}">🔊</view>
+            <view class="card-content-wrapper">
+              <!-- 顶部：斯语长句 + 播放 -->
+              <view class="phrase-header">
+                <text class="sw-sentence">{{item.swahili}}</text>
+                <view class="play-btn large" catchtap="playAudio" data-item="{{item}}">🔊</view>
               </view>
-              <view class="chinese text-secondary">{{item.chinese}}</view>
+
+              <!-- 中部：谐音 -->
+              <view class="homonym-row">
+                <text class="tag">谐音</text>
+                <text class="hm-sentence">{{item.homonym}}</text>
+              </view>
+
+              <!-- 中部：释义 -->
+              <view class="meaning-col">
+                <text class="cn-sentence">{{item.chinese}}</text>
+                <text class="en-sentence">{{item.english || ''}}</text>
+              </view>
+
+              <!-- 底部操作栏 -->
+              <view class="card-footer phrase-footer">
+                <view class="action-fav">
+                  <text class="fav-icon active">❤️</text>
+                  <text class="fav-label active">已加入句库</text>
+                </view>
+                <view class="action-fix" catchtap="notImplemented">
+                  <text>纠错</text>
+                </view>
+              </view>
             </view>
+
           </view>
         </block>
 

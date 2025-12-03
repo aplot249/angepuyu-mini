@@ -1,4 +1,4 @@
 {
-  "navigationBarTitleText": "坦坦斯语Swahili",
-  "enablePullDownRefresh": false
+  "navigationStyle": "custom",
+  "navigationBarTextStyle": "black"
 }

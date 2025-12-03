@@ -23,7 +23,9 @@ function request(url, method = 'POST', data = {}) {
         // wx.hideLoading()
         if (res.statusCode == 403) {
           reject(res.data)
-          wx.clearStorageSync()
+          // wx.clearStorageSync()
+          wx.removeStorageSync('ts_user')
+          wx.removeStorageSync('token')
           // wx.reLaunch({
           //   url: '/pages/profile/profile',
           // })

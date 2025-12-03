@@ -177,6 +177,10 @@ Page({
     console.log("op",op,id)
     if (op){ //已收藏，那就是取消收藏
       http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
+        wx.showToast({
+          title: '已取消收藏',
+          icon:'none'
+        })
           let favIds = app.globalData.userInfo.favorites  // 'favorites');
           favIds.splice(favIds.indexOf(id),1)
           app.globalData.userInfo.favorites = favIds
@@ -195,8 +199,11 @@ Page({
       })
     }else{ //新建收藏
       // 在这里判断有没有登录，没有登录的话就要登录。登录后再执行新建操作。
-
       http('/web/favourite/','POST',{"ctitem":id}).then(res=>{
+        wx.showToast({
+          title: '已收藏',
+          icon:'none'
+        })
         let favIds = app.globalData.userInfo.favorites || [] // 'favorites');
         favIds.push(id)
         console.log('favIDS',favIds)
