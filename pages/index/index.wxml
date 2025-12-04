@@ -1,84 +1,126 @@
-<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}" style="padding: 0;">
   
-  <!-- 首页 Banner -->
-  <view class="home-banner">
-    <view class="greeting">Jambo! 👋</view>
-    <view class="date-info">{{currentDate}}</view>
+  <!-- 顶部弧形背景 & 问候语区域 -->
+  <view class="header-arc-bg" style="padding-bottom: 200rpx;">
+    <view style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-content" style="height: {{navBarHeight}}px;">
+      <view class="greeting-container">
+        <view class="greeting-text">{{greeting}} 👋</view>
+        <!-- <view class="rate-badge">
+          <text class="rate-icon">💱</text>
+          <text>1 CNY ≈ {{exchangeRate}} TZS</text>
+        </view> -->
+      </view>
+    </view>
   </view>
 
-  <!-- 每日推荐卡片 -->
-  <view class="section-title">每日一句</view>
-  
-  <view class="daily-card-container">
-    <!-- 如果是单词类型 (一行两列布局，无图) -->
-    <block wx:if="{{dailyWord.type === 'word'}}">
-      <view class="card item-card word-layout daily-style">
-        <view class="card-main">
+  <!-- 页面主体内容 -->
+  <view class="main-content" style="margin-top: {{totalNavHeight + 20}}px;">
+    
+    <!-- 1. 主轮播图 -->
+    <swiper class="banner-swiper main" indicator-dots="true" autoplay="true" interval="5000" circular="true" indicator-active-color="#FEC99D" indicator-color="rgba(255, 255, 255, 0.8)">
+      <block wx:for="{{banners}}" wx:key="id">
+        <swiper-item bindtap="onBannerTap" data-id="{{item.id}}">
+          <image src="{{item.image_url}}" class="slide-image" mode="aspectFill"/>
+          <view class="banner-title-mask">
+            <text class="banner-title">{{item.name}}</text>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+
+    <!-- 2. 滚动喇叭 -->
+    <view class="notice-bar">
+      <view class="notice-icon">📢</view>
+      <swiper class="notice-swiper" vertical="true" autoplay="true" circular="true" interval="3000">
+        <block wx:for="{{announcements}}" wx:key="*this">
+          <swiper-item>
+            <view class="notice-item">{{item.content}}</view>
+          </swiper-item>
+        </block>
+      </swiper>
+    </view>
+
+    <!-- 3. 每日单词 (改为一行两列，无图) -->
+    <view class="section-header">
+      <view class="section-title">
+        <text>每日单词</text>
+        <text class="section-tag">Word</text>
+      </view>
+      <view class="refresh-btn" bindtap="refreshDaily">
+        <text>🔄 换一换</text>
+      </view>
+    </view>
+    
+    <!-- [修改] 使用 Grid 布局容器 -->
+    <view class="daily-word-grid">
+      <block wx:for="{{dailyWordList}}" wx:key="id">
+        <view class="card item-card word-card-mini">
           <view class="info-col">
             <view class="row-flex">
-              <text class="sw-text">{{dailyWord.swahili}}</text>
-              <view class="play-btn" bindtap="playDailyAudio">🔊</view>
+              <text class="sw-text">{{item.swahili}}</text>
+              <view class="play-btn mini" bindtap="playAudio" data-item="{{item}}">🔊</view>
             </view>
             
             <view class="homonym-box">
               <text class="tag">谐音</text>
-              <text class="hm-text">{{dailyWord.homonym}}</text>
+              <text class="hm-text">{{item.xieyin}}</text>
             </view>
 
             <view class="trans-box">
-              <text class="cn-text">{{dailyWord.chinese}}</text>
-              <text class="en-text">{{dailyWord.english}}</text>
+              <text class="cn-text">{{item.chinese}}</text>
+              <text class="en-text">{{item.english}}</text>
             </view>
           </view>
-          <!-- 已移除图片 -->
+          
+          <!-- <view class="card-footer-mini">
+            <view class="action-fav" bindtap="toggleDailyFav" data-type="word" data-index="{{index}}">
+              <text class="fav-icon {{item.isFav ? 'active' : ''}}">{{item.isFav ? '❤️' : '🤍'}}</text>
+            </view>
+            <view class="action-fix"><text>纠错</text></view>
+          </view> -->
         </view>
-        
-        <view class="card-footer">
-          <view class="action-fav" bindtap="toggleDailyFav">
-            <text class="fav-icon {{dailyWord.isFav ? 'active' : ''}}">{{dailyWord.isFav ? '❤️' : '🤍'}}</text>
-            <text class="fav-label {{dailyWord.isFav ? 'active' : ''}}">收藏</text>
-          </view>
-          <view class="action-fix"><text>纠错</text></view>
-        </view>
-      </view>
-    </block>
-
-    <!-- 如果是短语类型 (跨两列布局，保持通栏) -->
-    <block wx:else>
-      <view class="card item-card phrase-layout daily-style">
-        <view class="phrase-header">
-          <text class="sw-sentence">{{dailyWord.swahili}}</text>
-          <view class="play-btn large" bindtap="playDailyAudio">🔊</view>
-        </view>
-        <view class="homonym-row">
-          <text class="tag">谐音</text>
-          <text class="hm-sentence">{{dailyWord.homonym}}</text>
-        </view>
-        <view class="meaning-col">
-          <text class="cn-sentence">{{dailyWord.chinese}}</text>
-          <text class="en-sentence">{{dailyWord.english}}</text>
-        </view>
-        <view class="card-footer phrase-footer">
-          <view class="action-fav" bindtap="toggleDailyFav">
-            <text class="fav-icon {{dailyWord.isFav ? 'active' : ''}}">{{dailyWord.isFav ? '❤️' : '🤍'}}</text>
-            <text class="fav-label {{dailyWord.isFav ? 'active' : ''}}">收藏</text>
-          </view>
-          <view class="action-fix"><text>纠错</text></view>
-        </view>
-      </view>
-    </block>
-  </view>
-
-  <!-- 快捷入口 -->
-  <view class="quick-nav">
-    <view class="nav-item" bindtap="goCategory">
-      <view class="nav-icon orange">🗂</view>
-      <text>分类词库</text>
+      </block>
     </view>
-    <view class="nav-item" bindtap="goWordbook">
-      <view class="nav-icon purple">⭐</view>
-      <text>我的收藏</text>
-    </view>
-  </view>
 
+    <!-- 4. [中插] 广告轮播图 -->
+    <!-- <swiper class="banner-swiper middle" autoplay="true" interval="4000" circular="true" indicator-dots="false">
+      <block wx:for="{{middleBanners}}" wx:key="*this">
+        <swiper-item>
+          <image src="{{item}}" class="slide-image" mode="aspectFill"/>
+        </swiper-item>
+      </block>
+    </swiper> -->
+
+    <!-- 5. 每日短语 -->
+    <view class="section-header">
+      <view class="section-title">
+        <text>每日短语</text>
+        <text class="section-tag">Phrase</text>
+      </view>
+    </view>
+
+    <view class="card item-card phrase-layout" wx:for="{{dailyPhraseList}}" wx:key="*this">
+      <view class="phrase-header">
+        <text class="sw-sentence">{{item.swahili}}</text>
+        <view class="play-btn large" bindtap="playAudio" data-item="{{item}}">🔊</view>
+      </view>
+      <view class="homonym-row">
+        <text class="tag">谐音</text>
+        <text class="hm-sentence">{{item.xieyin}}</text>
+      </view>
+      <view class="meaning-col">
+        <text class="cn-text">{{item.chinese}}</text><view></view>
+        <text class="en-text">{{item.english}}</text>
+      </view>
+      <!-- <view class="card-footer">
+        <view class="action-fav" bindtap="toggleDailyFav" data-type="phrase">
+          <text class="fav-icon {{dailyPhrase.isFav ? 'active' : ''}}">{{dailyPhrase.isFav ? '❤️' : '🤍'}}</text>
+          <text class="fav-label">收藏</text>
+        </view>
+        <view class="action-fix"><text>纠错</text></view>
+      </view> -->
+    </view>
+
+  </view>
 </view>

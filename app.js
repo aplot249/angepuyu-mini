@@ -1,3 +1,5 @@
+const { http } = require("./requests/index");
+
 App({
   globalData: {
     userInfo: {
@@ -9,7 +11,8 @@ App({
       favorites: []
     },
     fontSizeLevel: 1, 
-    isDarkMode: false
+    isDarkMode: false,
+    ac: wx.createInnerAudioContext()
   },
 
   onLaunch() {
@@ -85,7 +88,86 @@ App({
   saveData() {
     wx.setStorageSync('ts_user', this.globalData.userInfo);
   },
-
+  playAudio(mp3,xiaohao){
+    if(!this.globalData.userInfo.isLoggedIn){
+      wx.showModal({
+        title: '请先登录，才能进行后续操作',
+        confirmText: "确认登录",
+        success: (res) => {
+          if (res.confirm) {
+            wx.getUserProfile({
+              desc: '需微信授权登录',
+              success: (res) => {
+                wx.showToast({
+                  title: '正在登录...',
+                  icon: "none"
+                })
+                wx.login({
+                  timeout: 8000,
+                  success: r => {
+                    console.log(r.code)
+                    http('/user/openid/', 'post', {
+                      code: r.code,
+                      gender: res.userInfo.gender,
+                      wxnickname: res.userInfo.nickName,
+                    }).then(res => {
+                      console.log('登录信息：', res)
+                      const newInfo = {
+                        ...res.user,
+                        isLoggedIn: true,
+                      };
+                      this.globalData.userInfo = newInfo;
+                      this.saveData();
+                      wx.showToast({
+                        title: '登录成功',
+                        icon: 'none'
+                      });
+                      wx.setStorageSync('token', res.token)
+                      // that.onLoad()
+                    })
+                  }
+                })
+              }
+            })
+          }
+        }
+      }
+      )
+    }else{
+    if (xiaohao > this.globalData.userInfo.points){
+      wx.showModal({
+        title: '积分不足，无法听音频',
+        content: '1、通过签到、分享赚取积分或者\n2：直接购买积分',
+        confirmText:'购买积分',
+        complete: (res) => {
+          if (res.cancel) {
+            wx.navigateTo({
+              url: '/pages/profile/profile',
+            })
+          }
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '/pages/purchase/purchase',
+            })
+          }
+        }
+      })
+    }else{
+      wx.showToast({
+        title: xiaohao != 0 ? '正在播放' : '暂无发音',
+        icon:'none'
+      })
+      let innerAudioContext = wx.createInnerAudioContext();
+      innerAudioContext.src = mp3
+      innerAudioContext.play()
+      this.globalData.userInfo.points -= xiaohao
+      http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
+        console.log('已同步')
+        // innerAudioContext.destroy()
+      })    
+    }   
+   } // 没登录的结尾
+  },
   changeFontSize() {
     let lvl = this.globalData.fontSizeLevel;
     lvl = (lvl + 1) % 4; 

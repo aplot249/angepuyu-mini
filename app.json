@@ -9,7 +9,8 @@
     "pages/contribute/contribute",
     "pages/share/share",
     "pages/about/about",
-    "pages/privacy/privacy"
+    "pages/privacy/privacy",
+    "pages/article/article"
   ],
   "window": {
     "backgroundTextStyle": "light",

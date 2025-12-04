@@ -2,7 +2,7 @@
   
   <!-- 顶部标语区域 -->
   <view class="banner-area">
-    <image class="banner-bg" src="/static/images/bg.png" mode="aspectFill"></image>
+    <image class="banner-bg" src="/static/images/bg.jpg" mode="aspectFill"></image>
     <view class="banner-overlay"></view>
     <view class="banner-content">
       <view class="app-logo">🇹🇿</view>

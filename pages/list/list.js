@@ -33,7 +33,7 @@ Page({
         let favIds = app.globalData.userInfo.favorites || []  // 'favorites');
         let list = res.results.map(item => ({
           ...item,
-          checked: favIds.includes(item.id)
+          isFav: favIds.includes(item.id)
         }));
         this.setData({
           wordsCount:res.count, //总数
@@ -47,7 +47,7 @@ Page({
           let favIds = app.globalData.userInfo.favorites || [] // 'favorites');
           let list = res.results.map(item => ({
             ...item,
-            checked: favIds.includes(item.id)
+            isFav: favIds.includes(item.id)
           }));
           this.setData({
             phraseCount:res.count, //总数
@@ -73,10 +73,10 @@ Page({
     if(this.data.currentTab == 0) {  //是单词
       http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}&page=${this.data.pageWord}&search=${this.data.keyword}`,'GET').then(res=>{
         console.log("res",res)
-        let favIds = app.globalData.userInfo.favorites  // 'favorites');
+        let favIds = app.globalData.userInfo.favorites || [] 
         let list = res.results.map(item => ({
           ...item,
-          checked: favIds.includes(item.id)
+          isFav: favIds.includes(item.id)
         }));
         this.setData({
           wordsCount:res.count, //总数
@@ -89,10 +89,10 @@ Page({
     }else{  //是短语
       http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}&page=${this.data.pagePhrase}&search=${this.data.keyword}`,'GET').then(res=>{
         console.log("res",res)
-        let favIds = app.globalData.userInfo.favorites  // 'favorites');
+        let favIds = app.globalData.userInfo.favorites  || [] 
         let list = res.results.map(item => ({
           ...item,
-          checked: favIds.includes(item.id)
+          isFav: favIds.includes(item.id)
         }));
         this.setData({
           phraseCount:res.count, //总数
@@ -161,19 +161,15 @@ Page({
   },
 
   playAudio(e) {
-    const type = e.currentTarget.dataset.type;
-    const cost = type === 'word' ? 1 : 3;
-    if (app.globalData.userInfo.points < cost) {
-      return wx.showToast({ title: '点数不足', icon: 'none' });
-    }
-    app.globalData.userInfo.points -= cost;
-    app.saveData();
-    wx.showToast({ title: '播放中...', icon: 'none' });
+    let item = e.currentTarget.dataset.item
+    let xiaohao = item.fayin ? item.xiaohao : 0
+    app.playAudio(item.fayin,xiaohao)
   },
 
   toggleFav(e) {
     const id = e.currentTarget.dataset.id;
-    let op =  e.currentTarget.dataset.check;
+    let op =  e.currentTarget.dataset.isfav;
+    console.log(e.currentTarget.dataset)
     console.log("op",op,id)
     if (op){ //已收藏，那就是取消收藏
       http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
@@ -186,12 +182,12 @@ Page({
           app.globalData.userInfo.favorites = favIds
           app.saveData()
           if(this.data.currentTab == 0){
-            this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['checked'] = false
+            this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['isFav'] = false
             this.setData({
               wordList:this.data.wordList
             })
           }else{
-            this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['checked'] = false
+            this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['isFav'] = false
             this.setData({
               phraseList:this.data.phraseList
             })
@@ -210,12 +206,12 @@ Page({
         app.globalData.userInfo.favorites = favIds
         app.saveData()
         if(this.data.currentTab == 0){
-          this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['checked'] = true
+          this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['isFav'] = true
           this.setData({
             wordList:this.data.wordList
           })
         }else{
-          this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['checked'] = true
+          this.data.phraseList[this.data.phraseList.findIndex(i=>i.id==id)]['isFav'] = true
           this.setData({
             phraseList:this.data.phraseList
           })

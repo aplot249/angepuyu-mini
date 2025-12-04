@@ -25,7 +25,7 @@
                 <view class="row-flex">
                   <text class="sw-text">{{item.swahili}}</text>
                   <!-- 语音播放按钮 (大) -->
-                  <view class="play-btn" catchtap="playAudio" data-type="word" data-item="{{item}}">🔊</view>
+                  <view class="play-btn" catchtap="playAudio" data-type="word" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">🔊</view>
                 </view>
                 
                 <view class="homonym-box">
@@ -46,9 +46,9 @@
             <!-- 底部操作栏 -->
             <view class="card-footer">
               <!-- 左下：收藏 (大) -->
-              <view class="action-fav" catchtap="toggleFav" data-id="{{item.id}}">
+              <view class="action-fav" catchtap="toggleFav" data-isFav="{{item.isFav}}" data-id="{{item.id}}">
                 <text class="fav-icon {{item.isFav ? 'active' : ''}}">{{item.isFav ? '❤️' : '🤍'}}</text>
-                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '已收藏' : '收藏'}}</text>
+                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '移出单词本' : '加入单词本'}}</text>
               </view>
               
               <!-- 右下：纠错 (小) -->
@@ -76,7 +76,7 @@
             <!-- 顶部：斯语长句 + 播放 -->
             <view class="phrase-header">
               <text class="sw-sentence">{{item.swahili}}</text>
-              <view class="play-btn large" catchtap="playAudio" data-type="phrase" data-item="{{item}}">🔊</view>
+              <view class="play-btn large" catchtap="playAudio" data-item="{{item}}">🔊</view>
             </view>
 
             <!-- 中部：谐音 -->
@@ -93,9 +93,9 @@
 
             <!-- 底部操作栏 -->
             <view class="card-footer phrase-footer">
-              <view class="action-fav" catchtap="toggleFav" data-id="{{item.id}}">
+              <view class="action-fav" catchtap="toggleFav" data-isFav="{{item.isFav}}" data-id="{{item.id}}">
                 <text class="fav-icon {{item.isFav ? 'active' : ''}}">{{item.isFav ? '❤️' : '🤍'}}</text>
-                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '加入句库' : '收藏短语'}}</text>
+                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '移出单词本' : '加入单词本'}}</text>
               </view>
               <view class="action-fix" catchtap="onCorrection" data-item="{{item}}">
                 <text>纠错</text>

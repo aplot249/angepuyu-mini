@@ -1,17 +1,51 @@
 const app = getApp();
-import { http } from '../../requests/index';
+import {http} from '../../requests/index'
 
 Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
+    
+    // 导航栏适配数据
+    statusBarHeight: 20,
+    navBarHeight: 44,
+    totalNavHeight: 64,
+    menuButtonHeight: 32, 
+
+    greeting: 'Jambo!',
+    exchangeRate: '385.5', 
+    
+    // 顶部主轮播图 [已更新]
     banners: [],
-    notices: [],
-    dailyWords: [],
-    dailyPhrases: []
+
+    // 中间小轮播图
+    // middleBanners: [
+    //   'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80',
+    //   'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&q=80'
+    // ],
+
+    announcements: [
+      '今日汇率更新：1人民币 ≈ 385.5坦先令',
+      '新版本增加了“短语纠错”功能，快来试试吧。',
+      '每日签到可领取积分奖励，别忘记哦。'
+    ],
+    dailyWordList:[],
+    dailyPhraseList:[]
+
   },
-  onLoad(){
-    if(this.data.dailyWords.length === 0) this.shuffleDaily();
+
+  onLoad() {
+    this.calcNavBar();
+    this.setGreeting();
+    http('/web/index/','get').then(res=>{
+      console.log(res)
+      this.setData({
+        banners:res.carousel,
+        announcements:res.noticeBar,
+        dailyWordList:res.tuijianWords,
+        dailyPhraseList:res.tuijianPhrases
+      })
+    })
   },
 
   onShow() {
@@ -20,41 +54,52 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-    // if(this.data.dailyWords.length === 0) this.shuffleDaily();
   },
 
-  shuffleDaily() {
-    http('/web/index/',"GET").then(res=>{
-      console.log(res)
-      this.setData({
-        notices:res.noticeBar,
-        banners:res.carousel,
-        dailyWords:res.tuijianWords,
-        dailyPhrases:res.tuijianPhrases,
-      })
-    wx.showToast({ title: '已更新', icon: 'none' });
-    })
+  calcNavBar() {
+    const sysInfo = wx.getSystemInfoSync();
+    const menuButton = wx.getMenuButtonBoundingClientRect();
+    const statusBarHeight = sysInfo.statusBarHeight;
+    const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
+    const totalNavHeight = statusBarHeight + navBarHeight;
 
-  //   // 随机抽取4个单词
-  //   const shuffledWords = [...WORD_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
-  //   // 随机抽取4个短语
-  //   const shuffledPhrases = [...PHRASE_POOL].sort(() => 0.5 - Math.random()).slice(0, 4);
-  //   this.setData({ 
-  //     dailyWords: shuffledWords,
-  //     dailyPhrases: shuffledPhrases
-  //   });
+    this.setData({
+      statusBarHeight,
+      navBarHeight,
+      totalNavHeight,
+      menuButtonHeight: menuButton.height
+    });
+  },
 
+  setGreeting() {
+    const hour = new Date().getHours();
+    let text = 'Jambo!';
+    if (hour >= 5 && hour < 12) text = 'Habari za asubuhi!'; 
+    else if (hour >= 12 && hour < 18) text = 'Habari za mchana!'; 
+    else text = 'Habari za jioni!'; 
+    this.setData({ greeting: text });
+  },
+
+  // [修改] 轮播图点击跳转
+  onBannerTap(e) {
+    const id = e.currentTarget.dataset.id;
+    if (id) {
+      wx.navigateTo({
+        url: `/pages/article/article?id=${id}`
+      });
+    }
   },
 
   playAudio(e) {
-    const type = e.currentTarget.dataset.type;
-    const cost = type === 'word' ? 1 : 3;
-    if (app.globalData.userInfo.points < cost) {
-      wx.showToast({ title: '点数不足', icon: 'none' });
-      return;
-    }
-    app.globalData.userInfo.points -= cost;
-    app.saveData();
-    wx.showToast({ title: `播放中 -${cost}点`, icon: 'none' });
+    let item = e.currentTarget.dataset.item
+    let xiaohao = item.fayin ? item.xiaohao : 0
+    app.playAudio(item.fayin,xiaohao)
+  },
+
+  refreshDaily() {
+    this.onLoad()
+  },
+  onUnload(){
+    // this.innerAudioContext.destroy()
   }
 })

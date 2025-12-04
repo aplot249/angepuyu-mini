@@ -9,7 +9,7 @@
     
     <view class="study-time-bar">
        <text class="time-icon">⏱</text>
-       <text>累计复习时长: </text>
+       <text>累计学习时长: </text>
        <text class="time-val">{{studyTimeDisplay}}</text>
     </view>
 
@@ -32,7 +32,7 @@
 
         <block wx:for="{{wordList}}" wx:key="id">
           <!-- 绑定点击卡片切换选中状态 -->
-          <view class="card item-card word-layout" bindtap="toggleCheck" data-id="{{item.id}}" data-type="word">
+          <view class="card item-card word-layout" bindtap="toggleCheck"  data-id="{{item.id}}" data-type="word">
             
             <!-- 复选框区域 (保持在最左侧) -->
             <view class="checkbox-area">
@@ -54,7 +54,7 @@
                   
                   <view class="homonym-box">
                     <text class="tag">谐音</text>
-                    <text class="hm-text">{{item.homonym}}</text>
+                    <text class="hm-text">{{item.xieyin}}</text>
                   </view>
 
                   <view class="trans-box">
@@ -64,19 +64,18 @@
                 </view>
 
                 <!-- 右侧：场景图片 (非必须，有图才显示) -->
-                <image wx:if="{{item.image}}" class="word-img" src="{{item.image}}" mode="aspectFill" lazy-load></image>
+                <image wx:if="{{item.portrait}}" class="word-img" src="{{item.portrait}}" mode="aspectFill" lazy-load></image>
               </view>
 
               <!-- 底部操作栏 -->
               <view class="card-footer">
                 <!-- 收藏按钮 (在单词本中默认是已收藏状态) -->
-                <view class="action-fav" catchtap="toggleFav" data-id="{{item.id}}"> <!-- 预留 toggleFav 逻辑 -->
+                <view class="action-fav" catchtap="toggleFav"  data-id="{{item.id}}"> 
                   <text class="fav-icon active">❤️</text>
-                  <text class="fav-label active">已收藏</text>
+                  <text class="fav-label active">移出单词本</text>
                 </view>
-                
                 <view class="action-fix" catchtap="notImplemented">
-                  <text>纠错反馈</text>
+                  <text>纠错</text>
                 </view>
               </view>
             </view>
@@ -119,7 +118,7 @@
               <!-- 中部：谐音 -->
               <view class="homonym-row">
                 <text class="tag">谐音</text>
-                <text class="hm-sentence">{{item.homonym}}</text>
+                <text class="hm-sentence">{{item.xieyin}}</text>
               </view>
 
               <!-- 中部：释义 -->
@@ -130,9 +129,9 @@
 
               <!-- 底部操作栏 -->
               <view class="card-footer phrase-footer">
-                <view class="action-fav">
+                <view class="action-fav" catchtap="toggleFav"  data-id="{{item.id}}">
                   <text class="fav-icon active">❤️</text>
-                  <text class="fav-label active">已加入句库</text>
+                  <text class="fav-label active">移出单词本</text>
                 </view>
                 <view class="action-fix" catchtap="notImplemented">
                   <text>纠错</text>

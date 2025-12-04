@@ -56,7 +56,7 @@
 
       <view class="stat-item" bindtap="goPurchase">
         <view class="num text-yellow">💎</view>
-        <view class="label">购买点数</view>
+        <view class="label">购买积分</view>
       </view>
     </view>
   </view>

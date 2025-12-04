@@ -23,7 +23,8 @@ Page({
     wordsTotalPageNum: '',
     phraseTotalPageNum: '',
     // 选中的ID集合 (跨Tab共享)
-    checkedIds: []
+    checkedIds: [],
+    studyTimeDisplay: '0分钟' 
   },
   // onLoad(){
   //   this.initData()
@@ -35,6 +36,11 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
+    // this.resetAndLoad();
+    
+    // [新增] 记录开始时间并更新显示
+    this.startTime = Date.now();
+    this.updateTimeDisplay();
 
     this.setData({
       wordList: [],
@@ -364,7 +370,30 @@ Page({
       )
     }
   },
-
+  toggleFav(e) {
+    const id = e.currentTarget.dataset.id;
+    http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
+      wx.showToast({
+        title: '已取消收藏',
+        icon:'none'
+      })
+      let favIds = app.globalData.userInfo.favorites 
+      favIds.splice(favIds.indexOf(id),1)
+      app.globalData.userInfo.favorites = favIds
+      app.saveData()
+      if(this.data.currentTab == 0){
+        this.data.wordList.splice(this.data.wordList.findIndex(i=>i.id==id),1)
+        this.setData({
+          wordList:this.data.wordList
+        })
+      }else{
+        this.data.phraseList.splice(this.data.phraseList.findIndex(i=>i.id==id),1)
+        this.setData({
+          phraseList:this.data.phraseList
+        })
+      }
+    })
+  },
   // --- 交互事件 ---
   onSearchInput(e) {
     this.setData({
@@ -473,6 +502,7 @@ Page({
   },
 
   onHide() {
+    this.saveStudyTime();
     this.setData({
       wordList: [],
       phraseList: [],
@@ -481,6 +511,59 @@ Page({
       hasMoreWords: true,
       hasMorePhrases: true
     });
+  },
+  onUnload(){
+    this.saveStudyTime();
+  },
+    // [新增] 计算并保存时长逻辑
+    saveStudyTime() {
+      if (!this.startTime) return;
+      const now = Date.now();
+      // 计算停留秒数
+      const duration = Math.floor((now - this.startTime) / 1000); 
+      
+      if (duration > 0) {
+          // 累加到全局数据
+          app.globalData.userInfo.totalStudyTime = (app.globalData.userInfo.totalStudyTime || 0) + duration;
+          app.saveData();
+          http('/user/userinfo/','post',{"totalStudyTime":app.globalData.userInfo.totalStudyTime}).then(res=>{
+              console.log('已记录')
+          })
+          // 重置开始时间，防止重复累加 (如果onHide后没被销毁又onShow)
+          this.startTime = now;
+          this.updateTimeDisplay();
+      }
+    },
+
+      // [新增] 格式化显示时长
+  updateTimeDisplay() {
+    const totalSeconds = app.globalData.userInfo.totalStudyTime || 0;
+    
+    let displayStr = '';
+    if (totalSeconds < 60) {
+        displayStr = '少于1分钟';
+    } else if (totalSeconds < 3600) {
+        displayStr = `${Math.floor(totalSeconds / 60)}分钟`;
+    } else {
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        displayStr = `${h}小时 ${m}分钟`;
+    }
+
+    this.setData({ studyTimeDisplay: displayStr });
+  },
+
+  resetAndLoad() {
+    this.setData({
+      wordList: [],
+      phraseList: [],
+      pageWord: 1,
+      pagePhrase: 1,
+      hasMoreWords: true,
+      hasMorePhrases: true,
+    });
+    this.loadFavorites('word');
+    this.loadFavorites('phrase');
   },
 
   // 全不选 (重置所有)
@@ -506,23 +589,9 @@ Page({
   },
 
   playAudio(e) {
-    const item = e.currentTarget.dataset.item;
-    const isWord = this.data.currentTab === 0;
-    const cost = isWord ? 1 : 3;
-
-    if (app.globalData.userInfo.points < cost) {
-      wx.showToast({
-        title: '点数不足',
-        icon: 'none'
-      });
-      return;
-    }
-    app.globalData.userInfo.points -= cost;
-    app.saveData();
-    wx.showToast({
-      title: `播放: ${item.swahili}`,
-      icon: 'none'
-    });
+    let item = e.currentTarget.dataset.item
+    let xiaohao = item.fayin ? item.xiaohao : 0
+    app.playAudio(item.fayin,xiaohao)
   },
 
   exportDoc() {

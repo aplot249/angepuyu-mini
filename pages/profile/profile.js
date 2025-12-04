@@ -42,6 +42,8 @@ Page({
                 const newInfo = {
                   ...res.user,
                   isLoggedIn: true,
+                  hasSignedIn:wx.getStorageSync('ts_user').hasSignedIn,
+                  hasSharedToday:wx.getStorageSync('ts_user').hasSharedToday,
                 };
                 app.globalData.userInfo = newInfo;
                 app.saveData();
@@ -74,6 +76,8 @@ Page({
           const newInfo = {
             // ...this.data.userInfo,
             isLoggedIn: false,
+            hasSharedToday: this.data.userInfo.hasSharedToday,
+            hasSignedIn: this.data.userInfo.hasSignedIn,
             // 可选：重置头像和昵称回默认
             // nickname: "Marafiki", 
             // avatarUrl: "" 
@@ -82,7 +86,6 @@ Page({
           this.setData({ userInfo: newInfo });
           app.globalData.userInfo = newInfo;
           app.saveData();
-          
           wx.showToast({ title: '已退出', icon: 'none' });
         }
       }
@@ -181,7 +184,7 @@ Page({
         return wx.showToast({ title: '请先登录', icon: 'none' });
     }
     if(this.data.userInfo.hasSignedIn) {
-      wx.showToast({ title: '今日已签到', icon: 'none' });
+      wx.showToast({ title: '今日已签到，请明日再试', icon: 'none' });
       return;
     }
     app.globalData.userInfo.points += 20;

@@ -1,7 +1,7 @@
 <view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
   <!-- 顶部余额卡片 -->
   <view class="balance-card">
-    <view class="balance-label">当前余额</view>
+    <view class="balance-label">当前积分</view>
     <view class="balance-value">
       <text class="num">{{userInfo.points}}</text>
       <text class="unit">点</text>
@@ -10,7 +10,7 @@
   </view>
 
   <!-- 积分规则说明 -->
-  <view class="section-title">点数获取与消耗规则</view>
+  <view class="section-title">积分获取与消耗规则</view>
   <view class="card rules-card">
     <view class="rule-item">
       <view class="icon green">🎁</view>
@@ -40,7 +40,7 @@
   </view>
 
   <!-- 充值选项 -->
-  <view class="section-title">点数充值</view>
+  <view class="section-title">积分充值</view>
   <view class="purchase-list">
     
     <!-- 选项 1 -->
@@ -52,7 +52,7 @@
           <view class="item-desc">{{priceList[0].product}}</view>
         </view>
       </view>
-      <view class="price-btn">¥ {{priceList[0].price}}</view>
+      <view class="price-btn">¥ {{priceList[0].price}}元</view>
     </view>
 
     <!-- 选项 2 (推荐) -->
@@ -65,7 +65,7 @@
           <view class="item-desc">{{priceList[1].product}}</view>
         </view>
       </view>
-      <view class="price-btn purple">¥ {{priceList[1].price}}</view>
+      <view class="price-btn purple">¥ {{priceList[1].price}}元</view>
     </view>
 
   </view>

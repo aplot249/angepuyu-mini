@@ -1,0 +1,71 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}" style="padding: 0;">
+  
+  <!-- [新增] 自定义返回按钮 (适配状态栏高度) -->
+  <!-- <view class="custom-back-btn" style="top: {{statusBarHeight}}px; height: 44px;" bindtap="goBack">
+    <view class="back-icon-circle">
+      <text>←</text>
+    </view>
+  </view> -->
+
+  <!-- 顶部沉浸式头图 -->
+  <view class="hero-area">
+    <image class="hero-img" src="{{article.image}}" mode="aspectFill"></image>
+    <view class="hero-overlay"></view>
+    <view class="hero-content">
+      <view class="tag">{{article.category}}</view>
+      <text class="title">{{article.title}}</text>
+      <text class="subtitle">{{article.subtitle}}</text>
+    </view>
+  </view>
+
+  <!-- 文章主体内容 -->
+  <view class="article-body">
+    
+    <!-- 作者信息栏 -->
+    <view class="meta-row">
+      <view class="author-info">
+        <image class="avatar" src="https://ui-avatars.com/api/?name=S&background=FF8A65&color=fff" mode="aspectFill"></image>
+        <view class="author-text">
+          <text class="name">坦坦斯语小编</text>
+          <text class="date">{{article.date}} · {{article.readTime}}分钟阅读</text>
+        </view>
+      </view>
+      <!-- <view class="action-btn" bindtap="toggleFav">
+        <text>{{isFav ? '❤️ 已收藏' : '🤍 收藏'}}</text>
+      </view> -->
+    </view>
+
+    <!-- 导语 -->
+    <view class="intro-box">
+      <text class="quote-icon">“</text>
+      <text>{{article.intro}}</text>
+    </view>
+
+    <!-- 正文段落循环 -->
+    <block wx:for="{{article.content}}" wx:key="index">
+      <view class="section">
+        
+        <!-- 斯语原文 (重点高亮) -->
+        <view class="swahili-block" wx:if="{{item.sw}}">
+          <view class="audio-marker" bindtap="playAudio" data-text="{{item.sw}}">🔊</view>
+          <text class="sw-text">{{item.sw}}</text>
+        </view>
+
+        <!-- 中文翻译 -->
+        <view class="chinese-text" wx:if="{{item.cn}}">
+          {{item.cn}}
+        </view>
+        
+        <!-- 文化小贴士 -->
+        <view class="culture-tip" wx:if="{{item.tip}}">
+          <text class="tip-title">💡 文化小贴士</text>
+          <text class="tip-content">{{item.tip}}</text>
+        </view>
+
+      </view>
+    </block>
+
+    <view class="footer-end">- Asante Sana -</view>
+
+  </view>
+</view>
