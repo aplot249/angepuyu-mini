@@ -3,8 +3,6 @@ const baseHOST = 'https://siyu.jsxinlingdi.com'
 // const baseHOST = 'http://192.168.1.181:8000'
 const baseImgUrl = baseHOST + '/media'
 
-const app = getApp();
-
 function request(url, method = 'POST', data = {}) {
   let header = {
     'Authorization': wx.getStorageSync('token') ? 'JWT ' + wx.getStorageSync('token') : {}
@@ -23,9 +21,19 @@ function request(url, method = 'POST', data = {}) {
         // wx.hideLoading()
         if (res.statusCode == 403) {
           reject(res.data)
-          // wx.clearStorageSync()
-          wx.removeStorageSync('ts_user')
-          wx.removeStorageSync('token')
+          const app = getApp();
+          const newInfo = {
+            // ...this.data.userInfo,
+            isLoggedIn: false,
+            hasSharedToday: app.globalData.userInfo.hasSharedToday,
+            hasSignedIn: app.globalData.userInfo.hasSignedIn,
+            // 可选：重置头像和昵称回默认
+            // nickname: "Marafiki", 
+            // avatarUrl: "" 
+          };
+          wx.setStorageSync('token', '')
+          app.globalData.userInfo = newInfo;
+          app.saveData();
           // wx.reLaunch({
           //   url: '/pages/profile/profile',
           // })

@@ -1,0 +1,68 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <!-- 顶部进度 -->
+  <view class="header-bar">
+    <view class="progress-info">
+      <text class="p-text">进度 {{currentIndex + 1}}/{{quizList.length}}</text>
+      <text class="score-text">得分: {{score}}</text>
+    </view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{((currentIndex + 1) / quizList.length) * 100}}%;"></view>
+    </view>
+  </view>
+
+  <!-- 题目滑动区域 -->
+  <swiper class="quiz-swiper" bindchange="onSwiperChange" current="{{currentIndex}}" previous-margin="40rpx" next-margin="40rpx">
+    <block wx:for="{{quizList}}" wx:key="id" wx:for-index="qIdx">
+      <swiper-item class="quiz-swiper-item">
+        
+        <view class="quiz-card">
+          <!-- 题目区域 -->
+          <view class="question-area">
+            <view class="q-tag">单词辨析</view>
+            <text class="q-word">{{item.question}}</text>
+            <view class="play-btn" catchtap="playAudio" data-word="{{item.question}}">🔊</view>
+            <text class="q-instruction">请选择正确的中文释义</text>
+          </view>
+
+          <!-- 选项区域 -->
+          <view class="options-area">
+            <block wx:for="{{item.options}}" wx:key="*this" wx:for-index="oIdx">
+              <!-- 
+                 样式逻辑：
+                 1. 未作答：默认样式
+                 2. 已作答 & 是正确答案：显示绿色 (correct)
+                 3. 已作答 & 用户选错 & 是当前选项：显示红色 (wrong)
+                 4. 已作答 & 其他选项：变淡 (dim)
+              -->
+              <view 
+                class="option-btn {{item.answered ? (oIdx === item.answerIndex ? 'correct' : (item.userChoice === oIdx ? 'wrong' : 'dim')) : ''}}" 
+                bindtap="selectOption" 
+                data-qindex="{{qIdx}}" 
+                data-oindex="{{oIdx}}"
+              >
+                <text class="opt-text">{{item.options[oIdx]}}</text>
+                
+                <!-- 结果图标 -->
+                <view class="status-icon" wx:if="{{item.answered}}">
+                  <text wx:if="{{oIdx === item.answerIndex}}">✓</text>
+                  <text wx:if="{{item.userChoice === oIdx && oIdx !== item.answerIndex}}">✕</text>
+                </view>
+              </view>
+            </block>
+          </view>
+          
+          <!-- 底部解析提示 (答错或答对后显示) -->
+          <view class="result-hint {{item.isCorrect ? 'success' : 'error'}}" wx:if="{{item.answered}}">
+            <text>{{item.isCorrect ? '🎉 回答正确！' : '😅 再接再厉，正确答案是：' + item.options[item.answerIndex]}}</text>
+          </view>
+
+        </view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <view class="footer-hint" bindtap="forceNext" wx:if="{{quizList[currentIndex].answered && currentIndex < quizList.length -1}}">
+    点击此处或滑动进入下一题 →
+  </view>
+</view>

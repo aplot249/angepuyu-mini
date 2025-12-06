@@ -32,7 +32,7 @@
 
         <block wx:for="{{wordList}}" wx:key="id">
           <!-- 绑定点击卡片切换选中状态 -->
-          <view class="card item-card word-layout" bindtap="toggleCheck"  data-id="{{item.id}}" data-type="word">
+          <view class="card item-card word-layout" bindtap="toggleCheck"  data-id="{{item.id}}" data-type="word" data-item="{{item}}">
             
             <!-- 复选框区域 (保持在最左侧) -->
             <view class="checkbox-area">
@@ -100,7 +100,7 @@
         </view>
 
         <block wx:for="{{phraseList}}" wx:key="id">
-          <view class="card item-card phrase-layout" bindtap="toggleCheck" data-id="{{item.id}}" data-type="phrase">
+          <view class="card item-card phrase-layout" bindtap="toggleCheck" data-id="{{item.id}}" data-type="phrase" data-item="{{item}}">
             
             <view class="checkbox-area">
               <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
@@ -152,19 +152,62 @@
 
   </swiper>
 
-  <!-- 悬浮功能按钮 (保持不变) -->
-  <view class="fab-group">
-    <view class="fab-btn purple" bindtap="selectAll" hover-class="btn-hover">
-      <text class="fab-icon">✅</text>
+  <!-- 全局遮罩层 -->
+  <view class="fab-overlay" wx:if="{{isFabOpen}}" bindtap="toggleFabMenu"></view>
+
+  <!-- 可拖动悬浮按钮容器 -->
+  <!-- [重要修复] 移除了容器上的 catchtouch 事件，只负责定位 -->
+  <view 
+    class="movable-fab-container"
+    style="left: {{fabPos.x}}px; top: {{fabPos.y}}px;"
+  >
+    <!-- 主按钮 (菜单开关 & 拖拽句柄) -->
+    <!-- [重要修复] 拖拽事件监听移到这里，只允许拖动主按钮 -->
+    <view class="fab-main-btn {{isFabOpen ? 'open' : ''}}"
+      catchtouchstart="onFabTouchStart"
+      catchtouchmove="onFabTouchMove"
+      catchtouchend="onFabTouchEnd"
+    >
+      <text class="main-icon">{{isFabOpen ? '✕' : '⚙️'}}</text>
     </view>
-    <view class="fab-btn gray" bindtap="unselectAll" hover-class="btn-hover">
-      <text class="fab-icon">❎</text>
+
+    <!-- 花瓣子菜单 (使用 catchtap 确保点击生效并阻止冒泡) -->
+    <!-- 1. 卡片复习 (top) -->
+    <view class="fab-sub-item item-1 {{isFabOpen ? 'show' : ''}}" catchtap="navigateToReview">
+      <view class="sub-btn cyan">🎴</view>
+      <text class="sub-label">卡片复习</text>
     </view>
-    <view class="fab-btn blue" bindtap="exportDoc" hover-class="btn-hover">
-      <text class="fab-icon">📄</text>
+
+    <!-- 2. 每日练习 (top-right) -->
+    <view class="fab-sub-item item-2 {{isFabOpen ? 'show' : ''}}" catchtap="navigateToQuiz">
+      <view class="sub-btn orange">📝</view>
+      <text class="sub-label">每日练习</text>
     </view>
-    <view class="fab-btn teal" bindtap="playStream" hover-class="btn-hover">
-      <text class="fab-icon">▶️</text>
+
+    <!-- 3. 串联播音 (bottom-right) -->
+    <view class="fab-sub-item item-3 {{isFabOpen ? 'show' : ''}}" catchtap="playStream">
+      <view class="sub-btn teal">▶️</view>
+      <text class="sub-label">串联播音</text>
     </view>
+
+    <!-- 4. 导出文档 (bottom) -->
+    <view class="fab-sub-item item-4 {{isFabOpen ? 'show' : ''}}" catchtap="exportDoc">
+      <view class="sub-btn blue">📄</view>
+      <text class="sub-label">导出文档</text>
+    </view>
+
+    <!-- 5. 全选 (bottom-left) -->
+    <view class="fab-sub-item item-5 {{isFabOpen ? 'show' : ''}}" catchtap="selectAll">
+      <view class="sub-btn purple">✅</view>
+      <text class="sub-label">全选</text>
+    </view>
+
+    <!-- 6. 取消选择 (top-left) -->
+    <view class="fab-sub-item item-6 {{isFabOpen ? 'show' : ''}}" catchtap="unselectAll">
+      <view class="sub-btn gray">❎</view>
+      <text class="sub-label">取消选择</text>
+    </view>
+
   </view>
+
 </view>

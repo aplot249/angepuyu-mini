@@ -1,0 +1,184 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-color);
+  padding: 0;
+  overflow: hidden;
+}
+
+/* 顶部信息栏 */
+.header-bar {
+  padding: 30rpx 40rpx;
+  background: var(--card-bg);
+  box-shadow: 0 4rpx 10rpx rgba(0,0,0,0.05);
+  z-index: 10;
+}
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+  font-weight: bold;
+  font-size: var(--text-sm);
+  color: var(--text-main);
+}
+.score-text { color: #FF7043; }
+
+.progress-track {
+  width: 100%;
+  height: 12rpx;
+  background: rgba(0,0,0,0.05);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+.dark-mode .progress-track { background: rgba(255,255,255,0.1); }
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FEC99D, #FF7043);
+  transition: width 0.3s ease;
+  border-radius: 6rpx;
+}
+
+/* Swiper 区域 */
+.quiz-swiper {
+  flex: 1;
+  width: 100%;
+  padding-top: 40rpx;
+  padding-bottom: 40rpx;
+}
+
+.quiz-swiper-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 题目卡片 */
+.quiz-card {
+  width: 600rpx;
+  height: 900rpx;
+  background: var(--card-bg);
+  border-radius: 40rpx;
+  box-shadow: 0 20rpx 50rpx rgba(141, 110, 99, 0.15);
+  border: 1rpx solid rgba(254, 201, 157, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.dark-mode .quiz-card { box-shadow: 0 20rpx 50rpx rgba(0,0,0,0.4); }
+
+/* 题目区 */
+.question-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(255,243,224,0.5) 0%, rgba(255,255,255,0) 100%);
+  padding: 40rpx;
+  border-bottom: 2rpx dashed rgba(0,0,0,0.05);
+}
+.dark-mode .question-area { background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%); border-bottom-color: rgba(255,255,255,0.1); }
+
+.q-tag {
+  font-size: var(--text-xs);
+  color: #BF360C;
+  background: #FFCCBC;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  font-weight: bold;
+}
+
+.q-word {
+  font-size: 80rpx;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 20rpx;
+  text-align: center;
+}
+
+.play-btn {
+  width: 80rpx; height: 80rpx;
+  background: #FFF3E0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40rpx; color: #FF7043;
+  margin-bottom: 40rpx;
+  box-shadow: 0 6rpx 12rpx rgba(255, 112, 67, 0.15);
+}
+.play-btn:active { transform: scale(0.9); }
+
+.q-instruction {
+  font-size: var(--text-sm);
+  color: var(--text-sub);
+  opacity: 0.8;
+}
+
+/* 选项区 */
+.options-area {
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+}
+
+.option-btn {
+  background: #f5f5f5;
+  padding: 30rpx 40rpx;
+  border-radius: 24rpx;
+  font-size: var(--text-base);
+  color: var(--text-main);
+  font-weight: bold;
+  border: 2rpx solid transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+.dark-mode .option-btn { background: #2c2c2c; }
+
+/* 状态样式 */
+.option-btn:active { background: #e0e0e0; }
+.dark-mode .option-btn:active { background: #3d3d3d; }
+
+.option-btn.correct {
+  background: #E8F5E9;
+  border-color: #4CAF50;
+  color: #2E7D32;
+}
+.dark-mode .option-btn.correct { background: #1B5E20; color: #E8F5E9; border-color: #4CAF50; }
+
+.option-btn.wrong {
+  background: #FFEBEE;
+  border-color: #EF5350;
+  color: #C62828;
+}
+.dark-mode .option-btn.wrong { background: #B71C1C; color: #FFEBEE; border-color: #EF5350; }
+
+.option-btn.dim { opacity: 0.5; }
+
+.status-icon { font-weight: 900; font-size: 32rpx; }
+
+/* 结果提示 */
+.result-hint {
+  position: absolute;
+  bottom: 0; left: 0; width: 100%;
+  padding: 20rpx;
+  text-align: center;
+  font-size: var(--text-xs);
+  font-weight: bold;
+}
+.result-hint.success { background: #4CAF50; color: white; }
+.result-hint.error { background: #FF7043; color: white; }
+
+.footer-hint {
+  text-align: center;
+  padding-bottom: 40rpx;
+  color: var(--text-sub);
+  font-size: var(--text-sm);
+  font-weight: bold;
+  opacity: 0.8;
+}

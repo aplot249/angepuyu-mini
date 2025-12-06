@@ -193,7 +193,7 @@ Page({
       chinese:this.data.chinese,
       english:this.data.english,
       swahili:this.data.swahili,
-      status:'1',
+      status:'1', //状态从未录音变成未发布。
     }
 
     wx.showLoading({ title: '正在上传...', mask: true });

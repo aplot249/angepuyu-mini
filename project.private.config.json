@@ -24,11 +24,25 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/purchase/purchase",
-          "pathName": "pages/purchase/purchase",
+          "name": "pages/quiz/quiz",
+          "pathName": "pages/quiz/quiz",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/review/review",
+          "pathName": "pages/review/review",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/purchase/purchase",
+          "pathName": "pages/purchase/purchase",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/profile/profile",

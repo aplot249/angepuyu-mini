@@ -154,7 +154,6 @@ Page({
       return wx.showToast({ title: '请先登录', icon: 'none' });
     }
     const content = this.data.feedbackContent.trim();
-    console.log(content)
     if (!content) {
       return wx.showToast({ title: '请输入内容', icon: 'none' });
     }
@@ -166,11 +165,6 @@ Page({
       wx.showToast({ title: '感谢您的反馈', icon: 'success' });
       this.setData({ showFeedbackModal: false });
     })
-    // setTimeout(() => {
-    //   wx.hideLoading();
-    //   this.setData({ showFeedbackModal: false });
-    //   wx.showToast({ title: '感谢您的反馈', icon: 'success' });
-    // }, 1000);
   },
 
   // --- 其他功能 ---

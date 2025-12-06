@@ -82,8 +82,8 @@
     </view>
     <view class="content-text">
       <view class="view">感谢朋友对我熬夜写代码的包容与支持；</view>
-      <view class="view">感谢坦桑尼亚**商会提供的帮助；</view>
-      <view class="view">感谢达累斯萨拉姆大学孔子学院提供的帮助；</view>
+      <!-- <view class="view">感谢坦桑尼亚**商会提供的帮助；</view>
+      <view class="view">感谢达累斯萨拉姆大学孔子学院提供的帮助；</view> -->
       <view class="view"><b>最感谢</b>的是正在使用这款软件的<b>你</b>，你的每次反馈都是我更新的动力！</view>
     </view>
     <view class="footer-sign">

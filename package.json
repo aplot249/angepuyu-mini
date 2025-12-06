@@ -4,7 +4,6 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
-    "@vant/weapp": "^1.11.7",
     "wxml-to-canvas": "^1.1.1"
   },
   "scripts": {

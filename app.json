@@ -10,7 +10,9 @@
     "pages/share/share",
     "pages/about/about",
     "pages/privacy/privacy",
-    "pages/article/article"
+    "pages/article/article",
+    "pages/review/review",
+    "pages/quiz/quiz"
   ],
   "window": {
     "backgroundTextStyle": "light",

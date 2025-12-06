@@ -88,6 +88,7 @@ App({
   saveData() {
     wx.setStorageSync('ts_user', this.globalData.userInfo);
   },
+  
   playAudio(mp3,xiaohao){
     if(!this.globalData.userInfo.isLoggedIn){
       wx.showModal({
