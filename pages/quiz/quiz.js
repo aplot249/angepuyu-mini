@@ -1,4 +1,6 @@
 const app = getApp();
+import  {http} from '../../requests/index'
+
 
 Page({
   data: {
@@ -48,7 +50,31 @@ Page({
       }
     ]
   },
-
+  // 洗牌函数（放在Page/Component对象内）
+  shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  },
+  onLoad(){
+    let checkedItems = wx.getStorageSync('checkedItems')
+    if(checkedItems){
+      this.setData({quizList:checkedItems})
+      let lingyu = this.data.quizList[0].lingyu
+      http('/web/relatedanswers/','post',{"lingyu":lingyu}).then(res=>{
+          console.log('res',res)
+          this.data.quizList[0].options = res.data
+          this.data.quizList[0].options.push(this.data.quizList[0].chinese)
+          // console.log('this.data.quizList[0].options',this.data.quizList[0].options)
+          this.shuffle(this.data.quizList[0].options)
+          // console.log('this.data.quizList[0].options',this.data.quizList[0].options)
+          this.setData({
+            quizList:this.data.quizList
+          })
+      })
+    }
+  },
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
