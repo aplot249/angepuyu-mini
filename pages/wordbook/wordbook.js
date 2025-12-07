@@ -632,6 +632,11 @@ Page({
   },
   onUnload(){
     this.saveStudyTime();
+    // wx.setStorageSync('checkedItems', [])
+    // this.setData({
+    //   checkedIds: [],
+    //   checkedItems:[],
+    // })
   },
 
   // [新增] 计算并保存时长逻辑

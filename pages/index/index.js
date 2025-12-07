@@ -97,7 +97,7 @@ Page({
   
     // [新增] 跳转到每日练习
     navigateToQuiz() {
-      wx.navigateTo({ url: '/pages/quiz/quiz' });
+      wx.navigateTo({ url: '/pages/quiz/quiz?from=index' });
     },
     
   playAudio(e) {
