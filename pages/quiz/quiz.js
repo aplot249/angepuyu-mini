@@ -6,6 +6,7 @@ Page({
     isDarkMode: false,
     currentIndex: 0,
     score: 0,
+    isFinished: false, // 新增：是否完成标记
     
     // 模拟题库
     quizList: [
@@ -58,7 +59,7 @@ Page({
   },
 
   onSwiperChange(e) {
-    // 仅在用户滑动时更新索引
+    // 仅在用户触摸滑动时更新索引
     if(e.detail.source === 'touch') {
       this.setData({ currentIndex: e.detail.current });
     }
@@ -98,6 +99,12 @@ Page({
       }, 1000);
     } else {
       wx.vibrateLong();
+      // [修复] 如果是最后一题，答错也需要在延迟后进入结算，否则用户无路可走
+      if (qindex === this.data.quizList.length - 1) {
+        setTimeout(() => {
+          this.autoNext();
+        }, 1500); // 留1.5秒看错误解析
+      }
     }
   },
 
@@ -105,12 +112,35 @@ Page({
     if (this.data.currentIndex < this.data.quizList.length - 1) {
       this.setData({ currentIndex: this.data.currentIndex + 1 });
     } else {
-      // 最后一题答完，显示完成提示
-      wx.showToast({ title: `完成！得分: ${this.data.score}`, icon: 'none', duration: 2000 });
+      // 最后一题答完，设置完成状态，显示弹窗
+      this.setData({ isFinished: true });
+      wx.vibrateLong();
     }
   },
 
   forceNext() {
     this.autoNext();
+  },
+
+  // 新增：重新开始
+  restartQuiz() {
+    // 重置所有题目状态
+    const resetList = this.data.quizList.map(item => ({
+      ...item, answered: false, userChoice: -1, isCorrect: false
+    }));
+    this.setData({
+      quizList: resetList,
+      currentIndex: 0,
+      score: 0,
+      isFinished: false
+    });
+  },
+
+  // 新增：分享配置
+  onShareAppMessage() {
+    return {
+      title: `我在每日练习中得了${this.data.score}分！快来挑战斯瓦西里语吧！`,
+      path: '/pages/quiz/quiz'
+    }
   }
 })

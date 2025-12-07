@@ -540,15 +540,17 @@ Page({
     this.loadFavorites('phrase');
   },
 
-    // [新增] 跳转到卡片复习
-    navigateToReview() {
-      wx.navigateTo({ url: '/pages/review/review' });
-    },
-  
-    // [新增] 跳转到每日练习
-    navigateToQuiz() {
-      wx.navigateTo({ url: '/pages/quiz/quiz' });
-    },
+  // [新增] 跳转到卡片复习
+  navigateToReview() {
+    console.log(this.data.checkedItems)
+    wx.setStorageSync('checkedItems', this.data.checkedItems)
+    wx.navigateTo({ url: '/pages/review/review' });
+  },
+
+  // [新增] 跳转到每日练习
+  navigateToQuiz() {
+    wx.navigateTo({ url: '/pages/quiz/quiz' });
+  },
     
   // 勾选/取消勾选
   toggleCheck(e) {

@@ -46,7 +46,14 @@ Page({
       }
     ]
   },
-
+  onLoad(){
+    let checkedItems = wx.getStorageSync('checkedItems')
+    if(checkedItems){
+      this.setData({
+        wordList:checkedItems
+      })
+    }
+  },
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
@@ -69,18 +76,22 @@ Page({
 
   // 监听滑动切换
   onSwiperChange(e) {
-    this.setData({
-      currentIndex: e.detail.current
-    });
-    // 可选：滑动到新卡片时，将上一张翻回来，保持统一状态
-    // this.resetFlips(); 
+    // [优化] 增加 source 判断，仅在用户手指触摸滑动时更新索引
+    // 避免 nextCard() 自动跳转时触发 bindchange 导致的数据冗余更新
+    if (e.detail.source === 'touch') {
+      this.setData({
+        currentIndex: e.detail.current
+      });
+    }
   },
 
-  playAudio(e) {
-    // 阻止冒泡防止翻转
-    const item = e.currentTarget.dataset.item;
-    wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
-  },
+  playAudio(e) {
+    // 阻止冒泡防止翻转
+    let item = e.currentTarget.dataset.item
+    let xiaohao = item.fayin ? item.xiaohao : 0
+    app.playAudio(item.fayin,xiaohao)
+    wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
+  },
 
   markKnown() {
     wx.showToast({ title: '已记住了！', icon: 'success' });

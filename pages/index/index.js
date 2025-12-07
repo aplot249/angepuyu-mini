@@ -90,6 +90,16 @@ Page({
     }
   },
 
+    // [新增] 跳转到卡片复习
+    navigateToReview() {
+      wx.navigateTo({ url: '/pages/review/review' });
+    },
+  
+    // [新增] 跳转到每日练习
+    navigateToQuiz() {
+      wx.navigateTo({ url: '/pages/quiz/quiz' });
+    },
+    
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0

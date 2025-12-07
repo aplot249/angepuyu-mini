@@ -1,5 +1,4 @@
-/* ... (保留原有的 header-arc-bg, nav-content, greeting 等样式) ... */
-/* --- 顶部弧形背景区域 --- */
+/* ... (保留原有顶部背景、导航、轮播图样式) ... */
 .header-arc-bg {
   position: absolute;
   top: 0;
@@ -58,10 +57,9 @@
 .main-content {
   position: relative;
   z-index: 20;
-  padding: 0 30rpx 20rpx;
+  padding: 0 30rpx;
 }
 
-/* ... (保留轮播图、公告栏样式) ... */
 .banner-swiper.main {
   width: 100%;
   height: 280rpx;
@@ -107,7 +105,7 @@
   background: #fff;
   padding: 16rpx 24rpx;
   border-radius: 16rpx;
-  margin-bottom: 40rpx;
+  margin-bottom: 30rpx;
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.03);
 }
 
@@ -139,6 +137,98 @@
   color: #D7CCC8;
 }
 
+/* [新增] 练习功能区样式 */
+.practice-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 24rpx;
+  margin-bottom: 40rpx;
+}
+
+.practice-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 24rpx 30rpx;
+  border-radius: 24rpx;
+  box-shadow: 0 6rpx 16rpx rgba(141, 110, 99, 0.08);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s;
+}
+
+.practice-card:active {
+  transform: scale(0.98);
+}
+
+/* 测验 (左) */
+.review-style {
+  background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
+  border: 1rpx solid rgba(0, 188, 212, 0.2);
+}
+
+.dark-mode .review-style {
+  background: linear-gradient(135deg, #006064 0%, #00838F 100%);
+  border-color: rgba(0, 188, 212, 0.1);
+}
+
+/* 练习 (右) */
+.quiz-style {
+  background: linear-gradient(135deg, #FFCCBC 0%, #FFAB91 100%);
+  border: 1rpx solid rgba(255, 87, 34, 0.2);
+}
+
+.dark-mode .quiz-style {
+  background: linear-gradient(135deg, #BF360C 0%, #D84315 100%);
+  border-color: rgba(255, 87, 34, 0.1);
+}
+
+.p-icon-box {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 20rpx;
+  box-shadow: 0 4rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .p-icon-box {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.p-text-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.p-title {
+  font-size: var(--text-base);
+  font-weight: 900;
+  color: #3E2723;
+}
+
+.dark-mode .p-title {
+  color: #ECEFF1;
+}
+
+.p-desc {
+  font-size: var(--text-xs);
+  color: #5D4037;
+  opacity: 0.7;
+  margin-top: 4rpx;
+  font-weight: bold;
+}
+
+.dark-mode .p-desc {
+  color: #B0BEC5;
+}
+
+
+/* ... (保留每日单词、短语等后续样式) ... */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -177,16 +267,13 @@
   opacity: 0.7;
 }
 
-/* [新增] 每日单词 Grid 布局 */
 .daily-word-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* 1行2列 */
   gap: 20rpx;
   margin-bottom: 30rpx;
 }
 
-/* [新增] 小单词卡片样式 (无图) */
 .word-card-mini {
   background: var(--card-bg);
   border-radius: 24rpx;
@@ -197,20 +284,15 @@
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  /* 撑满 Grid 高度 */
   box-sizing: border-box;
 }
 
 .word-card-mini .info-col {
   flex: 1;
 }
-.row-flex{
-  display: flex;
-  justify-content: space-between;
-}
+
 .word-card-mini .sw-text {
   font-size: var(--text-lg);
-  /* 稍微调小一点 */
   font-weight: 900;
   color: var(--text-main);
   word-break: break-all;
@@ -220,7 +302,6 @@
   width: 50rpx;
   height: 50rpx;
   font-size: 26rpx;
-  /* 小播放按钮 */
   background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
   border-radius: 50%;
   display: flex;
@@ -228,7 +309,7 @@
   justify-content: center;
   color: #FF7043;
   flex-shrink: 0;
-  /* margin-left: 10rpx; */
+  margin-left: 10rpx;
 }
 
 .word-card-mini .homonym-box {
@@ -290,7 +371,6 @@
   font-size: 32rpx;
 }
 
-/* ... (后续样式保持不变) ... */
 .banner-swiper.middle {
   width: 100%;
   height: 140rpx;
@@ -302,8 +382,8 @@
 .item-card {
   background: var(--card-bg);
   border-radius: 30rpx;
-  /* padding: 30rpx; */
-  /* margin-bottom: 30rpx; */
+  padding: 30rpx;
+  margin-bottom: 30rpx;
   box-shadow: 0 8rpx 24rpx rgba(141, 110, 99, 0.08);
   border: 1rpx solid rgba(254, 201, 157, 0.2);
 }
@@ -362,7 +442,7 @@
 .meaning-col {
   padding-bottom: 20rpx;
   border-bottom: 2rpx dashed rgba(141, 110, 99, 0.1);
-  /* margin-bottom: 20rpx; */
+  margin-bottom: 20rpx;
 }
 
 .card-footer {

@@ -175,13 +175,13 @@
     <!-- 1. 卡片复习 (top) -->
     <view class="fab-sub-item item-1 {{isFabOpen ? 'show' : ''}}" catchtap="navigateToReview">
       <view class="sub-btn cyan">🎴</view>
-      <text class="sub-label">卡片复习</text>
+      <text class="sub-label">卡片测验</text>
     </view>
 
     <!-- 2. 每日练习 (top-right) -->
     <view class="fab-sub-item item-2 {{isFabOpen ? 'show' : ''}}" catchtap="navigateToQuiz">
       <view class="sub-btn orange">📝</view>
-      <text class="sub-label">每日练习</text>
+      <text class="sub-label">做题练习</text>
     </view>
 
     <!-- 3. 串联播音 (bottom-right) -->

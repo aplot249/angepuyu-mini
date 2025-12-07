@@ -41,7 +41,26 @@
       </swiper>
     </view>
 
-    <!-- 3. 每日单词 (改为一行两列，无图) -->
+    <!-- [新增] 3. 每日练习功能区 (Review & Quiz) -->
+    <view class="practice-section">
+      <view class="practice-card review-style" bindtap="navigateToReview">
+        <view class="p-icon-box">🎴</view>
+        <view class="p-text-box">
+          <text class="p-title">卡片测验</text>
+          <text class="p-desc">Review</text>
+        </view>
+      </view>
+      
+      <view class="practice-card quiz-style" bindtap="navigateToQuiz">
+        <view class="p-icon-box">📝</view>
+        <view class="p-text-box">
+          <text class="p-title">做题练习</text>
+          <text class="p-desc">Quiz</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 4. 每日单词 (改为一行两列，无图) -->
     <view class="section-header">
       <view class="section-title">
         <text>每日单词</text>

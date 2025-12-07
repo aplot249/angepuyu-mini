@@ -9,7 +9,8 @@
   </view>
 
   <!-- 卡片滑动区域 -->
-  <swiper class="card-swiper" bindchange="onSwiperChange" previous-margin="40rpx" next-margin="40rpx">
+  <!-- [修复] 增加 current="{{currentIndex}}" 属性，使 Swiper 跟随数据变化 -->
+  <swiper class="card-swiper" current="{{currentIndex}}" bindchange="onSwiperChange" previous-margin="40rpx" next-margin="40rpx">
     <block wx:for="{{wordList}}" wx:key="id">
       <swiper-item class="card-swiper-item">
         
@@ -27,7 +28,7 @@
                   <text class="en-text">{{item.english}}</text>
                 </view>
 
-                <image class="scene-img" src="{{item.image}}" mode="aspectFill" wx:if="{{item.image}}"></image>
+                <image class="scene-img" src="{{item.portrait}}" mode="aspectFill" wx:if="{{item.portrait}}"></image>
                 <view class="img-placeholder" wx:else>🇹🇿</view> <!-- 无图时的占位 -->
               
                 <view class="bottom-hint">?</view>
@@ -48,7 +49,7 @@
 
                 <view class="homonym-box">
                   <text class="tag">谐音</text>
-                  <text class="hm-text">{{item.homonym}}</text>
+                  <text class="hm-text">{{item.xieyin}}</text>
                 </view>
 
                 <view class="action-row">
