@@ -60,10 +60,8 @@ App({
     if (dark === true || dark === false) {
       this.globalData.isDarkMode = dark;
     }
-    
     // [新增] 每日状态重置检查
     this.checkDailyReset();
-
     // 初始化皮肤颜色
     this.updateThemeSkin(this.globalData.isDarkMode);
   },
@@ -72,13 +70,11 @@ App({
   checkDailyReset() {
     const todayStr = new Date().toDateString(); // 获取当前日期字符串 (e.g. "Mon Nov 24 2025")
     const lastDate = wx.getStorageSync('ts_last_active_date');  //上次日期
-
     if (lastDate !== todayStr) {
       // 是新的一天，重置状态
       console.log('New day detected, resetting daily tasks.');
       this.globalData.userInfo.hasSignedIn = false;
       this.globalData.userInfo.hasSharedToday = false;
-      
       // 保存新日期和重置后的用户数据
       wx.setStorageSync('ts_last_active_date', todayStr);
       this.saveData();

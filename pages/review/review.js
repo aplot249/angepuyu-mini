@@ -1,58 +1,37 @@
 const app = getApp();
-
+import {http} from '../../requests/index'
 Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
     currentIndex: 0,
-    
-    // 模拟复习卡片数据
-    wordList: [
-      {
-        id: 101,
-        swahili: 'Karibu',
-        chinese: '欢迎',
-        english: 'Welcome',
-        homonym: '卡里布',
-        image: 'https://images.unsplash.com/photo-1596464716127-f9a86b5b3f4d?w=400&q=80',
-        isFlipped: false
-      },
-      {
-        id: 102,
-        swahili: 'Asante',
-        chinese: '谢谢',
-        english: 'Thank you',
-        homonym: '阿三忒',
-        image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&q=80',
-        isFlipped: false
-      },
-      {
-        id: 103,
-        swahili: 'Rafiki',
-        chinese: '朋友',
-        english: 'Friend',
-        homonym: '拉菲基',
-        image: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&q=80',
-        isFlipped: false
-      },
-      {
-        id: 104,
-        swahili: 'Jambo',
-        chinese: '你好',
-        english: 'Hello',
-        homonym: '江波',
-        image: '', // 测试无图情况
-        isFlipped: false
-      }
+    ctList: [ // 模拟复习卡片数据
+      // {
+      //   id: 101,
+      //   swahili: 'Karibu',
+      //   chinese: '欢迎',
+      //   english: 'Welcome',
+      //   homonym: '卡里布',
+      //   image: 'https://images.unsplash.com/photo-1596464716127-f9a86b5b3f4d?w=400&q=80',
+      //   isFlipped: false
+      // }
     ]
   },
   onLoad(){
-    let checkedItems = wx.getStorageSync('checkedItems')
-    if(checkedItems){
-      this.setData({
-        wordList:checkedItems
-      })
-    }
+//     let checkedItems = wx.getStorageSync('checkedItems')
+//     if(checkedItems){
+//       this.setData({
+          // ctList:checkedItems
+//       })
+//     }
+    // http('/web/randomquestion/','get').then(res=>{
+    //   console.log('gggggg',res)
+    //   this.setData({
+    //     ctList:res
+    //   })
+    // },err=>{
+    //   console.log('err',err)
+    // })
   },
   onShow() {
     this.setData({ 
@@ -60,17 +39,24 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-    
     // 设置标题
     wx.setNavigationBarTitle({ title: '卡片复习' });
+    http('/web/randomquestion/','get').then(res=>{
+      console.log('gggggg',res)
+      this.setData({
+        ctList:res
+      })
+    },err=>{
+      console.log('err',err)
+    })
   },
 
   // 翻转卡片
   toggleFlip(e) {
     const index = e.currentTarget.dataset.index;
-    const key = `wordList[${index}].isFlipped`;
+    const key = `ctList[${index}].isFlipped`;
     this.setData({
-      [key]: !this.data.wordList[index].isFlipped
+      [key]: !this.data.ctList[index].isFlipped
     });
   },
 
@@ -83,15 +69,25 @@ Page({
         currentIndex: e.detail.current
       });
     }
+    if(this.data.currentIndex === this.data.ctList.length-1){
+      http('/web/randomquestion/','get').then(res=>{
+        console.log('gggggg',res)
+        this.data.ctList.push(...res)
+        this.setData({
+          ctList:this.data.ctList,
+          currentIndex:this.data.currentIndex+1
+        })
+      })
+    }
   },
 
-  playAudio(e) {
-    // 阻止冒泡防止翻转
-    let item = e.currentTarget.dataset.item
-    let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao)
-    wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
-  },
+  playAudio(e) {
+    // 阻止冒泡防止翻转
+    let item = e.currentTarget.dataset.item
+    let xiaohao = item.fayin ? item.xiaohao : 0
+    app.playAudio(item.fayin,xiaohao)
+    wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
+  },
 
   markKnown() {
     wx.showToast({ title: '已记住了！', icon: 'success' });
@@ -106,7 +102,7 @@ Page({
   },
   
   nextCard() {
-    if (this.data.currentIndex < this.data.wordList.length - 1) {
+    if (this.data.currentIndex < this.data.ctList.length - 1) {
       this.setData({ currentIndex: this.data.currentIndex + 1 });
     }
   }

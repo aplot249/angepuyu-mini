@@ -27,18 +27,16 @@ Page({
     checkedIds: [],
     checkedItems:[],
     studyTimeDisplay: '0分钟' ,
-
     // [新增] 悬浮按钮相关状态
     isFabOpen: false, // 菜单是否展开
     fabPos: { x: 0, y: 0 }, // 按钮位置
     windowWidth: 0,
     windowHeight: 0,
-
+    //当前播放
     currentAudioIndex:0,
   },
   onLoad(){
       this.setData({isFabOpen:true})
-
   //   this.initData()
       // 获取屏幕尺寸，初始化按钮位置到右下角
       const sys = wx.getSystemInfoSync();
@@ -66,8 +64,8 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-    // this.resetAndLoad();
-    this.setTabBarBadge();
+    // this.resetAndLoad()
+    // this.setTabBarBadge();
     // [新增] 记录开始时间并更新显示
     this.startTime = Date.now();
     this.updateTimeDisplay();
@@ -110,58 +108,8 @@ Page({
             phraseTotalPageNum: res.totalPageNum,
           })
         })
-      },
-      err => {
-        console.log('err', err.detail)
-        if (err.detail == 'JWT Token已过期！' || err.detail == '身份认证信息未提供。') {
-          wx.showModal({
-              title: '请先登录，才能进行后续操作',
-              confirmText: "确认登录",
-              success: (res) => {
-                if (res.confirm) {
-                  wx.getUserProfile({
-                    desc: '需微信授权登录',
-                    success: (res) => {
-                      wx.showToast({
-                        title: '正在登录...',
-                        icon: "none"
-                      })
-                      wx.login({
-                        timeout: 8000,
-                        success: r => {
-                          console.log(r.code)
-                          http('/user/openid/', 'post', {
-                            code: r.code,
-                            gender: res.userInfo.gender,
-                            wxnickname: res.userInfo.nickName,
-                          }).then(res => {
-                            console.log('登录信息：', res)
-                            const newInfo = {
-                              ...res.user,
-                              isLoggedIn: true,
-                            };
-                            app.globalData.userInfo = newInfo;
-                            app.saveData();
-                            wx.showToast({
-                              title: '登录成功',
-                              icon: 'none'
-                            });
-                            wx.setStorageSync('token', res.token)
-                            wx.reLaunch({
-                              url: '/pages/wordbook/wordbook',
-                            })
-                            // that.onLoad()
-                          })
-                        }
-                      })
-                    }
-                  })
-                }
-              }
-            }
-          )
-        }
-    })
+      }
+    )
   },
   setTabBarBadge() {
     const total = this.data.wordList.length + this.data.phraseList.length;
@@ -322,7 +270,6 @@ Page({
   },
 
   // 加载数据核心逻辑
-  
   loadFavorites(type) {
     let that = this
     if (type == 'word') {
@@ -337,7 +284,6 @@ Page({
           ...item,
           checked: false
         }));
-
         this.setData({
           wordList: [...this.data.wordList, ...list],
           pageSize: res.page_size,
@@ -345,58 +291,7 @@ Page({
           hasMoreWords: this.data.pageWord < res.totalPageNum,
           wordsTotalPageNum: res.totalPageNum,
         })
-      },
-
-      err => {
-        console.log('err', err.detail)
-        if (err.detail == 'JWT Token已过期！' || err.detail == '身份认证信息未提供。') {
-          wx.showModal({
-              title: '请先登录，才能进行后续操作',
-              confirmText: "确认登录",
-              success: (res) => {
-                if (res.confirm) {
-                  wx.getUserProfile({
-                    desc: '需微信授权登录',
-                    success: (res) => {
-                      wx.showToast({
-                        title: '正在登录...',
-                        icon: "none"
-                      })
-                      wx.login({
-                        timeout: 8000,
-                        success: r => {
-                          console.log(r.code)
-                          http('/user/openid/', 'post', {
-                            code: r.code,
-                            gender: res.userInfo.gender,
-                            wxnickname: res.userInfo.nickName,
-                          }).then(res => {
-                            console.log('登录信息：', res)
-                            const newInfo = {
-                              ...res.user,
-                              isLoggedIn: true,
-                            };
-                            app.globalData.userInfo = newInfo;
-                            app.saveData();
-                            wx.showToast({
-                              title: '登录成功',
-                              icon: 'none'
-                            });
-                            wx.setStorageSync('token', res.token)
-                            that.onLoad()
-                          })
-                        }
-                      })
-                    }
-                  })
-                }
-              }
-            }
-          )
-        }
-    }
-
-      )
+      })
     } else {
       let myFav = JSON.stringify(app.globalData.userInfo.favorites)
       http(`/web/ctiemByFav/?page=${this.data.pagePhrase}&search=${this.data.searchText}`, 'POST', {
@@ -416,58 +311,10 @@ Page({
           phraseCount: res.count,
           phraseTotalPageNum: res.totalPageNum,
         })
-      },
-      err => {
-        console.log('err', err.detail)
-        if (err.detail == 'JWT Token已过期！' || err.detail == '身份认证信息未提供。') {
-          wx.showModal({
-              title: '请先登录，才能进行后续操作',
-              confirmText: "确认登录",
-              success: (res) => {
-                if (res.confirm) {
-                  wx.getUserProfile({
-                    desc: '需微信授权登录',
-                    success: (res) => {
-                      wx.showToast({
-                        title: '正在登录...',
-                        icon: "none"
-                      })
-                      wx.login({
-                        timeout: 8000,
-                        success: r => {
-                          console.log(r.code)
-                          http('/user/openid/', 'post', {
-                            code: r.code,
-                            gender: res.userInfo.gender,
-                            wxnickname: res.userInfo.nickName,
-                          }).then(res => {
-                            console.log('登录信息：', res)
-                            const newInfo = {
-                              ...res.user,
-                              isLoggedIn: true,
-                            };
-                            app.globalData.userInfo = newInfo;
-                            app.saveData();
-                            wx.showToast({
-                              title: '登录成功',
-                              icon: 'none'
-                            });
-                            wx.setStorageSync('token', res.token)
-                            that.onLoad()
-                          })
-                        }
-                      })
-                    }
-                  })
-                }
-              }
-            }
-          )
-        }
-    }
-      )
+      })
     }
   },
+
   toggleFav(e) {
     const id = e.currentTarget.dataset.id;
     http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
@@ -632,11 +479,6 @@ Page({
   },
   onUnload(){
     this.saveStudyTime();
-    // wx.setStorageSync('checkedItems', [])
-    // this.setData({
-    //   checkedIds: [],
-    //   checkedItems:[],
-    // })
   },
 
   // [新增] 计算并保存时长逻辑
@@ -662,7 +504,6 @@ Page({
       // [新增] 格式化显示时长
   updateTimeDisplay() {
     const totalSeconds = app.globalData.userInfo.totalStudyTime || 0;
-    
     let displayStr = '';
     if (totalSeconds < 60) {
         displayStr = '少于1分钟';
@@ -673,7 +514,6 @@ Page({
         const m = Math.floor((totalSeconds % 3600) / 60);
         displayStr = `${h}小时 ${m}分钟`;
     }
-
     this.setData({ studyTimeDisplay: displayStr });
   },
 

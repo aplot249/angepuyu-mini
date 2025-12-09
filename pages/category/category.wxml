@@ -18,10 +18,17 @@
     </view>
 
     <view class="sub-grid">
-      <block wx:for="{{categories[activeIdx].sublingyu}}" wx:key="*this">
+      <block wx:for="{{categories[activeIdx].sublingyu}}" wx:key="id">
         <view class="sub-item card" bindtap="goToList" data-subid="{{item.id}}" data-subname="{{item.name}}">
           <view class="sub-icon text-primary">📂</view>
           <text class="sub-name">{{item.name}}</text>
+          <!-- [新增] 底部圆形图标按钮 -->
+          <view class="action-row" catchtap="toggleSubFav" data-id="{{item.id}}" data-isFaved="{{item.isFaved}}">
+            <view class="circle-btn">
+              <text class="fav-icon" wx:if="{{!item.isFaved}}">🤍加入单词本</text> 
+              <text class="fav-icon" wx:if="{{item.isFaved}}">❤️移出单词本</text> 
+            </view>
+          </view>
         </view>
       </block>
     </view>

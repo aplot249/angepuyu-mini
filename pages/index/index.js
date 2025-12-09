@@ -1,5 +1,6 @@
 const app = getApp();
 import {http} from '../../requests/index'
+import {LoginTip} from '../../utils/util'
 
 Page({
   data: {
@@ -62,7 +63,6 @@ Page({
     const statusBarHeight = sysInfo.statusBarHeight;
     const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
     const totalNavHeight = statusBarHeight + navBarHeight;
-
     this.setData({
       statusBarHeight,
       navBarHeight,
@@ -90,15 +90,24 @@ Page({
     }
   },
 
-    // [新增] 跳转到卡片复习
-    navigateToReview() {
+  // [新增] 跳转到卡片复习
+  navigateToReview() {
+    // if(!app.globalData.userInfo.isLoggedIn){
+    //   LoginTip('/pages/index/index')
+    // }else{
       wx.navigateTo({ url: '/pages/review/review' });
-    },
-  
-    // [新增] 跳转到每日练习
-    navigateToQuiz() {
-      wx.navigateTo({ url: '/pages/quiz/quiz?from=index' });
-    },
+    // }
+  },
+
+  // [新增] 跳转到每日练习
+  navigateToQuiz() {
+    console.log('app.globalData.userInfo',app.globalData.userInfo)
+    // if(!app.globalData.userInfo.isLoggedIn){
+    //   LoginTip('/pages/index/index')
+    // }else{
+      wx.navigateTo({ url: '/pages/quiz/quiz?from=index' })
+    // }
+  },
     
   playAudio(e) {
     let item = e.currentTarget.dataset.item
@@ -110,6 +119,5 @@ Page({
     this.onLoad()
   },
   onUnload(){
-    // this.innerAudioContext.destroy()
   }
 })

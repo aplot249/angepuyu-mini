@@ -48,7 +48,7 @@ page {
 
 /* 容器样式 */
 .container {
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background-color: var(--bg-color);
   color: var(--text-main);
   padding: 30rpx;

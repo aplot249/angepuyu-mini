@@ -11,7 +11,6 @@ Page({
     currentTab: 0, 
     wordList: [],
     phraseList: [],
-
     pageWord: 1,
     pagePhrase: 1,
     hasMoreWords: true,
@@ -30,7 +29,7 @@ Page({
       });
       wx.setNavigationBarTitle({ title: options.subname });
       http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}&page=1&search=${this.data.keyword}`,'GET').then(res=>{
-        let favIds = app.globalData.userInfo.favorites || []  // 'favorites');
+        let favIds = app.globalData.userInfo.favorites || [] 
         let list = res.results.map(item => ({
           ...item,
           isFav: favIds.includes(item.id)

@@ -55,15 +55,6 @@ Page({
       let lingyu = this.data.quizList[this.data.currentIndex].lingyu
       this.getRelatedAnswer(lingyu,this.data.currentIndex)
     }else{
-      // http('/web/ctiemBySub/?subid=3','get').then(res=>{
-      //   console.log("res11111111",res)
-      //   this.setData({
-      //     quizList:res.results,
-      //     eachItemScore:Math.round(100/res.results.length)
-      //   })
-      //   let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-      //   this.getRelatedAnswer(lingyu,this.data.currentIndex)
-      // })
       http('/web/randomquestion/','get').then(res=>{
         // console.log(res)
         this.setData({
@@ -154,7 +145,7 @@ Page({
     } else {
       // 最后一题答完，设置完成状态，显示弹窗
       let num = this.data.quizList.filter(i=>i.isCorrect===true).length
-      console.log("num",num)
+      // console.log("num",num)
       let score = Math.floor((100 / this.data.quizList.length)*num) 
       this.setData({ 
         isFinished: true,
@@ -181,12 +172,12 @@ Page({
       isFinished: false
     });
   },
+
   continueQuiz(){
     this.setData({
       isFinished:false
     })
     http('/web/randomquestion/','get').then(res=>{
-      // console.log(res)
       this.data.quizList.push(...res)
       this.setData({
         quizList:this.data.quizList,
@@ -197,6 +188,7 @@ Page({
       this.getRelatedAnswer(lingyu,this.data.currentIndex)
     })
   },
+
   quitQuiz(){
     wx.navigateBack()
   },

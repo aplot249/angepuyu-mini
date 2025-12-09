@@ -2,16 +2,16 @@
   
   <!-- 顶部进度指示 -->
   <view class="progress-bar">
-    <text class="progress-text">卡片 {{currentIndex + 1}} / {{wordList.length}}</text>
+    <text class="progress-text">卡片 {{currentIndex + 1}} / {{ctList.length}}</text>
     <view class="progress-track">
-      <view class="progress-fill" style="width: {{((currentIndex + 1) / wordList.length) * 100}}%;"></view>
+      <view class="progress-fill" style="width: {{((currentIndex + 1) / ctList.length) * 100}}%;"></view>
     </view>
   </view>
 
   <!-- 卡片滑动区域 -->
   <!-- [修复] 增加 current="{{currentIndex}}" 属性，使 Swiper 跟随数据变化 -->
   <swiper class="card-swiper" current="{{currentIndex}}" bindchange="onSwiperChange" previous-margin="40rpx" next-margin="40rpx">
-    <block wx:for="{{wordList}}" wx:key="id">
+    <block wx:for="{{ctList}}" wx:key="id">
       <swiper-item class="card-swiper-item">
         
         <!-- 3D 翻转容器 -->

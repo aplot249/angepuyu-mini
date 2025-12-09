@@ -7,7 +7,6 @@ Page({
     fontSizeLevel: 1,
     fontSizeLabel: '标准',
     isDarkMode: false,
-    
     // 弹窗相关数据
     showFeedbackModal: false,
     feedbackContent: '',
@@ -128,7 +127,6 @@ Page({
   },
 
   // --- 意见反馈弹窗逻辑 ---
-  
   showFeedback() {
     this.setData({ 
       showFeedbackModal: true,
