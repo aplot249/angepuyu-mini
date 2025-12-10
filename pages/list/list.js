@@ -162,7 +162,7 @@ Page({
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao)
+    app.playAudio(item.fayin,xiaohao,item.title)
   },
 
   toggleFav(e) {

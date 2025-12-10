@@ -174,7 +174,7 @@
     <!-- 1. 卡片复习 (top) -->
     <view class="fab-sub-item item-1 {{isFabOpen ? 'show' : ''}}" catchtap="navigateToReview">
       <view class="sub-btn cyan">🎴</view>
-      <text class="sub-label">卡片测验</text>
+      <text class="sub-label">卡片学习</text>
     </view>
 
     <!-- 2. 每日练习 (top-right) -->

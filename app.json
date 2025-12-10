@@ -52,6 +52,7 @@
       }
     ]
   },
+  "requiredBackgroundModes": ["audio"],
   "permission": {
 
   },

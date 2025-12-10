@@ -3,6 +3,7 @@ import {
   http
 } from '../../requests/index'
 const XLSX = require('../../utils/xlsx.mini.min.js');
+const bgAudio = wx.getBackgroundAudioManager();
 
 Page({
   data: {
@@ -23,8 +24,7 @@ Page({
     phraseCount: '',
     wordsTotalPageNum: '',
     phraseTotalPageNum: '',
-    // 选中的ID集合 (跨Tab共享)
-    checkedIds: [],
+    checkedIds: [], // 选中的ID集合 (跨Tab共享)
     checkedItems:[],
     studyTimeDisplay: '0分钟' ,
     // [新增] 悬浮按钮相关状态
@@ -32,12 +32,10 @@ Page({
     fabPos: { x: 0, y: 0 }, // 按钮位置
     windowWidth: 0,
     windowHeight: 0,
-    //当前播放
-    currentAudioIndex:0,
+    currentAudioIndex:0, //当前播放
   },
   onLoad(){
       this.setData({isFabOpen:true})
-  //   this.initData()
       // 获取屏幕尺寸，初始化按钮位置到右下角
       const sys = wx.getSystemInfoSync();
       this.setData({
@@ -49,15 +47,56 @@ Page({
           y: sys.windowHeight * 0.5
         }
       })
-      app.globalData.ac.onEnded(() => {
-        this.playNext();  //播放下一个
-      });
-      app.globalData.ac.onError((res) => {
-        console.error('音频播放错误:', res.errMsg);
-        this.playNext();  // 错误时也尝试播放下一个，或进行其他处理
-      });
+      this.initAudioListener();
   },
 
+  // --- 2. 初始化监听器 (只执行一次) ---
+  initAudioListener() {
+    // 监听自然播放结束 -> 核心：自动切下一首
+    bgAudio.onEnded(() => {
+      console.log('本首播放结束，自动下一首');
+      this.playNext();
+    });
+    // 监听错误 -> 建议：如果出错，自动跳过播放下一首
+    bgAudio.onError((err) => {
+      console.error('播放出错', err);
+      // 可选：出错后自动切下一首，防止卡死
+      this.playNext();
+    });
+    // 监听上一曲/下一曲 (用户在锁屏界面点的)
+    // bgAudio.onPrev(() => this.playPrev());
+    // bgAudio.onNext(() => this.playNext());
+    // UI同步
+    bgAudio.onPlay(() => this.setData({ isPlaying: true }));
+    bgAudio.onPause(() => this.setData({ isPlaying: false }));
+    bgAudio.onStop(() => this.setData({ isPlaying: false }));
+  },
+  playMusic(index) {
+    const list = this.data.checkedItems;
+    // 边界检查
+    if (index < 0 || index >= list.length) {
+      console.log('列表播放完毕或索引越界');
+      return; 
+    }
+    const item = list[index];
+    // 更新数据索引
+    this.setData({ currentAudioIndex: index });
+    // 赋值给 bgAudio (一旦赋值 src，会自动开始播放)
+    bgAudio.title = item.swahili;
+    bgAudio.src = item.fayin; // 必须最后赋值
+  },
+  // 下一首
+  playNext() {
+    let nextIndex = this.data.currentAudioIndex + 1;
+    // 判断是否到达列表末尾
+    if (nextIndex >= this.data.checkedItems.length) {
+      // 策略A：停止播放
+      return;
+      // 策略B：循环播放（回到第0首）
+      // nextIndex = 0; 
+    }
+    this.playMusic(nextIndex);
+  },
   onShow() {
     this.setData({
       fontSizeLevel: app.globalData.fontSizeLevel,
@@ -224,32 +263,26 @@ Page({
   onFabTouchMove(e) {
     const { clientX, clientY } = e.touches[0];
     const { startX, startY, initialX, initialY } = this.dragData;
-    
     // 计算位移
     const deltaX = clientX - startX;
     const deltaY = clientY - startY;
-
     // 如果移动距离很小，不算拖动（防误触）
     if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
       this.dragData.isDragging = true;
-      
       // 拖动时自动收起菜单
       if (this.data.isFabOpen) {
         this.setData({ isFabOpen: false });
       }
     }
-
     // 计算新位置 (限制在屏幕范围内)
     let newX = initialX + deltaX;
     let newY = initialY + deltaY;
-    
     // 边界限制 (按钮宽高假设约 60px)
     const btnSize = 60; 
     if (newX < 0) newX = 0;
     if (newX > this.data.windowWidth - btnSize) newX = this.data.windowWidth - btnSize;
     if (newY < 0) newY = 0;
     if (newY > this.data.windowHeight - btnSize) newY = this.data.windowHeight - btnSize;
-
     this.setData({
       fabPos: { x: newX, y: newY }
     });
@@ -339,6 +372,7 @@ Page({
       }
     })
   },
+
   // --- 交互事件 ---
   onSearchInput(e) {
     this.setData({
@@ -556,15 +590,15 @@ Page({
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao)
+    app.playAudio(item.fayin,xiaohao,item.title)
   },
 
   exportDoc() {
-    // const count = this.data.checkedIds.length;
-    // if (count === 0) return wx.showToast({
-    //   title: '请先勾选词条',
-    //   icon: 'none'
-    // });
+    const count = this.data.checkedIds.length;
+    if (count === 0) return wx.showToast({
+      title: '请先勾选词条',
+      icon: 'none'
+    });
 
     // const cost = count * 5;
     // if (app.globalData.userInfo.points < cost) return wx.showToast({
@@ -590,35 +624,6 @@ Page({
     });
   },
 
-  // 播放当前索引的音频
-  playCurrentAudio() {
-    if (this.data.currentAudioIndex >= this.data.checkedItems.length) {
-      console.log('所有音频播放完毕');
-      this.setData({
-        // checkedIds:[],
-        // checkedItems:[],
-        currentAudioIndex:0
-      })
-      // 可以在这里触发完成回调
-      return;
-    }
-    const audioSrc = this.data.checkedItems[this.data.currentAudioIndex].fayin;
-    console.log('audioSrc',audioSrc)
-    // 停止当前播放并重置源
-    // app.globalData.ac.stop();
-    app.globalData.ac.src = audioSrc;
-    app.globalData.ac.play();
-  },
-
-  // 播放下一个音频
-  playNext() {
-    let nextIndex = this.data.currentAudioIndex + 1;
-    this.setData({
-      currentAudioIndex: nextIndex
-    });
-    this.playCurrentAudio();
-  },
-    
   playStream() {
     if (this.data.checkedIds.length === 0) return wx.showToast({
       title: '请先勾选词条',
@@ -629,7 +634,7 @@ Page({
       icon: 'none'
     });
     this.setData({isFabOpen:false})
-    this.playCurrentAudio()
+    this.playMusic(0)
   },
 
   // 2. 导出按钮的响应函数

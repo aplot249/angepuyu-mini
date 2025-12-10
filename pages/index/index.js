@@ -1,6 +1,7 @@
 const app = getApp();
 import {http} from '../../requests/index'
 import {LoginTip} from '../../utils/util'
+import audioManager from '../../utils/audioManager'
 
 Page({
   data: {
@@ -31,10 +32,8 @@ Page({
       '每日签到可领取积分奖励，别忘记哦。'
     ],
     dailyWordList:[],
-    dailyPhraseList:[]
-
+    dailyPhraseList:[],
   },
-
   onLoad() {
     this.calcNavBar();
     this.setGreeting();
@@ -92,27 +91,19 @@ Page({
 
   // [新增] 跳转到卡片复习
   navigateToReview() {
-    // if(!app.globalData.userInfo.isLoggedIn){
-    //   LoginTip('/pages/index/index')
-    // }else{
-      wx.navigateTo({ url: '/pages/review/review' });
-    // }
+    wx.navigateTo({ url: '/pages/review/review' });
   },
 
   // [新增] 跳转到每日练习
   navigateToQuiz() {
     console.log('app.globalData.userInfo',app.globalData.userInfo)
-    // if(!app.globalData.userInfo.isLoggedIn){
-    //   LoginTip('/pages/index/index')
-    // }else{
-      wx.navigateTo({ url: '/pages/quiz/quiz?from=index' })
-    // }
+    wx.navigateTo({ url: '/pages/quiz/quiz?from=index' })
   },
     
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao)
+    app.playAudio(item.fayin,xiaohao,item.swahili)
   },
 
   refreshDaily() {

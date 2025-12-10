@@ -12,7 +12,7 @@ App({
     },
     fontSizeLevel: 1, 
     isDarkMode: false,
-    ac: wx.createInnerAudioContext()
+    // ac: wx.createInnerAudioContext()
   },
 
   onLaunch() {
@@ -85,7 +85,7 @@ App({
     wx.setStorageSync('ts_user', this.globalData.userInfo);
   },
   
-  playAudio(mp3,xiaohao){
+  playAudio(mp3,xiaohao,title){
     if(!this.globalData.userInfo.isLoggedIn){
       wx.showModal({
         title: '请先登录，才能进行后续操作',
@@ -154,9 +154,11 @@ App({
         title: xiaohao != 0 ? '正在播放' : '暂无发音',
         icon:'none'
       })
-      let innerAudioContext = wx.createInnerAudioContext();
+      // let innerAudioContext = wx.createInnerAudioContext();
+      let innerAudioContext = wx.getBackgroundAudioManager();
+      innerAudioContext.title = title
       innerAudioContext.src = mp3
-      innerAudioContext.play()
+      // innerAudioContext.play()
       this.globalData.userInfo.points -= xiaohao
       http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
         console.log('已同步')
@@ -165,6 +167,7 @@ App({
     }   
    } // 没登录的结尾
   },
+
   changeFontSize() {
     let lvl = this.globalData.fontSizeLevel;
     lvl = (lvl + 1) % 4; 

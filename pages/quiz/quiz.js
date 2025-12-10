@@ -93,8 +93,8 @@ Page({
   playAudio(e) {
     const item = e.currentTarget.dataset.item;
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao)
-    wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
+    app.playAudio(item.fayin,xiaohao,item.title)
+    // wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
   },
 
   selectOption(e) {
