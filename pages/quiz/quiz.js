@@ -1,7 +1,6 @@
 const app = getApp();
 import  {http} from '../../requests/index'
 
-
 Page({
   data: {
     fontSizeLevel: 1,
@@ -21,7 +20,8 @@ Page({
       //   userChoice: -1,
       //   isCorrect: false
       // },
-    ]
+    ],
+    noLoad:false
   },
   // 洗牌函数（放在Page/Component对象内）
   shuffle(array) {
@@ -58,13 +58,13 @@ Page({
       http('/web/randomquestion/','get').then(res=>{
         // console.log(res)
         this.setData({
-          quizList:res,
+        noLoad:res.tip,
+        quizList:res.data,
           eachItemScore:Math.round(100/this.data.quizList.length)
         })
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
       })
-
     }
   },
   onShow() {
@@ -103,14 +103,11 @@ Page({
     console.log(question.chinese,oanswer,question.chinese===oanswer)
     // 如果已回答，则不可再次点击
     if (question.answered) return;
-
     const isCorrect = oanswer === question.chinese;
-    
     // 更新题目状态
     const answeredKey = `quizList[${qindex}].answered`;
     const choiceKey = `quizList[${qindex}].userChoice`;
     const correctKey = `quizList[${qindex}].isCorrect`;
-
     this.setData({
       [answeredKey]: true,
       [choiceKey]: oindex,
@@ -130,7 +127,7 @@ Page({
       if (qindex === this.data.quizList.length - 1) {
         setTimeout(() => {
           this.autoNext();
-        }, 1500); // 留1.5秒看错误解析
+        }, 1000); // 留1.5秒看错误解析
       }
     }
   },
@@ -177,16 +174,24 @@ Page({
     this.setData({
       isFinished:false
     })
-    http('/web/randomquestion/','get').then(res=>{
-      this.data.quizList.push(...res)
-      this.setData({
-        quizList:this.data.quizList,
-        currentIndex:this.data.currentIndex+1,
-        eachItemScore:Math.round(100/this.data.quizList.length)
+    if(this.data.noLoad==true){
+      wx.showToast({
+        title: '这是最后一题',
+        icon:'none'
       })
-      let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-      this.getRelatedAnswer(lingyu,this.data.currentIndex)
-    })
+    }else{
+      http('/web/randomquestion/','get').then(res=>{
+        this.data.quizList.push(...res.data)
+        this.setData({
+          noLoad:res.tip,
+          quizList:this.data.quizList,
+          currentIndex:this.data.currentIndex+1,
+          eachItemScore:Math.round(100/this.data.quizList.length)
+        })
+        let lingyu = this.data.quizList[this.data.currentIndex].lingyu
+        this.getRelatedAnswer(lingyu,this.data.currentIndex)
+      })
+    }
   },
 
   quitQuiz(){

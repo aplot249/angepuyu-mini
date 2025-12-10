@@ -15,7 +15,8 @@ Page({
       //   image: 'https://images.unsplash.com/photo-1596464716127-f9a86b5b3f4d?w=400&q=80',
       //   isFlipped: false
       // }
-    ]
+    ],
+    noLoad:false
   },
   onLoad(){
 //     let checkedItems = wx.getStorageSync('checkedItems')
@@ -41,10 +42,11 @@ Page({
     app.updateThemeSkin(app.globalData.isDarkMode);
     // 设置标题
     wx.setNavigationBarTitle({ title: '卡片复习' });
+    // 直接用我的收藏里取
     http('/web/randomquestion/','get').then(res=>{
-      console.log('gggggg',res)
-      this.setData({
-        ctList:res
+        this.setData({
+        noLoad:res.tip,
+        ctList:res.data
       })
     },err=>{
       console.log('err',err)
@@ -69,15 +71,23 @@ Page({
         currentIndex: e.detail.current
       });
     }
+    // 到最后一个了
     if(this.data.currentIndex === this.data.ctList.length-1){
-      http('/web/randomquestion/','get').then(res=>{
-        console.log('gggggg',res)
-        this.data.ctList.push(...res)
-        this.setData({
-          ctList:this.data.ctList,
-          currentIndex:this.data.currentIndex+1
+      if(this.data.noLoad==true){
+          wx.showToast({
+            title: '这是最后一张',
+            icon:'none'
+          })
+      }else{
+        http('/web/randomquestion/','get').then(res=>{
+          this.data.ctList.push(...res.data)
+          this.setData({
+            noLoad:res.tip,
+            ctList:this.data.ctList,
+            currentIndex:this.data.currentIndex+1
+          })
         })
-      })
+      }
     }
   },
 
@@ -89,14 +99,21 @@ Page({
     wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
   },
 
-  markKnown() {
-    wx.showToast({ title: '已记住了！', icon: 'success' });
-    // 逻辑：自动滑到下一张
+  markKnown(e) {
+    console.log(e)
+    // wx.showToast({ title: '已记住了！', icon: 'success' });
+    wx.showToast({ title: '不会再出现', icon: 'none' });
+
+    let questionid = e.currentTarget.dataset.id
+    // 逻辑：自动滑到下一，并加入已做过
+    http('/web/hasdonequeston/','post',{'question':questionid}).then(res=>{
+
+    })
     this.nextCard();
   },
 
   markForgot() {
-    wx.showToast({ title: '加入生词本', icon: 'none' });
+    // wx.showToast({ title: '加入生词本', icon: 'none' });
     // 逻辑：自动滑到下一张
     this.nextCard();
   },

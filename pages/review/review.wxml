@@ -53,8 +53,8 @@
                 </view>
 
                 <view class="action-row">
-                  <view class="action-btn known" catchtap="markKnown">我认识</view>
-                  <view class="action-btn forgot" catchtap="markForgot">忘记了</view>
+                  <view class="action-btn known" data-id="{{item.id}}" catchtap="markKnown">已认识（不再出现）</view>
+                  <view class="action-btn forgot" catchtap="markForgot">不认识</view>
                 </view>
               </view>
             </view>

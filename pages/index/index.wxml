@@ -46,7 +46,7 @@
       <view class="practice-card review-style" bindtap="navigateToReview">
         <view class="p-icon-box">🎴</view>
         <view class="p-text-box">
-          <text class="p-title">卡片测验</text>
+          <text class="p-title">卡片学习</text>
           <text class="p-desc">Review</text>
         </view>
       </view>
