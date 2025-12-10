@@ -1,6 +1,6 @@
 // const baseHOST = 'http://127.0.0.1:8000'
 // const baseHOST = 'https://siyu.jsxinlingdi.com'
-const baseHOST = 'http://192.168.1.182:8000'
+const baseHOST = 'http://172.22.96.1:8000'
 const baseImgUrl = baseHOST + '/media'
 
 function request(url, method = 'POST', data = {}) {
@@ -23,6 +23,9 @@ function request(url, method = 'POST', data = {}) {
           case 200:
             resolve(data)
             break;
+          case 201:
+            resolve(data)
+            break;            
           case 204:
             resolve(data)
             break;            

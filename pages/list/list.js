@@ -172,11 +172,17 @@ Page({
     console.log("op",op,id)
     if (op){ //已收藏，那就是取消收藏
       http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
+        if(res.isLast){
+          // 就要清除收藏分类了
+          let ll = app.globalData.userInfo.favcat.splice(res.id,1)
+          app.globalData.userInfo.favcat = ll
+          app.saveData()
+        }
         wx.showToast({
           title: '已取消收藏',
           icon:'none'
         })
-          let favIds = app.globalData.userInfo.favorites  // 'favorites');
+          let favIds = app.globalData.userInfo.favorites 
           favIds.splice(favIds.indexOf(id),1)
           app.globalData.userInfo.favorites = favIds
           app.saveData()
@@ -199,10 +205,12 @@ Page({
           title: '已收藏',
           icon:'none'
         })
-        let favIds = app.globalData.userInfo.favorites || [] // 'favorites');
+        let favIds = app.globalData.userInfo.favorites || [] 
         favIds.push(id)
         console.log('favIDS',favIds)
         app.globalData.userInfo.favorites = favIds
+        // app.globalData.userInfo.favcat.push(3)
+        app.globalData.userInfo.favcat = Array.from(new Set([...app.globalData.userInfo.favcat,...[res.lingyu]]))
         app.saveData()
         if(this.data.currentTab == 0){
           this.data.wordList[this.data.wordList.findIndex(i=>i.id==id)]['isFav'] = true
@@ -215,57 +223,7 @@ Page({
             phraseList:this.data.phraseList
           })
         }
-      },
-      err=>{
-        console.log('err', err.detail)
-        if (err.detail == 'JWT Token已过期！' || err.detail == '身份认证信息未提供。') {
-          wx.showModal({
-              title: '请先登录，才能进行后续操作',
-              confirmText: "确认登录",
-              success: (res) => {
-                if (res.confirm) {
-                  wx.getUserProfile({
-                    desc: '需微信授权登录',
-                    success: (res) => {
-                      wx.showToast({
-                        title: '正在登录...',
-                        icon: "none"
-                      })
-                      wx.login({
-                        timeout: 8000,
-                        success: r => {
-                          console.log(r.code)
-                          http('/user/openid/', 'post', {
-                            code: r.code,
-                            gender: res.userInfo.gender,
-                            wxnickname: res.userInfo.nickName,
-                          }).then(res => {
-                            console.log('登录信息：', res)
-                            const newInfo = {
-                              ...res.user,
-                              isLoggedIn: true,
-                            };
-                            app.globalData.userInfo = newInfo;
-                            app.saveData();
-                            wx.showToast({
-                              title: '登录成功',
-                              icon: 'none'
-                            });
-                            wx.setStorageSync('token', res.token)
-                            that.onLoad()
-                          })
-                        }
-                      })
-                    }
-                  })
-                }
-              }
-            }
-          )
-        }
-      }
-      )
-      
+      })
     }
     let favs = app.globalData.userInfo.favorites || [];
     const index = favs.indexOf(id);
