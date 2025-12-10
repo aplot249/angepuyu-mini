@@ -190,10 +190,10 @@
     </view>
 
     <!-- 4. 导出文档 (bottom) -->
-    <view class="fab-sub-item item-4 {{isFabOpen ? 'show' : ''}}" catchtap="exportDoc">
+    <!-- <view class="fab-sub-item item-4 {{isFabOpen ? 'show' : ''}}" catchtap="exportDoc">
       <view class="sub-btn blue">📄</view>
       <text class="sub-label">导出文档</text>
-    </view>
+    </view> -->
 
     <!-- 5. 全选 (bottom-left) -->
     <view class="fab-sub-item item-5 {{isFabOpen ? 'show' : ''}}" catchtap="selectAll">

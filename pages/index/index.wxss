@@ -139,6 +139,7 @@
 
 /* [新增] 练习功能区样式 */
 .practice-section {
+  height: 150rpx;
   display: flex;
   justify-content: space-between;
   gap: 24rpx;
@@ -164,7 +165,7 @@
 /* 测验 (左) */
 .review-style {
   /* background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%); */
-  background: linear-gradient(135deg, #ff9671 20%, #f9f871 100%);
+  background: linear-gradient(135deg, #FFCCBC 0%, #f9f871 100%);
   border: 1rpx solid rgba(0, 188, 212, 0.2);
 }
 

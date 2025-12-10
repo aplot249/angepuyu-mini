@@ -10,29 +10,37 @@ Page({
     fontSizeLevel: 1,
     isDarkMode: false,
     currentTab: 0, // 0: Words, 1: Phrases
+
     searchText: '',
     // 数据列表
     wordList: [],
     phraseList: [],
+
     // 分页状态 (用于模拟无限加载)
     pageWord: 1,
     pagePhrase: 1,
     hasMoreWords: true,
     hasMorePhrases: true,
+
     pageSize: 6,
+
     wordsCount: '',
     phraseCount: '',
+
     wordsTotalPageNum: '',
     phraseTotalPageNum: '',
+
     checkedIds: [], // 选中的ID集合 (跨Tab共享)
     checkedItems:[],
+
     studyTimeDisplay: '0分钟' ,
-    // [新增] 悬浮按钮相关状态
-    isFabOpen: false, // 菜单是否展开
+
+    isFabOpen: false, // 悬浮按钮相关状态，菜单是否展开
     fabPos: { x: 0, y: 0 }, // 按钮位置
     windowWidth: 0,
     windowHeight: 0,
-    currentAudioIndex:0, //当前播放
+
+    currentAudioIndex:0, //当前播放序号
   },
   onLoad(){
       this.setData({isFabOpen:true})
@@ -41,13 +49,14 @@ Page({
       this.setData({
         windowWidth: sys.windowWidth,
         windowHeight: sys.windowHeight,
-        // 默认位置：右下角，留出一些边距
-        fabPos: {
-          x: sys.windowWidth * 0.6,
-          y: sys.windowHeight * 0.5
+        fabPos: { // 默认位置：右下角，留出一些边距
+          // x: sys.windowWidth * 0.6,
+          // y: sys.windowHeight * 0.5
+          x: sys.windowWidth * 0.8,
+          y: sys.windowHeight * 0.8
         }
       })
-      this.initAudioListener();
+      this.initAudioListener(); //播音监听
   },
 
   // --- 2. 初始化监听器 (只执行一次) ---
@@ -71,6 +80,7 @@ Page({
     bgAudio.onPause(() => this.setData({ isPlaying: false }));
     bgAudio.onStop(() => this.setData({ isPlaying: false }));
   },
+  // 串联播放音乐
   playMusic(index) {
     const list = this.data.checkedItems;
     // 边界检查
@@ -85,7 +95,7 @@ Page({
     bgAudio.title = item.swahili;
     bgAudio.src = item.fayin; // 必须最后赋值
   },
-  // 下一首
+  // 串联播放下一条音频
   playNext() {
     let nextIndex = this.data.currentAudioIndex + 1;
     // 判断是否到达列表末尾
@@ -97,14 +107,17 @@ Page({
     }
     this.playMusic(nextIndex);
   },
+
   onShow() {
     this.setData({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-    // this.resetAndLoad()
-    // this.setTabBarBadge();
+
+    // this.resetAndLoad() 相当于重置作用
+    // this.setTabBarBadge(); // 设置徽标的没用
+
     // [新增] 记录开始时间并更新显示
     this.startTime = Date.now();
     this.updateTimeDisplay();
@@ -115,10 +128,11 @@ Page({
       pageWord: 1,
       pagePhrase: 1,
     })
+
     let myFav = JSON.stringify(app.globalData.userInfo.favorites) || []
     http(`/web/ctiemByFav/?page=1`, 'POST', {
       "q": myFav,
-      'wp': '0'
+      'wp': '0' //请求单词的第一页
     }).then(
       res => {
         console.log(res)
@@ -134,7 +148,7 @@ Page({
         })
         http(`/web/ctiemByFav/?page=1`, 'POST', {
           "q": myFav,
-          'wp': '1'
+          'wp': '1' //请求短语的第一页
         }).then(res => {
           let list = res.results.map(item => ({
             ...item,
@@ -150,14 +164,16 @@ Page({
       }
     )
   },
-  setTabBarBadge() {
-    const total = this.data.wordList.length + this.data.phraseList.length;
-    if (total > 0) {
-      wx.setTabBarBadge({ index: 2, text: String(total) });
-    } else {
-      wx.removeTabBarBadge({ index: 2 });
-    }
-  },
+
+  // setTabBarBadge() {
+  //   const total = this.data.wordList.length + this.data.phraseList.length;
+  //   if (total > 0) {
+  //     wx.setTabBarBadge({ index: 2, text: String(total) });
+  //   } else {
+  //     wx.removeTabBarBadge({ index: 2 });
+  //   }
+  // },
+
   // initData(){
   //   // console.log('fffffffff')
   //   let that = this
@@ -249,6 +265,7 @@ Page({
   // --- 拖拽与菜单逻辑 ---
 
   // 触摸开始
+  // 触摸移动的
   onFabTouchStart(e) {
     this.dragData = {
       startX: e.touches[0].clientX,
@@ -348,6 +365,7 @@ Page({
     }
   },
 
+  // 只有取消收藏
   toggleFav(e) {
     const id = e.currentTarget.dataset.id;
     http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
@@ -355,10 +373,13 @@ Page({
         title: '已取消收藏',
         icon:'none'
       })
+      // 先删除localStorage和全局的
       let favIds = app.globalData.userInfo.favorites 
       favIds.splice(favIds.indexOf(id),1)
       app.globalData.userInfo.favorites = favIds
       app.saveData()
+
+      // 再从对应的单词、短语词条里删除
       if(this.data.currentTab == 0){
         this.data.wordList.splice(this.data.wordList.findIndex(i=>i.id==id),1)
         this.setData({
@@ -391,13 +412,14 @@ Page({
     this.loadFavorites('phrase');
   },
 
+  // 手动点击切换
   switchTab(e) {
     const idx = parseInt(e.currentTarget.dataset.idx);
     this.setData({
       currentTab: idx
     });
   },
-
+  // 窗口滑动切换
   onSwiperChange(e) {
     this.setData({
       currentTab: e.detail.current
@@ -423,8 +445,6 @@ Page({
 
   // [新增] 跳转到卡片复习
   navigateToReview() {
-    console.log(this.data.checkedItems)
-    wx.setStorageSync('checkedItems', this.data.checkedItems)
     wx.navigateTo({ url: '/pages/review/review' });
   },
 
@@ -433,7 +453,7 @@ Page({
     wx.navigateTo({ url: '/pages/quiz/quiz' });
   },
     
-  // 勾选/取消勾选
+  // 单个勾选/取消勾选
   toggleCheck(e) {
     const {
       id,
@@ -457,7 +477,7 @@ Page({
       checkedItems:checkedItems,
     });
     console.log("this.data.checkedItems",this.data.checkedItems)
-    console.log("this.data.List",this.data.wordList)
+    // console.log("this.data.List",this.data.wordList)
     // 更新视图状态 (局部更新，性能优化)
     const listKey = type === 'word' ? 'wordList' : 'phraseList';
     const list = this.data[listKey];
@@ -551,18 +571,18 @@ Page({
     this.setData({ studyTimeDisplay: displayStr });
   },
 
-  resetAndLoad() {
-    this.setData({
-      wordList: [],
-      phraseList: [],
-      pageWord: 1,
-      pagePhrase: 1,
-      hasMoreWords: true,
-      hasMorePhrases: true,
-    });
-    this.loadFavorites('word');
-    this.loadFavorites('phrase');
-  },
+  // resetAndLoad() {
+  //   this.setData({
+  //     wordList: [],
+  //     phraseList: [],
+  //     pageWord: 1,
+  //     pagePhrase: 1,
+  //     hasMoreWords: true,
+  //     hasMorePhrases: true,
+  //   });
+  //   this.loadFavorites('word');
+  //   this.loadFavorites('phrase');
+  // },
 
   // 全不选 (重置所有)
   unselectAll() {
@@ -587,12 +607,14 @@ Page({
     });
   },
 
+  // 单挑发音
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
     app.playAudio(item.fayin,xiaohao,item.title)
   },
 
+  // 导出文档
   exportDoc() {
     const count = this.data.checkedIds.length;
     if (count === 0) return wx.showToast({
@@ -624,6 +646,7 @@ Page({
     });
   },
 
+  // 串联播音
   playStream() {
     if (this.data.checkedIds.length === 0) return wx.showToast({
       title: '请先勾选词条',

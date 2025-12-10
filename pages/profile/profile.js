@@ -238,6 +238,10 @@ Page({
     wx.navigateTo({ url: '/pages/purchase/purchase' });
   },
 
+  navigateToShare() {
+    wx.navigateTo({ url: '/pages/share/share' });
+  },
+
   navigateToContribute() {
     if (!this.data.userInfo.isLoggedIn) {
       return wx.showToast({ title: '请先登录', icon: 'none' });

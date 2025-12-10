@@ -129,7 +129,7 @@
   align-items: center; 
   justify-content: center;
 }
-.num { font-size: var(--text-lg); font-weight: bold; color: #3E2723; }
+.num { font-size: var(--text-xl); font-weight: bold; color: #3E2723; }
 .label { font-size: var(--text-xs); opacity: 0.8; margin-top: 4rpx; color: #3E2723; }
 
 .share-btn {
@@ -144,7 +144,15 @@
 
 .text-yellow { color: #F57F17; }
 .text-orange { color: #BF360C; }
-
+.menu-title{
+  padding: 0 0 18rpx 0;
+  font-size: var(--text-lg); 
+  font-weight: bold; 
+  color: var(--text-main);
+}
+.paddingtop{
+  padding-top: 30rpx;
+}
 .menu-item { display: flex; justify-content: space-between; align-items: center; padding: 30rpx 0; border-bottom: 1rpx solid rgba(0,0,0,0.05); }
 .menu-item:last-child { border-bottom: none; }
 .menu-left { display: flex; align-items: center; font-size: var(--text-base); font-weight: bold; }

@@ -1,7 +1,6 @@
 const app = getApp();
 import {http} from '../../requests/index'
 import {LoginTip} from '../../utils/util'
-import audioManager from '../../utils/audioManager'
 
 Page({
   data: {

@@ -143,4 +143,6 @@
     </view>
 
   </view>
+
+  <welcome-modal visible="{{true}}" bind:close="onCloseWelcome" bind:confirm="onConfirmWelcome" />
 </view>
