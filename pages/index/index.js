@@ -1,6 +1,5 @@
 const app = getApp();
 import {http} from '../../requests/index'
-import {LoginTip} from '../../utils/util'
 
 Page({
   data: {

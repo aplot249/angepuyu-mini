@@ -248,7 +248,12 @@ Page({
     }
     wx.navigateTo({ url: '/pages/contribute/contribute' });
   },
-  
+  navigateToMistake(){
+    wx.navigateTo({ url: '/pages/mistake/mistake' });
+  },
+  navigateToShare(){
+    wx.navigateTo({ url: '/pages/share/share' });
+  },
   notImplemented() {
     wx.showToast({ title: '功能开发中', icon: 'none' });
   }

@@ -1,4 +1,5 @@
 const { http } = require("./requests/index");
+import { eventBus } from './utils/eventBus.js';
 
 App({
   globalData: {
@@ -10,6 +11,7 @@ App({
       hasSharedToday: false, // [新增] 今日是否已分享
       favorites: []
     },
+    userCreated:null,
     fontSizeLevel: 1, 
     isDarkMode: false,
     // ac: wx.createInnerAudioContext()
@@ -114,6 +116,8 @@ App({
                         isLoggedIn: true,
                       };
                       this.globalData.userInfo = newInfo;
+                      this.globalData.userCreated =  res.created
+                      eventBus.emit('userNewCreated', this.globalData.userCreated);
                       this.saveData();
                       wx.showToast({
                         title: '登录成功',

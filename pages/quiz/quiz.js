@@ -23,7 +23,6 @@ Page({
     ],
     noLoad:false
   },
-  // 洗牌函数（放在Page/Component对象内）
   shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -58,8 +57,8 @@ Page({
       http('/web/randomquestion/','get').then(res=>{
         // console.log(res)
         this.setData({
-        noLoad:res.tip,
-        quizList:res.data,
+          noLoad:res.tip,
+          quizList:res.data,
           eachItemScore:Math.round(100/this.data.quizList.length)
         })
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
@@ -73,7 +72,7 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-    wx.setNavigationBarTitle({ title: '每日练习' });
+    wx.setNavigationBarTitle({ title: '做题练习' });
   },
 
   onSwiperChange(e) {
@@ -123,12 +122,16 @@ Page({
       }, 1000);
     } else {
       wx.vibrateLong();
+      console.log('dacuo',question)
+      http('/web/mistake/','post',{'ctitemid':question.id,'answers':JSON.stringify(question.options)}).then(res=>{
+        console.log('ress9',res)
+      })
       // [修复] 如果是最后一题，答错也需要在延迟后进入结算，否则用户无路可走
-      if (qindex === this.data.quizList.length - 1) {
+      // if (qindex === this.data.quizList.length - 1) {
         setTimeout(() => {
           this.autoNext();
         }, 1000); // 留1.5秒看错误解析
-      }
+      // }
     }
   },
 

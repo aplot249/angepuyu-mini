@@ -100,9 +100,9 @@
 .circle-btn {
   margin-top: 20rpx;
   width: 180rpx;
-  /* height: 64rpx; */
+  height: 40rpx;
   border-radius: 20%;
-  background-color: #FFF3E0; /* 暖色背景 */
+  background-color: #FFF3E0; /*暖色背景*/
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,5 +120,7 @@
   line-height: 1;
   padding: 6rpx 2rpx;
   /* border:1px solid; */
-  color: #FF7043;
+  /* color: #FF7043; */
+  color: var(--text-sub);
+
 }

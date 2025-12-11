@@ -1,6 +1,8 @@
+import { eventBus } from '../utils/eventBus.js';
+
 // const baseHOST = 'http://127.0.0.1:8000'
-const baseHOST = 'https://siyu.jsxinlingdi.com'
-// const baseHOST = 'http://192.168.1.181:8000'
+// const baseHOST = 'https://siyu.jsxinlingdi.com'
+const baseHOST = 'http://192.168.1.181:8000'
 const baseImgUrl = baseHOST + '/media'
 
 function request(url, method = 'POST', data = {}) {
@@ -18,7 +20,7 @@ function request(url, method = 'POST', data = {}) {
       timeout: '8000',
       success: res => {
         const { statusCode, data } = res;
-        console.log('eeeeeeeeeee',statusCode)
+        // console.log('eeeeeeeeeee',statusCode)
         switch(statusCode){
           case 200:
             resolve(data)
@@ -85,6 +87,8 @@ function request(url, method = 'POST', data = {}) {
                                     isLoggedIn: true,
                                   };
                                   app.globalData.userInfo = newInfo;
+                                  app.globalData.userCreated =  res.data.created
+                                  eventBus.emit('userNewCreated', app.globalData.userCreated);
                                   app.saveData();
                                   wx.showToast({
                                     title: '登录成功',

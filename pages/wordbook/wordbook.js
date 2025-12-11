@@ -455,11 +455,7 @@ Page({
     
   // 单个勾选/取消勾选
   toggleCheck(e) {
-    const {
-      id,
-      type,
-      item
-    } = e.currentTarget.dataset;
+    const {id,type,item} = e.currentTarget.dataset;
     let ids = this.data.checkedIds;
     let checkedItems = this.data.checkedItems
     // 更新全局ID列表

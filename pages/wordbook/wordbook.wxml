@@ -27,15 +27,15 @@
       <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMoreWords">
         <view wx:if="{{wordList.length === 0}}" class="empty-state">
           <view class="empty-icon">📂</view>
-          <text>还没有收藏单词哦~</text>
+          <text>还没有单词哦，请先在行业分类中选择~</text>
         </view>
 
         <block wx:for="{{wordList}}" wx:key="id">
           <!-- 绑定点击卡片切换选中状态 -->
-          <view class="card item-card word-layout" bindtap="toggleCheck"  data-id="{{item.id}}" data-type="word" data-item="{{item}}">
+          <view class="card item-card word-layout" bindtap="playAudio"  data-id="{{item.id}}" data-type="word" data-item="{{item}}">
             
             <!-- 复选框区域 (保持在最左侧) -->
-            <view class="checkbox-area">
+            <view class="checkbox-area" catchtap="toggleCheck" data-id="{{item.id}}" data-type="word" data-item="{{item}}">
               <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
                 <view wx:if="{{item.checked}}" class="check-mark">✓</view>
               </view>
@@ -86,7 +86,7 @@
            <text wx:if="{{hasMoreWords}}">加载中...</text>
            <text wx:else>--- 到底啦 ---</text>
         </view>
-        <view style="height: 200rpx;"></view>
+        <!-- <view style="height: 200rpx;"></view> -->
       </scroll-view>
     </swiper-item>
 
@@ -95,13 +95,13 @@
       <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMorePhrases">
         <view wx:if="{{phraseList.length === 0}}" class="empty-state">
           <view class="empty-icon">📂</view>
-          <text>还没有收藏短语哦~</text>
+          <text>还没有单词哦，请先在行业分类中选择~</text>
         </view>
 
         <block wx:for="{{phraseList}}" wx:key="id">
-          <view class="card item-card phrase-layout" bindtap="toggleCheck" data-id="{{item.id}}" data-type="phrase" data-item="{{item}}">
+          <view class="card item-card phrase-layout" bindtap="playAudio" data-id="{{item.id}}" data-type="phrase" data-item="{{item}}">
             
-            <view class="checkbox-area">
+            <view class="checkbox-area" catchtap="toggleCheck" data-id="{{item.id}}" data-type="phrase" data-item="{{item}}">
               <view class="custom-checkbox {{item.checked ? 'checked' : ''}}">
                 <view wx:if="{{item.checked}}" class="check-mark">✓</view>
               </view>
@@ -145,7 +145,7 @@
            <text wx:if="{{hasMorePhrases}}">加载中...</text>
            <text wx:else>--- 到底啦 ---</text>
         </view>
-        <view style="height: 200rpx;"></view>
+        <!-- <view style="height: 200rpx;"></view> -->
       </scroll-view>
     </swiper-item>
 

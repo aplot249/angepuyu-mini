@@ -12,7 +12,8 @@
     "pages/privacy/privacy",
     "pages/article/article",
     "pages/review/review",
-    "pages/quiz/quiz"
+    "pages/quiz/quiz",
+    "pages/mistake/mistake"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -57,7 +57,7 @@
 .main-content {
   position: relative;
   z-index: 20;
-  padding: 0 30rpx;
+  padding: 0 30rpx 15rpx 30rpx;
 }
 
 .banner-swiper.main {
@@ -259,7 +259,7 @@
 }
 
 .refresh-btn {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--text-sub);
   background: rgba(0, 0, 0, 0.05);
   padding: 6rpx 16rpx;
@@ -334,6 +334,7 @@
 
 .word-card-mini .tag {
   font-size: 18rpx;
+  font-size: var(--text-sub);
   padding: 2rpx 6rpx;
   margin-right: 6rpx;
 }
@@ -396,7 +397,9 @@
 }
 
 .phrase-layout {
-  border-left: 8rpx solid #FF7043;
+  /* border: 1px solid; */
+  /* border-left: 8rpx solid #FF7043; */
+  /* margin-bottom: 20rpx; */
 }
 
 .phrase-header {

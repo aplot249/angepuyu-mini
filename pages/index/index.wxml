@@ -78,7 +78,7 @@
           <view class="info-col">
             <view class="row-flex">
               <text class="sw-text">{{item.swahili}}</text>
-              <view class="play-btn mini" bindtap="playAudio" data-item="{{item}}">🔊</view>
+              <view class="play-btn" bindtap="playAudio" data-item="{{item}}">🔊</view>
             </view>
             
             <view class="homonym-box">
@@ -115,7 +115,7 @@
     <!-- 5. 每日短语 -->
     <view class="section-header">
       <view class="section-title">
-        <text>每日短语</text>
+        <text>每日一句</text>
         <text class="section-tag">Phrase</text>
       </view>
     </view>
@@ -144,5 +144,5 @@
 
   </view>
 
-  <welcome-modal visible="{{true}}" bind:close="onCloseWelcome" bind:confirm="onConfirmWelcome" />
+  <welcome-modal />
 </view>

@@ -24,11 +24,18 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/quiz/quiz",
-          "pathName": "pages/quiz/quiz",
+          "name": "pages/mistake/mistake",
+          "pathName": "pages/mistake/mistake",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/quiz/quiz",
+          "pathName": "pages/quiz/quiz",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/review/review",
