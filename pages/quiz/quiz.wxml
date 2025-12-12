@@ -1,36 +1,48 @@
 <view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
   
-  <!-- 顶部进度 -->
-  <view class="header-bar">
-    <view class="progress-info">
-      <text class="p-text">进度 {{currentIndex + 1}}/{{quizList.length}}</text>
-      <text class="score-text">得分: {{score}}</text>
-    </view>
-    <view class="progress-track">
-      <view class="progress-fill" style="width: {{((currentIndex + 1) / quizList.length) * 100}}%;"></view>
+  <!-- 1. 顶部数据统计栏 (新版) -->
+  <view class="stats-header">
+    <view class="stats-grid">
+      <view class="stat-item">
+        <text class="stat-num">{{completedCount}}</text>
+        <text class="stat-label">已做题</text>
+      </view>
+      <view class="stat-line"></view>
+      <view class="stat-item" bind:tap="goMistake">
+        <text class="stat-num">{{wrongCount}}</text>
+        <text class="stat-label">错题</text>
+      </view>
+      <view class="stat-line"></view>
+      <!-- <view class="stat-item">
+        <text class="stat-num">{{quizList.length - completedCount}}</text>
+        <text class="stat-label">剩余题</text>
+      </view> -->
+      <view class="stat-line"></view>
+      <view class="stat-item" bind:tap="goPurchase">
+        <text class="stat-num highlight">{{points}}</text>
+        <text class="stat-label">积分</text>
+      </view>
     </view>
   </view>
 
-  <!-- 题目滑动区域 -->
-  <swiper class="quiz-swiper" current="{{currentIndex}}" bindchange="onSwiperChange" current="{{currentIndex}}" previous-margin="40rpx" next-margin="40rpx">
+  <!-- 2. 题目滑动区域 -->
+  <swiper class="quiz-swiper" bindchange="onSwiperChange" current="{{currentIndex}}" previous-margin="40rpx" next-margin="40rpx">
     <block wx:for="{{quizList}}" wx:key="id" wx:for-index="qIdx" wx:for-item="quizItem">
       <swiper-item class="quiz-swiper-item">
-        
         <view class="quiz-card">
-          
           <!-- 题目区域 -->
           <view class="question-area">
             <view class="q-tag">单词辨析</view>
             <text class="q-word">{{quizItem.swahili}}</text>
             <view class="play-btn" catchtap="playAudio" data-item="{{quizItem}}">🔊</view>
-            <text class="q-instruction">请选择正确的中文释义</text>
+            <text class="q-instruction">请选择正确的中文释义 (消耗5积分)</text>
           </view>
 
           <!-- 选项区域 -->
           <view class="options-area" style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
             <block wx:for="{{quizItem.options}}" wx:key="*this" wx:for-index="oIdx" wx:for-item="option">
               <view 
-                class="option-btn {{quizItem.answered ? (option === quizItem.chinese ? 'correct' : (quizItem.userChoice === oIdx ? 'wrong' : 'dim')) : ''}}" 
+                class="option-btn {{quizItem.answered ? (option === quizItem.chinese ? 'correct' : (quizItem.userChoice === oIdx ? 'wrong' : 'dim')) : ''}}"
                 bindtap="selectOption" 
                 data-qindex="{{qIdx}}" 
                 data-oindex="{{oIdx}}"
@@ -61,25 +73,46 @@
     点击此处或滑动进入下一题 →
   </view>
 
-  <!-- 结果弹窗 -->
+  <!-- 3. 结果弹窗 (做完题显示) -->
   <view class="result-overlay {{isFinished ? 'show' : ''}}">
     <view class="result-card">
-      <view class="result-icon">{{score >= 80 ? '🏆' : (score >= 60 ? '👍' : '💪')}}</view>
+      <view class="result-icon">{{score >= 60 ? '🏆' : '💪'}}</view>
       <view class="result-title">{{score >= 80 ? '水平不错' : (score >= 60 ? '给你点赞' : '要继续努力')}}</view>
       <view class="result-score">{{score}}分</view>
       <view class="result-desc">
         {{score >= 80 ? '太棒了！你的斯瓦西里语水平突飞猛进！' : (score >= 60 ? '不错哦，继续保持！' : '不要灰心，多练习几次就记住了。')}}
+        本次练习共做 {{completedCount}} 题，错 {{wrongCount}} 题。继续加油！
       </view>
-      
       <view class="result-actions">
-        <!-- 引导分享按钮 -->
-        <button class="action-btn btn-share" open-type="share">
-          分享成绩给好友
-        </button>
+        <button class="action-btn btn-share" open-type="share">分享成绩</button>
         <view class="action-btn btn-restart" bindtap="restartQuiz">再练一次</view>
         <view class="action-btn btn-restart" bindtap="continueQuiz">继续练习</view>
-        <view class="action-btn btn-restart" bindtap="quitQuiz">退出</view>
       </view>
     </view>
   </view>
+
+  <!-- 4. 积分不足弹窗 (新增) -->
+  <view class="modal-mask {{showNoPointsModal ? 'show' : ''}}" catchtouchmove="true">
+    <view class="modal-box">
+      <view class="modal-header">
+        <text class="modal-icon">💎</text>
+      </view>
+      <view class="modal-content">
+        <view class="modal-title">积分不足</view>
+        <view class="modal-desc">每做一道题需要消耗 5 积分，您当前的积分不足，无法继续答题。</view>
+        <view class="modal-btns">
+          <!-- 分享按钮 -->
+          <button class="m-btn share-btn" open-type="share">
+            <text>分享赚积分</text>
+          </button>
+          <!-- 购买按钮 -->
+          <view class="m-btn buy-btn" bindtap="buyPoints">
+            <text>花30元购买1000积分</text>
+          </view>
+        </view>
+        <view class="modal-close" bindtap="closeNoPointsModal">暂不练习</view>
+      </view>
+    </view>
+  </view>
+
 </view>

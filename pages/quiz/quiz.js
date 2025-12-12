@@ -1,14 +1,22 @@
 const app = getApp();
-import  {http} from '../../requests/index'
+import {http} from '../../requests/index'
 
 Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
     currentIndex: 0,
-    score: 0,
-    isFinished: false, // 新增：是否完成标记
-    eachItemScore:0,
+    
+    // 统计数据
+    score: 60,         // 初始积分 (模拟)
+    points:null,
+
+    completedCount: 0, // 已做题数
+    wrongCount: 0,     // 错题数
+    
+    isFinished: false,
+    showNoPointsModal: false, // 积分不足弹窗控制
+
     // 模拟题库
     quizList: [
       // {
@@ -19,9 +27,31 @@ Page({
       //   answered: false,
       //   userChoice: -1,
       //   isCorrect: false
-      // },
+      // }
     ],
     noLoad:false
+  },
+  onLoad(){
+      http('/web/randomquestion/','get').then(res=>{
+      // console.log(res)
+      this.setData({
+        noLoad:res.tip,
+        quizList:res.data,
+        eachItemScore:Math.round(100/this.data.quizList.length),
+        points:app.globalData.userInfo.points
+      })
+      let lingyu = this.data.quizList[this.data.currentIndex].lingyu
+      this.getRelatedAnswer(lingyu,this.data.currentIndex)
+    })
+  },
+  onShow() {
+    this.setData({ 
+      fontSizeLevel: app.globalData.fontSizeLevel,
+      isDarkMode: app.globalData.isDarkMode,
+      points:app.globalData.userInfo.points,
+    });
+    app.updateThemeSkin(app.globalData.isDarkMode);
+    wx.setNavigationBarTitle({ title: '每日练习' });
   },
   shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -43,48 +73,41 @@ Page({
       })
     })
   },
-  onLoad(option){
-    // 如果是选好的单词进来练习
-    if(option.from!='index'){
-      let checkedItems = wx.getStorageSync('checkedItems')
-      this.setData({
-        quizList:checkedItems,
-        eachItemScore:Math.round(100/this.data.quizList.length)
-      })
-      let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-      this.getRelatedAnswer(lingyu,this.data.currentIndex)
-    }else{
-      http('/web/randomquestion/','get').then(res=>{
-        // console.log(res)
-        this.setData({
-          noLoad:res.tip,
-          quizList:res.data,
-          eachItemScore:Math.round(100/this.data.quizList.length)
-        })
-        let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-        this.getRelatedAnswer(lingyu,this.data.currentIndex)
-      })
-    }
-  },
-  onShow() {
-    this.setData({ 
-      fontSizeLevel: app.globalData.fontSizeLevel,
-      isDarkMode: app.globalData.isDarkMode
-    });
-    app.updateThemeSkin(app.globalData.isDarkMode);
-    wx.setNavigationBarTitle({ title: '做题练习' });
-  },
-
   onSwiperChange(e) {
-    // 仅在用户触摸滑动时更新索引
-    if(e.detail.source === 'touch') {
-      console.log('currentIndex',this.data.currentIndex)
-      console.log("e.detail.current",e.detail.current)
-      // 向后才去请求新数据
-      if(e.detail.current > this.data.currentIndex){
-        this.setData({ currentIndex: e.detail.current });
-        let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-        this.getRelatedAnswer(lingyu,this.data.currentIndex)
+    // if(e.detail.source === 'touch') {
+    //   console.log('currentIndex',this.data.currentIndex)
+    //   console.log("e.detail.current",e.detail.current)
+    //   // 向后才去请求新数据
+    //   if(e.detail.current > this.data.currentIndex){
+    //     this.setData({ currentIndex: e.detail.current });
+    //     let lingyu = this.data.quizList[this.data.currentIndex].lingyu
+    //     this.getRelatedAnswer(lingyu,this.data.currentIndex)
+    //   }
+    // }
+    console.log('e.detail.current',e.detail.current)
+    // 以前序列小于这次积分，就是向后刷
+    if (this.data.currentIndex < e.detail.current){
+      if(app.globalData.userInfo.points <= 0){
+        app.globalData.userInfo.points = 0
+        app.saveData()
+        this.setData({
+          currentIndex:e.detail.current - 1,
+          showNoPointsModal:true
+        })
+      }else{
+        app.globalData.userInfo.points -= 3
+        app.saveData()
+        http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+          console.log('res',res)
+        })
+        // if (e.detail.source === 'touch') {
+          this.setData({
+            currentIndex: e.detail.current,
+          });
+          this.setData({ currentIndex: e.detail.current });
+          let lingyu = this.data.quizList[this.data.currentIndex].lingyu
+          this.getRelatedAnswer(lingyu,this.data.currentIndex)
+        // }
       }
     }
   },
@@ -93,9 +116,9 @@ Page({
     const item = e.currentTarget.dataset.item;
     let xiaohao = item.fayin ? item.xiaohao : 0
     app.playAudio(item.fayin,xiaohao,item.title)
-    // wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
   },
 
+  // 答题逻辑
   selectOption(e) {
     const { qindex, oindex,oanswer } = e.currentTarget.dataset;
     const question = this.data.quizList[qindex];
@@ -116,25 +139,47 @@ Page({
     console.log('choiceKey',oindex)
     if (isCorrect) {
       wx.vibrateShort(); // 震动反馈
+      app.globalData.userInfo.points -= 3 
+      if(app.globalData.userInfo.points < 0){
+        app.globalData.userInfo.points = 0
+      }
+      this.setData({
+        completedCount: this.data.completedCount + 1,
+        points:app.globalData.userInfo.points
+      })
       // 答对自动跳下一题 (延迟体验更好)
-      setTimeout(() => {
-        this.autoNext();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.autoNext();
+      // }, 1000);
     } else {
       wx.vibrateLong();
       console.log('dacuo',question)
       http('/web/mistake/','post',{'ctitemid':question.id,'answers':JSON.stringify(question.options)}).then(res=>{
         console.log('ress9',res)
+        app.globalData.userInfo.points -= 3
+        this.setData({
+          wrongCount:res.count, //错题总数
+          points:app.globalData.userInfo.points
+        })
       })
       // [修复] 如果是最后一题，答错也需要在延迟后进入结算，否则用户无路可走
       // if (qindex === this.data.quizList.length - 1) {
-        setTimeout(() => {
-          this.autoNext();
-        }, 1000); // 留1.5秒看错误解析
+        // setTimeout(() => {
+        //   this.autoNext();
+        // }, 1000); // 留1.5秒看错误解析
       // }
     }
   },
-
+  goMistake(){
+    wx.navigateTo({
+      url: '/pages/mistake/mistake',
+    })
+  },
+  goPurchase(){
+    wx.navigateTo({
+      url: '/pages/purchase/purchase',
+    })
+  },
   autoNext() {
     if (this.data.currentIndex < this.data.quizList.length - 1) {
       // 滑动切换到下一题
@@ -159,7 +204,6 @@ Page({
     this.autoNext();
   },
 
-  // 新增：重新开始
   restartQuiz() {
     // 重置所有题目状态
     const resetList = this.data.quizList.map(item => ({
@@ -172,7 +216,6 @@ Page({
       isFinished: false
     });
   },
-
   continueQuiz(){
     this.setData({
       isFinished:false
@@ -197,14 +240,33 @@ Page({
     }
   },
 
-  quitQuiz(){
-    wx.navigateBack()
+  // --- 积分不足处理 ---
+
+  buyPoints() {
+    this.setData({ showNoPointsModal: false });
+    wx.navigateTo({ url: '/pages/purchase/purchase' });
   },
-  // 新增：分享配置
-  onShareAppMessage() {
+
+  closeNoPointsModal() {
+    this.setData({ showNoPointsModal: false });
+  },
+
+  // 分享配置
+  onShareAppMessage(res) {
+    // 关闭弹窗（如果是从弹窗点击分享）
+    if (this.data.showNoPointsModal) {
+      this.setData({ showNoPointsModal: false });
+      // 这里可以模拟分享成功后增加积分，实际需后端回调
+      setTimeout(() => {
+        this.setData({ score: this.data.score + 20 });
+        wx.showToast({ title: '分享成功 +20分', icon: 'success' });
+      }, 2000);
+    }
+
     return {
-      title: `我在每日练习中得了${this.data.score}分！快来挑战斯瓦西里语吧！`,
-      path: '/pages/quiz/quiz'
+      title: '坦坦斯语”针对在坦华人提供学斯语，我做了20道题，得了60分，快来一起学斯语吧。',
+      path: '/pages/quiz/quiz',
+      imageUrl: '/images/share-cover.png' // 假设有分享图
     }
   }
 })

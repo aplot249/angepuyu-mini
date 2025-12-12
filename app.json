@@ -1,62 +1,56 @@
 {
   "pages": [
-    "pages/index/index",
+    "pages/review/review",
+    "pages/quiz/quiz",
     "pages/category/category",
-    "pages/wordbook/wordbook",
     "pages/profile/profile",
+    "pages/index/index",
+    "pages/wordbook/wordbook",
     "pages/list/list",
     "pages/purchase/purchase",
     "pages/contribute/contribute",
     "pages/share/share",
-    "pages/about/about",
     "pages/privacy/privacy",
+    "pages/about/about",
     "pages/article/article",
-    "pages/review/review",
-    "pages/quiz/quiz",
     "pages/mistake/mistake"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "坦坦斯语Swahili",
+    "navigationBarTitleText": "坦桑通 Swahili",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
-    "color": "#a8a29e",
-    "selectedColor": "#2DD4BF",
+    "color": "#9E9E9E",
+    "selectedColor": "#FF7043",
     "backgroundColor": "#ffffff",
     "borderStyle": "white",
     "list": [
       {
-        "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "/static/images/home.png",
-        "selectedIconPath": "/static/images/home-active.png"
-      },
-      {
-        "pagePath": "pages/category/category",
-        "text": "行业分类",
-        "iconPath": "/static/images/category.png",
-        "selectedIconPath": "/static/images/category-active.png"
-      },
-      {
-        "pagePath": "pages/wordbook/wordbook",
-        "text": "单词本",
+        "pagePath": "pages/review/review",
+        "text": "卡片学习",
         "iconPath": "/static/images/dictionary.png",
         "selectedIconPath": "/static/images/dictionary-active.png"
       },
       {
+        "pagePath": "pages/quiz/quiz",
+        "text": "做题练习",
+        "iconPath": "/static/images/edit.png",
+        "selectedIconPath": "/static/images/edit-active.png"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "text": "词库分类",
+        "iconPath": "/static/images/category.png",
+        "selectedIconPath": "/static/images/category-active.png"
+      },
+      {
         "pagePath": "pages/profile/profile",
-        "text": "个人中心",
+        "text": "更多功能",
         "iconPath": "/static/images/mine.png",
         "selectedIconPath": "/static/images/mine-active.png"
       }
     ]
-  },
-  "requiredBackgroundModes": ["audio"],
-  "permission": {
-
-  },
-    "darkmode": true,
-    "themeLocation": "theme.json"
+  }
 }

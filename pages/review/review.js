@@ -1,11 +1,28 @@
 const app = getApp();
 import {http} from '../../requests/index'
+
 Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
     currentIndex: 0,
-    ctList: [ // 模拟复习卡片数据
+    
+    // 导航栏适配数据
+    statusBarHeight: 20,
+    navBarHeight: 44,
+    totalNavHeight: 64,
+    menuButtonHeight: 32,
+    
+    // 学习统计指标
+    knownCount: 0,     // 已认识
+    forgotCount: 0,    // 不认识
+    completedCount: 0, // 已做题 (已学习)
+    points: app.globalData.userInfo.points,       // 当前积分
+    
+    showNoPointsModal: false, // 积分不足弹窗控制
+
+    // 模拟复习卡片数据
+    wordList: [
       // {
       //   id: 101,
       //   swahili: 'Karibu',
@@ -14,81 +31,112 @@ Page({
       //   homonym: '卡里布',
       //   image: 'https://images.unsplash.com/photo-1596464716127-f9a86b5b3f4d?w=400&q=80',
       //   isFlipped: false
-      // }
-    ],
-    noLoad:false
+      // },
+    ]
   },
-  onLoad(){
-//     let checkedItems = wx.getStorageSync('checkedItems')
-//     if(checkedItems){
-//       this.setData({
-          // ctList:checkedItems
-//       })
-//     }
-    // http('/web/randomquestion/','get').then(res=>{
-    //   console.log('gggggg',res)
-    //   this.setData({
-    //     ctList:res
-    //   })
-    // },err=>{
-    //   console.log('err',err)
-    // })
+
+  onLoad() {
+    this.calcNavBar();
+        // 直接用我的收藏里取
+        http('/web/randomcard/','get').then(res=>{
+          this.setData({
+            noLoad:res.tip,
+            wordList:res.data
+        })
+      },err=>{
+        console.log('err',err)
+      })
   },
+
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
-      isDarkMode: app.globalData.isDarkMode
+      isDarkMode: app.globalData.isDarkMode,
+      points:app.globalData.userInfo.points
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-    // 设置标题
-    wx.setNavigationBarTitle({ title: '卡片复习' });
-    // 直接用我的收藏里取
-    http('/web/randomquestion/','get').then(res=>{
-        this.setData({
-        noLoad:res.tip,
-        ctList:res.data
-      })
-    },err=>{
-      console.log('err',err)
-    })
+    wx.setNavigationBarTitle({ title: '开始学习' });
   },
 
-  // 翻转卡片
-  toggleFlip(e) {
-    const index = e.currentTarget.dataset.index;
-    const key = `ctList[${index}].isFlipped`;
+  calcNavBar() {
+    const sysInfo = wx.getSystemInfoSync();
+    const menuButton = wx.getMenuButtonBoundingClientRect();
+    const statusBarHeight = sysInfo.statusBarHeight;
+    const navBarHeight = (menuButton.top - statusBarHeight) * 2 + menuButton.height;
+    const totalNavHeight = statusBarHeight + navBarHeight;
+
     this.setData({
-      [key]: !this.data.ctList[index].isFlipped
+      statusBarHeight,
+      navBarHeight,
+      totalNavHeight,
+      menuButtonHeight: menuButton.height
     });
   },
 
-  // 监听滑动切换
   onSwiperChange(e) {
-    // [优化] 增加 source 判断，仅在用户手指触摸滑动时更新索引
-    // 避免 nextCard() 自动跳转时触发 bindchange 导致的数据冗余更新
-    if (e.detail.source === 'touch') {
+    console.log('e.detail.current',e.detail.current)
+    // 以前序列小于这次积分，就是向后刷
+    if (this.data.currentIndex < e.detail.current){
       this.setData({
-        currentIndex: e.detail.current
-      });
-    }
-    // 到最后一个了
-    if(this.data.currentIndex === this.data.ctList.length-1){
-      if(this.data.noLoad==true){
-          wx.showToast({
-            title: '这是最后一张',
-            icon:'none'
-          })
-      }else{
-        http('/web/randomquestion/','get').then(res=>{
-          this.data.ctList.push(...res.data)
-          this.setData({
-            noLoad:res.tip,
-            ctList:this.data.ctList,
-            currentIndex:this.data.currentIndex+1
-          })
+        completedCount: this.data.completedCount + 1,
+      })
+      if(app.globalData.userInfo.points <= 0){
+        app.globalData.userInfo.points = 0
+        app.saveData()
+        this.setData({
+          currentIndex:e.detail.current - 1,
+          showNoPointsModal:true
         })
+      }else{
+        app.globalData.userInfo.points -= 3
+        if(app.globalData.userInfo.points < 0){
+          app.globalData.userInfo.points = 0
+        }
+        app.saveData()
+        http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+          console.log('res',res)
+        })
+        if (e.detail.source === 'touch') {
+          this.setData({
+            currentIndex: e.detail.current,
+            points:app.globalData.userInfo.points
+          });
+        }
+        // 到最后一个了,就增加
+        if(this.data.currentIndex === this.data.wordList.length-1){
+          if(this.data.noLoad==true){
+              wx.showToast({
+                title: '这是最后一张',
+                icon:'none'
+              })
+          }else{
+            http('/web/randomcard/','get').then(res=>{
+              // app.globalData.userInfo.points -= 3
+              // app.saveData()
+              this.data.wordList.push(...res.data)
+              this.setData({
+                noLoad:res.tip,
+                wordList:this.data.wordList,
+                // currentIndex:this.data.currentIndex+1,
+                completedCount:this.data.completedCount+1
+              })
+            })
+          }
+        }
       }
     }
+  },
+  goPurchase(){
+    wx.navigateTo({
+      url: '/pages/purchase/purchase',
+    })
+  },
+  toggleFlip(e) {
+    const index = e.currentTarget.dataset.index;
+    const key = `wordList[${index}].isFlipped`;
+    this.setData({
+      [key]: !this.data.wordList[index].isFlipped
+    });
   },
 
   playAudio(e) {
@@ -99,28 +147,88 @@ Page({
     // wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
   },
 
+  // 标记为已认识 (消耗积分)
   markKnown(e) {
-    console.log(e)
-    // wx.showToast({ title: '已记住了！', icon: 'success' });
-    wx.showToast({ title: '不会再出现', icon: 'none' });
-
-    let questionid = e.currentTarget.dataset.id
+    // 1. 检查积分
+    // if (this.data.points < 3) {
+    //   this.setData({ showNoPointsModal: true });
+    //   return;
+    // }
+    // wx.vibrateShort();
+    // 2. 更新数据 (扣除3分)
+    console.log('target',this.data.wordList[this.data.currentIndex])
+    let cardid = this.data.wordList[this.data.currentIndex].id
     // 逻辑：自动滑到下一，并加入已做过
-    http('/web/hasdonequeston/','post',{'question':questionid}).then(res=>{
-
+    http('/web/updateusercard/','post',{'ctitemid':cardid,'action':'0'}).then(res=>{
+      console.log('标记为已认识',res)
+      this.setData({
+        knownCount: res.knownCount,
+        // points: this.data.points - 3 
+      });
+      wx.showToast({ title: '已记住！', icon: 'success' });
     })
-    this.nextCard();
+    // wx.showToast({ title: '已掌握', icon: 'none' });
+    // this.nextCard();
   },
 
-  markForgot() {
-    // wx.showToast({ title: '加入生词本', icon: 'none' });
-    // 逻辑：自动滑到下一张
-    this.nextCard();
+  // 标记为不认识 (消耗积分)
+  markForgot(e) {
+    // 1. 检查积分
+    // if (this.data.points < 3) {
+    //   this.setData({ showNoPointsModal: true });
+    //   return;
+    // }
+
+    wx.vibrateShort();
+    // 2. 更新数据 (扣除3分)
+    console.log('target',e)
+    let cardid = this.data.wordList[this.data.currentIndex].id
+    http('/web/updateusercard/','post',{'ctitemid':cardid,'action':'1'}).then(res=>{
+      console.log('标记为不认识',res)
+      this.setData({
+        forgotCount: res.forgotCount,
+        // points: this.data.points - 3
+      });
+      wx.showToast({ title: '加入复习', icon: 'none' });
+    })
+    // this.nextCard();
   },
   
   nextCard() {
-    if (this.data.currentIndex < this.data.ctList.length - 1) {
+    if (this.data.currentIndex < this.data.wordList.length - 1) {
       this.setData({ currentIndex: this.data.currentIndex + 1 });
+      // wx.showToast({ title: '今日任务完成！', icon: 'success' });
+    }
+  },
+
+  // --- 积分不足处理 ---
+
+  buyPoints() {
+    this.setData({ showNoPointsModal: false });
+    wx.navigateTo({ url: '/pages/purchase/purchase' });
+  },
+
+  closeNoPointsModal() {
+    this.setData({ showNoPointsModal: false });
+  },
+
+  // 分享配置
+  onShareAppMessage(res) {
+    // 如果是从积分不足弹窗触发的分享，分享成功后奖励积分
+    if (this.data.showNoPointsModal) {
+      this.setData({ showNoPointsModal: false });
+      
+      // 模拟分享回调 (实际需后端配合)
+      setTimeout(() => {
+        this.setData({ points: this.data.points + 20 });
+        wx.showToast({ title: '分享成功 +20分', icon: 'success' });
+      }, 2000);
+    }
+
+    return {
+      title: '“坦坦斯语”为坦桑华人提供学斯语平台，我在这里学习了30个斯语单词，，快来一起学斯语吧。',
+      path: '/pages/review/review',
+      imageUrl: '/images/share-cover.png' // 假设有分享图
     }
   }
 })
