@@ -1,5 +1,8 @@
 {
   "navigationStyle": "custom",
   "navigationBarTitleText": "卡片学习",
-  "navigationBarTextStyle": "white"
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "vip-modal": "/components/vip-modal/vip-modal"
+  }
 }

@@ -115,4 +115,10 @@
     </view>
   </view>
 
+  <vip-modal 
+    visible="{{showNoPointsModal}}" 
+    bind:close="onCloseVip" 
+    bind:purchase="onConfirmPurchase" 
+  />
+  
 </view>

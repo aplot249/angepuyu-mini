@@ -132,7 +132,7 @@
   </view>
 
   <!-- 3. 积分不足弹窗 -->
-  <view class="modal-mask {{showNoPointsModal ? 'show' : ''}}" catchtouchmove="true">
+  <!-- <view class="modal-mask {{showNoPointsModal ? 'show' : ''}}" catchtouchmove="true">
     <view class="modal-box">
       <view class="modal-header">
         <text class="modal-icon">💎</text>
@@ -140,21 +140,19 @@
       <view class="modal-content">
         <view class="modal-title">积分不足</view>
         <view class="modal-desc">每学习一个单词消耗 3 积分，您当前的积分不足，无法继续。</view>
-        
         <view class="modal-btns">
-          <!-- 分享按钮 -->
           <button class="m-btn share-btn" open-type="share">
             <text>分享赚积分</text>
           </button>
-          <!-- 购买按钮 -->
           <view class="m-btn buy-btn" bindtap="buyPoints">
             <text>花30元购买1000积分</text>
           </view>
         </view>
-        
         <view class="modal-close" bindtap="closeNoPointsModal">暂不学习</view>
       </view>
     </view>
-  </view>
+  </view> -->
+
+  <vip-modal visible="{{showNoPointsModal}}" />
 
 </view>

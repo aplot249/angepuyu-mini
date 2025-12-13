@@ -123,9 +123,7 @@ Page({
   autoUpdate() {
     // 检查是否满足停止条件
     if (!this.data.isLoop) return;
-
     const newWait = this.data.waitTimes + 1;
-
     // 超时检查
     if (newWait >= this.data.maxWait) {
       console.log('轮询超时');
@@ -147,6 +145,9 @@ Page({
         app.saveData()
         this.setData({
           userInfo:this.data.userInfo
+        })
+        http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+          console.log('已更新points')
         })
       }else{
         const timerId = setTimeout(() => this.autoUpdate(), 1000);

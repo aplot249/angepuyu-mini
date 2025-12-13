@@ -44,7 +44,9 @@ Page({
     http('/web/randomcard/','get').then(res=>{
       this.setData({
         noLoad:res.tip,
-        wordList:res.data
+        wordList:res.data,
+        knownCount: res.knownCount,
+        forgotCount: res.forgotCount
       })
     })
     this.setData({ 
@@ -54,6 +56,16 @@ Page({
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     wx.setNavigationBarTitle({ title: '开始学习' });
+  },
+
+  onHide(){
+    this.setData({
+      wordList:[],
+      currentIndex: 0,
+      knownCount: 0,     // 已认识
+      forgotCount: 0,    // 不认识
+      showNoPointsModal:false,
+    })
   },
 
   calcNavBar() {
@@ -115,20 +127,36 @@ Page({
               this.setData({
                 noLoad:res.tip,
                 wordList:this.data.wordList,
+                knownCount: res.knownCount,
+                forgotCount: res.forgotCount,
                 // currentIndex:this.data.currentIndex+1,
-                completedCount:this.data.completedCount+1
+                // completedCount:this.data.completedCount+1
               })
             })
           }
         }
       }
     }
+    // 往回刷
+    else{
+      if(e.detail.current == 0){
+          this.setData({
+            currentIndex:0
+          })
+      }
+    }
   },
-  goPurchase(){
-    wx.navigateTo({
-      url: '/pages/purchase/purchase',
-    })
+
+  // goPurchase(){
+  //   wx.navigateTo({
+  //     url: '/pages/purchase/purchase',
+  //   })
+  // },
+
+  onConfirmPurchase(e) {
+    console.log('用户选择了:', e.detail); // {planId: 3, price: 80, name: "年卡"}
   },
+
   toggleFlip(e) {
     const index = e.currentTarget.dataset.index;
     const key = `wordList[${index}].isFlipped`;
@@ -168,6 +196,7 @@ Page({
       console.log('标记为已认识',res)
       this.setData({
         knownCount: res.knownCount,
+        forgotCount: res.forgotCount,
         // points: this.data.points - 3 
       });
       wx.showToast({ title: '已记住！', icon: 'success' });
@@ -191,6 +220,7 @@ Page({
     http('/web/updateusercard/','post',{'ctitemid':cardid,'action':'1'}).then(res=>{
       console.log('标记为不认识',res)
       this.setData({
+        knownCount: res.knownCount,
         forgotCount: res.forgotCount,
         // points: this.data.points - 3
       });
@@ -222,18 +252,22 @@ Page({
     // 如果是从积分不足弹窗触发的分享，分享成功后奖励积分
     if (this.data.showNoPointsModal) {
       this.setData({ showNoPointsModal: false });
-      
-      // 模拟分享回调 (实际需后端配合)
-      setTimeout(() => {
-        this.setData({ points: this.data.points + 20 });
-        wx.showToast({ title: '分享成功 +20分', icon: 'success' });
-      }, 2000);
     }
+    if(!app.globalData.userInfo.hasSharedToday){
+      app.globalData.userInfo.points +=20
+      app.globalData.userInfo.hasSharedToday = true
+      app.saveData()
+      this.setData({ points: app.globalData.userInfo.points });
+      wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
-    return {
-      title: '“坦坦斯语”为坦桑华人提供学斯语平台，我在这里学习了30个斯语单词，，快来一起学斯语吧。',
-      path: '/pages/review/review',
-      imageUrl: '/images/share-cover.png' // 假设有分享图
+      return {
+        title: '坦桑华人学斯语，我在这里学习了30个斯语单词，，快来一起吧。',
+        path: '/pages/review/review',
+        imageUrl: '/images/share-cover.png', // 假设有分享图
+      }
     }
-  }
+    // else{
+    //   wx.showToast({ title: '一天领取一次', icon: 'none' });
+    // }
+  },
 })

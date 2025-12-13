@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "做题练习",
-  "navigationBarTextStyle": "white"
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "vip-modal": "/components/vip-modal/vip-modal"
+  }
 }

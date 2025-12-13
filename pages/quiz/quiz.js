@@ -44,6 +44,7 @@ Page({
       this.setData({
         noLoad:res.tip,
         quizList:res.data,
+        wrongCount:res.mistakeCount,
         currentIndex:0,
         eachItemScore:Math.round(100/this.data.quizList.length),
         points:app.globalData.userInfo.points
@@ -53,6 +54,18 @@ Page({
     })
     app.updateThemeSkin(app.globalData.isDarkMode);
     // wx.setNavigationBarTitle({ title: '每日练习' });
+  },
+  onHide(){
+    this.setData({
+      quizList:[],
+      currentIndex: 0,
+      knownCount: 0,     // 已认识
+      forgotCount: 0,    // 不认识
+      completedCount: 0, // 已做题数
+      wrongCount: 0,     // 错题数
+      isFinished: false,
+      showNoPointsModal: false, // 积分不足弹窗控制
+    })
   },
   shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -119,6 +132,7 @@ Page({
               this.setData({
                 noLoad:res.tip,
                 quizList:this.data.quizList,
+                wrongCount:res.mistakeCount,
                 // currentIndex:this.data.currentIndex+1,
                 // completedCount:this.data.completedCount+1
               })
@@ -194,10 +208,15 @@ Page({
       url: '/pages/mistake/mistake',
     })
   },
-  goPurchase(){
-    wx.navigateTo({
-      url: '/pages/purchase/purchase',
-    })
+  // goPurchase(){
+  //   wx.navigateTo({
+  //     url: '/pages/purchase/purchase',
+  //   })
+  // },
+  onConfirmPurchase(e) {
+    console.log('用户选择了:', e.detail); // {planId: 3, price: 80, name: "年卡"}
+    
+    // 这里调用微信支付接口
   },
   autoNext() {
     if (this.data.currentIndex < this.data.quizList.length - 1) {
@@ -250,6 +269,7 @@ Page({
         this.setData({
           noLoad:res.tip,
           quizList:this.data.quizList,
+          wrongCount:res.mistakeCount,
           currentIndex:this.data.currentIndex+1,
           eachItemScore:Math.round(100/this.data.quizList.length)
         })
@@ -275,17 +295,22 @@ Page({
     // 关闭弹窗（如果是从弹窗点击分享）
     if (this.data.showNoPointsModal) {
       this.setData({ showNoPointsModal: false });
-      // 这里可以模拟分享成功后增加积分，实际需后端回调
-      setTimeout(() => {
-        this.setData({ score: this.data.score + 20 });
-        wx.showToast({ title: '分享成功 +20分', icon: 'success' });
-      }, 2000);
     }
+    if(!app.globalData.userInfo.hasSharedToday){
+      app.globalData.userInfo.points +=20
+      app.globalData.userInfo.hasSharedToday = true
+      app.saveData()
+      this.setData({ points: app.globalData.userInfo.points });
+      wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
-    return {
-      title: '坦坦斯语”针对在坦华人提供学斯语，我做了20道题，得了60分，快来一起学斯语吧。',
-      path: '/pages/quiz/quiz',
-      imageUrl: '/images/share-cover.png' // 假设有分享图
+      return {
+        title: '坦桑华人学斯语，我在这里做了30个斯语题目，快来一起吧。',
+        path: '/pages/quiz/quiz',
+        imageUrl: '/images/share-cover.png', // 假设有分享图
+      }
     }
+    // else{
+    //   wx.showToast({ title: '一天领取一次', icon: 'none' });
+    // }
   }
 })
