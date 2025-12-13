@@ -31,14 +31,11 @@ Page({
     ],
     noLoad:false
   },
-  onLoad(){
-
-  },
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
-      points:app.globalData.userInfo.points,
+      points:app.globalData.points,
     });
     http('/web/randomquestion/','get').then(res=>{
       this.setData({
@@ -47,7 +44,6 @@ Page({
         wrongCount:res.mistakeCount,
         currentIndex:0,
         eachItemScore:Math.round(100/this.data.quizList.length),
-        points:app.globalData.userInfo.points
       })
       let lingyu = this.data.quizList[this.data.currentIndex].lingyu
       this.getRelatedAnswer(lingyu,this.data.currentIndex)
@@ -92,27 +88,24 @@ Page({
     // 以前序列小于这次积分，就是向后刷
     if (this.data.currentIndex < e.detail.current){
       // 向后刷积分小于0时候
-      if(app.globalData.userInfo.points < 0){
-        app.globalData.userInfo.points = 0
-        app.saveData()
+      if(app.globalData.points <= 0){
+        app.globalData.points = 0
+        app.savePoints()
         this.setData({
-          points:app.globalData.userInfo.points,
+          points:app.globalData.points,
           currentIndex:e.detail.current - 1,
           showNoPointsModal:true
         })
       }else{
         // 遍历题，扣2积分
-        app.globalData.userInfo.points -= 2
-        if(app.globalData.userInfo.points < 0){
-          app.globalData.userInfo.points = 0
+        app.globalData.points -= 2
+        if(app.globalData.points < 0){
+          app.globalData.points = 0
         }
         this.setData({
-          points:app.globalData.userInfo.points
+          points:app.globalData.points
         })
-        app.saveData()
-        http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
-          console.log('res',res)
-        })
+        app.savePoints()
         this.setData({ currentIndex: e.detail.current });
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
@@ -126,7 +119,7 @@ Page({
               })
           }else{
             http('/web/randomquestion/','get').then(res=>{
-              // app.globalData.userInfo.points -= 3
+              // app.globalData.points -= 3
               // app.saveData()
               this.data.quizList.push(...res.data)
               this.setData({
@@ -171,14 +164,15 @@ Page({
     if (isCorrect) {
       wx.vibrateShort(); // 震动反馈
       // 做对做错，扣1积分
-      app.globalData.userInfo.points -= 1
-      if(app.globalData.userInfo.points < 0){
-        app.globalData.userInfo.points = 0
+      app.globalData.points -= 1
+      if(app.globalData.points < 0){
+        app.globalData.points = 0
       }
       this.setData({
         completedCount: this.data.completedCount + 1,
-        points:app.globalData.userInfo.points
+        points:app.globalData.points
       })
+      app.savePoints()
       // 答对自动跳下一题 (延迟体验更好)
       // setTimeout(() => {
       //   this.autoNext();
@@ -189,11 +183,15 @@ Page({
       http('/web/mistake/','post',{'ctitemid':question.id,'answers':JSON.stringify(question.options)}).then(res=>{
         console.log('ress9',res)
         // 做对做错，扣1积分
-        app.globalData.userInfo.points -= 1
+        app.globalData.points -= 1
+        if(app.globalData.points < 0){
+          app.globalData.points = 0
+        }
         this.setData({
           wrongCount:res.count, //错题总数
-          points:app.globalData.userInfo.points
+          points:app.globalData.points
         })
+        app.savePoints()
       })
       // [修复] 如果是最后一题，答错也需要在延迟后进入结算，否则用户无路可走
       // if (qindex === this.data.quizList.length - 1) {
@@ -297,10 +295,10 @@ Page({
       this.setData({ showNoPointsModal: false });
     }
     if(!app.globalData.userInfo.hasSharedToday){
-      app.globalData.userInfo.points +=20
+      app.globalData.points +=20
       app.globalData.userInfo.hasSharedToday = true
-      app.saveData()
-      this.setData({ points: app.globalData.userInfo.points });
+      app.savePoints()
+      this.setData({ points: app.globalData.points });
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {

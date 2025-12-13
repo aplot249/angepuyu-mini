@@ -17,22 +17,12 @@ Page({
     knownCount: 0,     // 已认识
     forgotCount: 0,    // 不认识
     completedCount: 0, // 已做题 (已学习)
-    points: app.globalData.userInfo.points,       // 当前积分
+    points: app.globalData.points,       // 当前积分
     
     showNoPointsModal: false, // 积分不足弹窗控制
 
     // 模拟复习卡片数据
-    wordList: [
-      // {
-      //   id: 101,
-      //   swahili: 'Karibu',
-      //   chinese: '欢迎',
-      //   english: 'Welcome',
-      //   homonym: '卡里布',
-      //   image: 'https://images.unsplash.com/photo-1596464716127-f9a86b5b3f4d?w=400&q=80',
-      //   isFlipped: false
-      // },
-    ]
+    wordList: []
   },
 
   onLoad() {
@@ -40,7 +30,7 @@ Page({
   },
 
   onShow() {
-      // 直接用我的收藏里取
+      // 直接从我的收藏里取
     http('/web/randomcard/','get').then(res=>{
       this.setData({
         noLoad:res.tip,
@@ -52,10 +42,10 @@ Page({
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
-      points:app.globalData.userInfo.points
+      points:app.globalData.points
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-    wx.setNavigationBarTitle({ title: '开始学习' });
+    // wx.setNavigationBarTitle({ title: '开始学习' });
   },
 
   onHide(){
@@ -90,28 +80,26 @@ Page({
       this.setData({
         completedCount: this.data.completedCount + 1,
       })
-      if(app.globalData.userInfo.points <= 0){
-        app.globalData.userInfo.points = 0
-        app.saveData()
+      if(app.globalData.points <= 0){
+        app.globalData.points = 0
+        app.savePoints()
+        //积分不足，退回去，显示要充值
         this.setData({
           currentIndex:e.detail.current - 1,
-          showNoPointsModal:true
+          showNoPointsModal:true  
         })
       }else{
-        app.globalData.userInfo.points -= 3
-        if(app.globalData.userInfo.points < 0){
-          app.globalData.userInfo.points = 0
+        app.globalData.points -= 3
+        if(app.globalData.points < 0){
+          app.globalData.points = 0
         }
-        app.saveData()
-        http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
-          console.log('res',res)
-        })
-        if (e.detail.source === 'touch') {
+        app.savePoints()
+        // if (e.detail.source === 'touch') {
           this.setData({
             currentIndex: e.detail.current,
-            points:app.globalData.userInfo.points
+            points:app.globalData.points
           });
-        }
+        // }
         // 到最后一个了,就增加
         if(this.data.currentIndex === this.data.wordList.length-1){
           if(this.data.noLoad==true){
@@ -121,8 +109,6 @@ Page({
               })
           }else{
             http('/web/randomcard/','get').then(res=>{
-              // app.globalData.userInfo.points -= 3
-              // app.saveData()
               this.data.wordList.push(...res.data)
               this.setData({
                 noLoad:res.tip,
@@ -146,12 +132,6 @@ Page({
       }
     }
   },
-
-  // goPurchase(){
-  //   wx.navigateTo({
-  //     url: '/pages/purchase/purchase',
-  //   })
-  // },
 
   onConfirmPurchase(e) {
     console.log('用户选择了:', e.detail); // {planId: 3, price: 80, name: "年卡"}
@@ -197,7 +177,6 @@ Page({
       this.setData({
         knownCount: res.knownCount,
         forgotCount: res.forgotCount,
-        // points: this.data.points - 3 
       });
       wx.showToast({ title: '已记住！', icon: 'success' });
     })
@@ -222,7 +201,6 @@ Page({
       this.setData({
         knownCount: res.knownCount,
         forgotCount: res.forgotCount,
-        // points: this.data.points - 3
       });
       wx.showToast({ title: '加入复习', icon: 'none' });
     })
@@ -237,7 +215,6 @@ Page({
   },
 
   // --- 积分不足处理 ---
-
   buyPoints() {
     this.setData({ showNoPointsModal: false });
     wx.navigateTo({ url: '/pages/purchase/purchase' });
@@ -254,10 +231,11 @@ Page({
       this.setData({ showNoPointsModal: false });
     }
     if(!app.globalData.userInfo.hasSharedToday){
-      app.globalData.userInfo.points +=20
+      app.globalData.points +=20
       app.globalData.userInfo.hasSharedToday = true
       app.saveData()
-      this.setData({ points: app.globalData.userInfo.points });
+      app.savePoints()
+      this.setData({ points: app.globalData.points });
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {

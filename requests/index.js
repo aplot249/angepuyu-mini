@@ -2,7 +2,7 @@ import { eventBus } from '../utils/eventBus.js';
 
 // const baseHOST = 'http://127.0.0.1:8000'
 // const baseHOST = 'https://siyu.jsxinlingdi.com'
-const baseHOST = 'http://192.168.43.247:8000'
+const baseHOST = 'http://192.168.1.181:8000'
 const baseImgUrl = baseHOST + '/media'
 
 function request(url, method = 'POST', data = {}) {

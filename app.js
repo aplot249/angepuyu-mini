@@ -5,12 +5,12 @@ App({
   globalData: {
     userInfo: {
       nickname: "Marafiki", //默认值
-      points: 0,
       isRecorder:false,
       hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享
       favorites: []
     },
+    points: 50,
     userCreated:null,
     fontSizeLevel: 1, 
     isDarkMode: false,
@@ -77,16 +77,19 @@ App({
       console.log('New day detected, resetting daily tasks.');
       this.globalData.userInfo.hasSignedIn = false;
       this.globalData.userInfo.hasSharedToday = false;
+      this.globalData.points = 50;
       // 保存新日期和重置后的用户数据
       wx.setStorageSync('ts_last_active_date', todayStr);
       this.saveData();
+      this.savePoints();
     }
   },
-
   saveData() {
     wx.setStorageSync('ts_user', this.globalData.userInfo);
   },
-  
+  savePoints() {
+    wx.setStorageSync('points', this.globalData.points);
+  },
   playAudio(mp3,xiaohao,title){
     if(!this.globalData.userInfo.isLoggedIn){
       wx.showModal({
@@ -142,9 +145,6 @@ App({
         confirmText:'购买积分',
         complete: (res) => {
           if (res.cancel) {
-            // wx.navigateTo({
-            //   url: '/pages/profile/profile',
-            // })
           }
           if (res.confirm) {
             wx.navigateTo({
@@ -167,11 +167,12 @@ App({
       innerAudioContext.title = title
       innerAudioContext.src = mp3
       // innerAudioContext.play()
-      this.globalData.userInfo.points -= xiaohao
-      http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
-        console.log('已同步')
-        // innerAudioContext.destroy()
-      })    
+      // 采用会员制，不需要积分同步
+      // this.globalData.userInfo.points -= xiaohao
+      // http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
+      //   console.log('已同步')
+      //   // innerAudioContext.destroy()
+      // })    
     }   
    } // 没登录的结尾
   },
