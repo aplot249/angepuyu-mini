@@ -35,7 +35,7 @@
             <view class="q-tag">单词辨析</view>
             <text class="q-word">{{quizItem.swahili}}</text>
             <view class="play-btn" catchtap="playAudio" data-item="{{quizItem}}">🔊</view>
-            <text class="q-instruction">请选择正确的中文释义 (消耗5积分)</text>
+            <text class="q-instruction">请选择正确的中文释义 (消耗3积分)</text>
           </view>
 
           <!-- 选项区域 -->
@@ -69,9 +69,9 @@
     </block>
   </swiper>
 
-  <view class="footer-hint" bindtap="forceNext" wx:if="{{quizList[currentIndex].answered && currentIndex < quizList.length -1}}">
+  <!-- <view class="footer-hint" bindtap="forceNext" wx:if="{{quizList[currentIndex].answered && currentIndex < quizList.length -1}}">
     点击此处或滑动进入下一题 →
-  </view>
+  </view> -->
 
   <!-- 3. 结果弹窗 (做完题显示) -->
   <view class="result-overlay {{isFinished ? 'show' : ''}}">

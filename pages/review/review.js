@@ -37,18 +37,16 @@ Page({
 
   onLoad() {
     this.calcNavBar();
-        // 直接用我的收藏里取
-        http('/web/randomcard/','get').then(res=>{
-          this.setData({
-            noLoad:res.tip,
-            wordList:res.data
-        })
-      },err=>{
-        console.log('err',err)
-      })
   },
 
   onShow() {
+      // 直接用我的收藏里取
+    http('/web/randomcard/','get').then(res=>{
+      this.setData({
+        noLoad:res.tip,
+        wordList:res.data
+      })
+    })
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
@@ -134,6 +132,13 @@ Page({
   toggleFlip(e) {
     const index = e.currentTarget.dataset.index;
     const key = `wordList[${index}].isFlipped`;
+    // 在这里播放声音
+    let item = this.data.wordList[index]
+    // 查看斯语答案时候自动发音
+    if(!item.isFlipped){
+      let xiaohao = item.fayin ? item.xiaohao : 0
+      app.playAudio(item.fayin,xiaohao,item.swahili)
+    }
     this.setData({
       [key]: !this.data.wordList[index].isFlipped
     });

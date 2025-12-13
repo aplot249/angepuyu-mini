@@ -607,7 +607,7 @@ Page({
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao,item.title)
+    app.playAudio(item.fayin,xiaohao,item.swahili)
   },
 
   // 导出文档

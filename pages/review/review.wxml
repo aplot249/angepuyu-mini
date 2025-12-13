@@ -49,7 +49,6 @@
               <text class="stat-label">积分</text>
             </view>
           </view>
-
         </view>
       </block>
     </view>
@@ -89,7 +88,7 @@
 
                   <view class="bottom-hint">
                     <text class="hint-dot"></text>
-                    <text>点击翻转</text>
+                    <text>点击翻转，背面有斯语答案</text>
                   </view>
                 </view>
               </view>

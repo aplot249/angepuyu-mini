@@ -142,9 +142,9 @@ App({
         confirmText:'购买积分',
         complete: (res) => {
           if (res.cancel) {
-            wx.navigateTo({
-              url: '/pages/profile/profile',
-            })
+            // wx.navigateTo({
+            //   url: '/pages/profile/profile',
+            // })
           }
           if (res.confirm) {
             wx.navigateTo({
@@ -154,8 +154,12 @@ App({
         }
       })
     }else{
+      // wx.showToast({
+      //   title: xiaohao != 0 ? '正在播放' : '暂无发音',
+      //   icon:'none'
+      // })
       wx.showToast({
-        title: xiaohao != 0 ? '正在播放' : '暂无发音',
+        title: mp3 == null ? '暂无发音' : '正在播放',
         icon:'none'
       })
       // let innerAudioContext = wx.createInnerAudioContext();

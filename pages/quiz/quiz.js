@@ -32,17 +32,7 @@ Page({
     noLoad:false
   },
   onLoad(){
-      http('/web/randomquestion/','get').then(res=>{
-      // console.log(res)
-      this.setData({
-        noLoad:res.tip,
-        quizList:res.data,
-        eachItemScore:Math.round(100/this.data.quizList.length),
-        points:app.globalData.userInfo.points
-      })
-      let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-      this.getRelatedAnswer(lingyu,this.data.currentIndex)
-    })
+
   },
   onShow() {
     this.setData({ 
@@ -50,8 +40,19 @@ Page({
       isDarkMode: app.globalData.isDarkMode,
       points:app.globalData.userInfo.points,
     });
+    http('/web/randomquestion/','get').then(res=>{
+      this.setData({
+        noLoad:res.tip,
+        quizList:res.data,
+        currentIndex:0,
+        eachItemScore:Math.round(100/this.data.quizList.length),
+        points:app.globalData.userInfo.points
+      })
+      let lingyu = this.data.quizList[this.data.currentIndex].lingyu
+      this.getRelatedAnswer(lingyu,this.data.currentIndex)
+    })
     app.updateThemeSkin(app.globalData.isDarkMode);
-    wx.setNavigationBarTitle({ title: '每日练习' });
+    // wx.setNavigationBarTitle({ title: '每日练习' });
   },
   shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -74,40 +75,56 @@ Page({
     })
   },
   onSwiperChange(e) {
-    // if(e.detail.source === 'touch') {
-    //   console.log('currentIndex',this.data.currentIndex)
-    //   console.log("e.detail.current",e.detail.current)
-    //   // 向后才去请求新数据
-    //   if(e.detail.current > this.data.currentIndex){
-    //     this.setData({ currentIndex: e.detail.current });
-    //     let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-    //     this.getRelatedAnswer(lingyu,this.data.currentIndex)
-    //   }
-    // }
     console.log('e.detail.current',e.detail.current)
     // 以前序列小于这次积分，就是向后刷
     if (this.data.currentIndex < e.detail.current){
-      if(app.globalData.userInfo.points <= 0){
+      // 向后刷积分小于0时候
+      if(app.globalData.userInfo.points < 0){
         app.globalData.userInfo.points = 0
         app.saveData()
         this.setData({
+          points:app.globalData.userInfo.points,
           currentIndex:e.detail.current - 1,
           showNoPointsModal:true
         })
       }else{
-        app.globalData.userInfo.points -= 3
+        // 遍历题，扣2积分
+        app.globalData.userInfo.points -= 2
+        if(app.globalData.userInfo.points < 0){
+          app.globalData.userInfo.points = 0
+        }
+        this.setData({
+          points:app.globalData.userInfo.points
+        })
         app.saveData()
         http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
           console.log('res',res)
         })
-        // if (e.detail.source === 'touch') {
-          this.setData({
-            currentIndex: e.detail.current,
-          });
-          this.setData({ currentIndex: e.detail.current });
-          let lingyu = this.data.quizList[this.data.currentIndex].lingyu
-          this.getRelatedAnswer(lingyu,this.data.currentIndex)
-        // }
+        this.setData({ currentIndex: e.detail.current });
+        let lingyu = this.data.quizList[this.data.currentIndex].lingyu
+        this.getRelatedAnswer(lingyu,this.data.currentIndex)
+
+        // 到最后一个了,就增加
+        if(this.data.currentIndex === this.data.quizList.length-1){
+          if(this.data.noLoad==true){
+              wx.showToast({
+                title: '这是最后一张',
+                icon:'none'
+              })
+          }else{
+            http('/web/randomquestion/','get').then(res=>{
+              // app.globalData.userInfo.points -= 3
+              // app.saveData()
+              this.data.quizList.push(...res.data)
+              this.setData({
+                noLoad:res.tip,
+                quizList:this.data.quizList,
+                // currentIndex:this.data.currentIndex+1,
+                // completedCount:this.data.completedCount+1
+              })
+            })
+          }
+        }
       }
     }
   },
@@ -139,7 +156,8 @@ Page({
     console.log('choiceKey',oindex)
     if (isCorrect) {
       wx.vibrateShort(); // 震动反馈
-      app.globalData.userInfo.points -= 3 
+      // 做对做错，扣1积分
+      app.globalData.userInfo.points -= 1
       if(app.globalData.userInfo.points < 0){
         app.globalData.userInfo.points = 0
       }
@@ -156,7 +174,8 @@ Page({
       console.log('dacuo',question)
       http('/web/mistake/','post',{'ctitemid':question.id,'answers':JSON.stringify(question.options)}).then(res=>{
         console.log('ress9',res)
-        app.globalData.userInfo.points -= 3
+        // 做对做错，扣1积分
+        app.globalData.userInfo.points -= 1
         this.setData({
           wrongCount:res.count, //错题总数
           points:app.globalData.userInfo.points
