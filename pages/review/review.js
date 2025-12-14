@@ -17,7 +17,7 @@ Page({
     knownCount: 0,     // 已认识
     forgotCount: 0,    // 不认识
     completedCount: 0, // 已做题 (已学习)
-    points: app.globalData.points,       // 当前积分
+    points: app.globalData.userInfo.points,       // 当前积分
     
     showNoPointsModal: false, // 积分不足弹窗控制
 
@@ -42,14 +42,17 @@ Page({
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
-      points:app.globalData.points
+      points:app.globalData.userInfo.points
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     // wx.setNavigationBarTitle({ title: '开始学习' });
   },
 
   onHide(){
+    app.globalData.userInfo.points = this.data.points
+    app.saveData()
     this.setData({
+      points:null,
       wordList:[],
       currentIndex: 0,
       knownCount: 0,     // 已认识
@@ -80,26 +83,20 @@ Page({
       this.setData({
         completedCount: this.data.completedCount + 1,
       })
-      if(app.globalData.points <= 0){
-        app.globalData.points = 0
-        app.savePoints()
+      if(this.data.points <= 0){
         //积分不足，退回去，显示要充值
         this.setData({
+          points:0,
           currentIndex:e.detail.current - 1,
           showNoPointsModal:true  
         })
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
       }else{
-        app.globalData.points -= 3
-        if(app.globalData.points < 0){
-          app.globalData.points = 0
-        }
-        app.savePoints()
-        // if (e.detail.source === 'touch') {
-          this.setData({
-            currentIndex: e.detail.current,
-            points:app.globalData.points
-          });
-        // }
+        this.setData({
+          points: this.data.points - 3 > 0 ? this.data.points - 3 : 0,
+          currentIndex: e.detail.current,
+        });
         // 到最后一个了,就增加
         if(this.data.currentIndex === this.data.wordList.length-1){
           if(this.data.noLoad==true){
@@ -231,11 +228,8 @@ Page({
       this.setData({ showNoPointsModal: false });
     }
     if(!app.globalData.userInfo.hasSharedToday){
-      app.globalData.points +=20
       app.globalData.userInfo.hasSharedToday = true
-      app.saveData()
-      app.savePoints()
-      this.setData({ points: app.globalData.points });
+      this.setData({ points: this.data.points+20 });
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {

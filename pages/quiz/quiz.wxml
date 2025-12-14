@@ -20,7 +20,7 @@
       <view class="stat-line"></view>
       <view class="stat-item" bind:tap="goPurchase">
         <text class="stat-num highlight">{{points}}</text>
-        <text class="stat-label">积分</text>
+        <text class="stat-label">剩余积分</text>
       </view>
     </view>
   </view>
@@ -113,10 +113,8 @@
     </view>
   </view> -->
 
-  <vip-modal 
-    visible="{{showNoPointsModal}}" 
-    bind:close="onCloseVip" 
-    bind:purchase="onConfirmPurchase" 
-  />
+  <points-modal visible="{{showNoPointsModal}}" />
+
+  <!-- <vip-modal visible="{{showNoPointsModal}}" /> -->
   
 </view>

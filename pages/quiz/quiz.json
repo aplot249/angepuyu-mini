@@ -2,6 +2,7 @@
   "navigationBarTitleText": "做题练习",
   "navigationBarTextStyle": "white",
   "usingComponents": {
-    "vip-modal": "/components/vip-modal/vip-modal"
+    "vip-modal": "/components/vip-modal/vip-modal",
+    "points-modal": "/components/points-modal/points-modal"
   }
 }

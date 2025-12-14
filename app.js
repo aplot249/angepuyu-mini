@@ -10,44 +10,41 @@ App({
       hasSharedToday: false, // [新增] 今日是否已分享
       favorites: []
     },
-    points: 50,
     userCreated:null,
     fontSizeLevel: 1, 
     isDarkMode: false,
-    // ac: wx.createInnerAudioContext()
   },
 
   onLaunch() {
-      // 如果代码发布新版本，小程序里自动提示更新
-      if (wx.canIUse('getUpdateManager')) {
-        const updateManager = wx.getUpdateManager();
-        updateManager.onCheckForUpdate(res => {
-          if (res.hasUpdate) {
-            updateManager.onUpdateReady(() => { // 新包下载完成
-              wx.showModal({
-                title: '更新提示',
-                content: '新版本已就绪，点击重启体验',
-                showCancel: false,
-                success: res => res.confirm && updateManager.applyUpdate() // 强制重启应用新版
-              });
+    // 如果代码发布新版本，小程序里自动提示更新
+    if (wx.canIUse('getUpdateManager')) {
+      const updateManager = wx.getUpdateManager();
+      updateManager.onCheckForUpdate(res => {
+        if (res.hasUpdate) {
+          updateManager.onUpdateReady(() => { // 新包下载完成
+            wx.showModal({
+              title: '更新提示',
+              content: '新版本已就绪，点击重启体验',
+              showCancel: false,
+              success: res => res.confirm && updateManager.applyUpdate() // 强制重启应用新版
             });
-            updateManager.onUpdateFailed(() => { // 下载失败
-              wx.showModal({
-                title: '更新失败',
-                content: '请删除小程序后重新搜索打开',
-                showCancel: false
-              });
+          });
+          updateManager.onUpdateFailed(() => { // 下载失败
+            wx.showModal({
+              title: '更新失败',
+              content: '请删除小程序后重新搜索打开',
+              showCancel: false
             });
-          }
-        });
-      } else { // 兼容低版本基础库（<1.9.90）
-        wx.showModal({
-          title: '提示',
-          content: '当前微信版本过低，请升级后重试',
-          success: res => res.confirm && wx.updateWeChatApp() // 跳转微信更新
-        });
-      }
-      
+          });
+        }
+      });
+    } else { // 兼容低版本基础库（<1.9.90）
+      wx.showModal({
+        title: '提示',
+        content: '当前微信版本过低，请升级后重试',
+        success: res => res.confirm && wx.updateWeChatApp() // 跳转微信更新
+      });
+    }
     // 读取本地存储
     const user = wx.getStorageSync('ts_user');
     const font = wx.getStorageSync('ts_font');
@@ -77,18 +74,19 @@ App({
       console.log('New day detected, resetting daily tasks.');
       this.globalData.userInfo.hasSignedIn = false;
       this.globalData.userInfo.hasSharedToday = false;
-      this.globalData.points = 50;
+      this.globalData.userInfo.points = 50;
       // 保存新日期和重置后的用户数据
       wx.setStorageSync('ts_last_active_date', todayStr);
       this.saveData();
-      this.savePoints();
     }
   },
   saveData() {
     wx.setStorageSync('ts_user', this.globalData.userInfo);
-  },
-  savePoints() {
-    wx.setStorageSync('points', this.globalData.points);
+    // if(this.globalData.userInfo.isLoggedIn){
+    //   http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
+    //     console.log('已更新积分')
+    //   })
+    // }
   },
   playAudio(mp3,xiaohao,title){
     if(!this.globalData.userInfo.isLoggedIn){
@@ -127,7 +125,6 @@ App({
                         icon: 'none'
                       });
                       wx.setStorageSync('token', res.token)
-                      // that.onLoad()
                     })
                   }
                 })
@@ -144,8 +141,7 @@ App({
         content: '1、通过签到、分享赚取积分或者\n2：直接购买积分',
         confirmText:'购买积分',
         complete: (res) => {
-          if (res.cancel) {
-          }
+          if (res.cancel) {}
           if (res.confirm) {
             wx.navigateTo({
               url: '/pages/purchase/purchase',
@@ -154,25 +150,19 @@ App({
         }
       })
     }else{
-      // wx.showToast({
-      //   title: xiaohao != 0 ? '正在播放' : '暂无发音',
-      //   icon:'none'
-      // })
       wx.showToast({
         title: mp3 == null ? '暂无发音' : '正在播放',
         icon:'none'
       })
-      // let innerAudioContext = wx.createInnerAudioContext();
       let innerAudioContext = wx.getBackgroundAudioManager();
       innerAudioContext.title = title
       innerAudioContext.src = mp3
       // innerAudioContext.play()
-      // 采用会员制，不需要积分同步
-      // this.globalData.userInfo.points -= xiaohao
-      // http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
-      //   console.log('已同步')
-      //   // innerAudioContext.destroy()
-      // })    
+      this.globalData.userInfo.points -= xiaohao
+      http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
+        console.log('已同步')
+        // innerAudioContext.destroy()
+      })
     }   
    } // 没登录的结尾
   },

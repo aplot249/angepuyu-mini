@@ -9,7 +9,7 @@ Page({
     
     // 统计数据
     score: 60,         // 初始积分 (模拟)
-    points:null,
+    points:app.globalData.userInfo.points,
 
     completedCount: 0, // 已做题数
     wrongCount: 0,     // 错题数
@@ -35,7 +35,7 @@ Page({
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
-      points:app.globalData.points,
+      points:app.globalData.userInfo.points,
     });
     http('/web/randomquestion/','get').then(res=>{
       this.setData({
@@ -52,6 +52,8 @@ Page({
     // wx.setNavigationBarTitle({ title: '每日练习' });
   },
   onHide(){
+    app.globalData.userInfo.points = this.data.points
+    app.saveData()
     this.setData({
       quizList:[],
       currentIndex: 0,
@@ -88,25 +90,20 @@ Page({
     // 以前序列小于这次积分，就是向后刷
     if (this.data.currentIndex < e.detail.current){
       // 向后刷积分小于0时候
-      if(app.globalData.points <= 0){
-        app.globalData.points = 0
-        app.savePoints()
+      if(this.data.points <= 0){
         this.setData({
-          points:app.globalData.points,
+          points:0,
           currentIndex:e.detail.current - 1,
           showNoPointsModal:true
         })
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
       }else{
         // 遍历题，扣2积分
-        app.globalData.points -= 2
-        if(app.globalData.points < 0){
-          app.globalData.points = 0
-        }
         this.setData({
-          points:app.globalData.points
-        })
-        app.savePoints()
-        this.setData({ currentIndex: e.detail.current });
+          points:this.data.points - 2 > 0 ? this.data.points - 2 : 0,
+          currentIndex: e.detail.current 
+        });
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
 
@@ -119,8 +116,6 @@ Page({
               })
           }else{
             http('/web/randomquestion/','get').then(res=>{
-              // app.globalData.points -= 3
-              // app.saveData()
               this.data.quizList.push(...res.data)
               this.setData({
                 noLoad:res.tip,
@@ -164,15 +159,10 @@ Page({
     if (isCorrect) {
       wx.vibrateShort(); // 震动反馈
       // 做对做错，扣1积分
-      app.globalData.points -= 1
-      if(app.globalData.points < 0){
-        app.globalData.points = 0
-      }
       this.setData({
         completedCount: this.data.completedCount + 1,
-        points:app.globalData.points
+        points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
       })
-      app.savePoints()
       // 答对自动跳下一题 (延迟体验更好)
       // setTimeout(() => {
       //   this.autoNext();
@@ -183,15 +173,10 @@ Page({
       http('/web/mistake/','post',{'ctitemid':question.id,'answers':JSON.stringify(question.options)}).then(res=>{
         console.log('ress9',res)
         // 做对做错，扣1积分
-        app.globalData.points -= 1
-        if(app.globalData.points < 0){
-          app.globalData.points = 0
-        }
         this.setData({
           wrongCount:res.count, //错题总数
-          points:app.globalData.points
+          points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
         })
-        app.savePoints()
       })
       // [修复] 如果是最后一题，答错也需要在延迟后进入结算，否则用户无路可走
       // if (qindex === this.data.quizList.length - 1) {
@@ -213,7 +198,6 @@ Page({
   // },
   onConfirmPurchase(e) {
     console.log('用户选择了:', e.detail); // {planId: 3, price: 80, name: "年卡"}
-    
     // 这里调用微信支付接口
   },
   autoNext() {
@@ -278,7 +262,6 @@ Page({
   },
 
   // --- 积分不足处理 ---
-
   buyPoints() {
     this.setData({ showNoPointsModal: false });
     wx.navigateTo({ url: '/pages/purchase/purchase' });
@@ -295,10 +278,8 @@ Page({
       this.setData({ showNoPointsModal: false });
     }
     if(!app.globalData.userInfo.hasSharedToday){
-      app.globalData.points +=20
       app.globalData.userInfo.hasSharedToday = true
-      app.savePoints()
-      this.setData({ points: app.globalData.points });
+      this.setData({ points: this.data.points + 20});
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {
