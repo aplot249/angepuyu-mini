@@ -1,10 +1,10 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/review/review",
     "pages/quiz/quiz",
     "pages/category/category",
     "pages/profile/profile",
-    "pages/index/index",
     "pages/wordbook/wordbook",
     "pages/list/list",
     "pages/purchase/purchase",
@@ -18,7 +18,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "坦桑通 Swahili",
+    "navigationBarTitleText": "坦坦斯语",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -28,29 +28,30 @@
     "borderStyle": "white",
     "list": [
       {
-        "pagePath": "pages/review/review",
-        "text": "卡片学习",
-        "iconPath": "/static/images/dictionary.png",
-        "selectedIconPath": "/static/images/dictionary-active.png"
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/images/home.png",
+        "selectedIconPath": "/static/images/home-active.png"
       },
       {
         "pagePath": "pages/quiz/quiz",
-        "text": "做题练习",
+        "text": "做题",
         "iconPath": "/static/images/edit.png",
         "selectedIconPath": "/static/images/edit-active.png"
       },
       {
         "pagePath": "pages/category/category",
-        "text": "词库分类",
+        "text": "词库",
         "iconPath": "/static/images/category.png",
         "selectedIconPath": "/static/images/category-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "更多功能",
+        "text": "更多",
         "iconPath": "/static/images/mine.png",
         "selectedIconPath": "/static/images/mine-active.png"
       }
     ]
-  }
+  },
+  "requiredBackgroundModes": ["audio"]
 }

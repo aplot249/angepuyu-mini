@@ -1,4 +1,4 @@
-const { http } = require("./requests/index");
+const { http,baseImgUrl } = require("./requests/index");
 import { eventBus } from './utils/eventBus.js';
 
 App({
@@ -83,6 +83,7 @@ App({
   saveData() {
     wx.setStorageSync('ts_user', this.globalData.userInfo);
     // if(this.globalData.userInfo.isLoggedIn){
+      // console.log('userInfo.isLoggedIn',this.globalData.userInfo.isLoggedIn)
     //   http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
     //     console.log('已更新积分')
     //   })
@@ -156,8 +157,8 @@ App({
       })
       let innerAudioContext = wx.getBackgroundAudioManager();
       innerAudioContext.title = title
-      innerAudioContext.src = mp3
-      // innerAudioContext.play()
+      let fayin = mp3 ? mp3 : baseImgUrl+'/zanwufayin.mp3'
+      innerAudioContext.src = fayin
       this.globalData.userInfo.points -= xiaohao
       http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
         console.log('已同步')

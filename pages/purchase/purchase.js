@@ -17,7 +17,7 @@ Page({
     priceList:[]
   },
   onLoad(){
-    http('/web/pricelist/','get').then(res=>{
+    http('/user/price/','get').then(res=>{
         console.log(res)
         this.setData({
           priceList:res
@@ -81,7 +81,8 @@ Page({
           wx.showLoading({
             title: '支付中...'
           });
-          http('/web/pay/', 'post',{"price":price,"points":amount,"desp":desp}).then(res => {
+          let title = `${desp}#${amount}`
+          http('/user/pay/', 'post',{"price":price,"title":title}).then(res => {
             if (res.code === 0) {
               const payment = res.payment;
               this.setData({"prepay_id":payment.prepay_id})
@@ -131,7 +132,7 @@ Page({
       return;
     }
     let that = this
-    http(`/web/transcation/${this.data.prepay_id}/`,'get').then(res=>{
+    http(`/user/transcation/${this.data.prepay_id}/`,'get').then(res=>{
       this.setData({
         waitTimes: newWait
       });
@@ -141,7 +142,8 @@ Page({
         wx.showToast({
           title: '支付成功',
         })
-        app.globalData.userInfo.points = app.globalData.userInfo.points+res.points
+        let points = Number(res.title.split('#')[1])
+        app.globalData.userInfo.points += points
         app.saveData()
         this.setData({
           userInfo:this.data.userInfo

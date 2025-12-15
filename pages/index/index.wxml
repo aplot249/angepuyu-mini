@@ -28,7 +28,7 @@
         </swiper-item>
       </block>
     </swiper>
-
+    
     <!-- 2. 滚动喇叭 -->
     <view class="notice-bar">
       <view class="notice-icon">📢</view>
@@ -41,69 +41,81 @@
       </swiper>
     </view>
 
-    <!-- [新增] 3. 每日练习功能区 (Review & Quiz) -->
-    <view class="practice-section">
-      <view class="practice-card review-style" bindtap="navigateToReview">
-        <view class="p-icon-box">🎴</view>
-        <view class="p-text-box">
-          <text class="p-title">卡片学习</text>
-          <text class="p-desc">Review</text>
+    <!-- 3. 核心功能区 I -->
+    <view class="func-grid-row">
+      <view class="func-card review-style" bindtap="navigateToReview">
+        <view class="f-icon-box">🎴</view>
+        <view class="f-text-box">
+          <text class="f-title">卡片学习</text>
+          <text class="f-desc">Review</text>
         </view>
       </view>
       
-      <view class="practice-card quiz-style" bindtap="navigateToQuiz">
-        <view class="p-icon-box">📝</view>
-        <view class="p-text-box">
-          <text class="p-title">做题练习</text>
-          <text class="p-desc">Quiz</text>
+      <view class="func-card quiz-style" bindtap="navigateToQuiz">
+        <view class="f-icon-box">📝</view>
+        <view class="f-text-box">
+          <text class="f-title">做题练习</text>
+          <text class="f-desc">Quiz</text>
         </view>
       </view>
     </view>
 
-    <!-- 4. 每日单词 (改为一行两列，无图) -->
+    <!-- 4. 核心功能区 II -->
+    <view class="func-grid-row">
+      <view class="func-card mistake-style" bindtap="navigateToMistake">
+        <view class="f-icon-box">📓</view>
+        <view class="f-text-box">
+          <text class="f-title">我的错题</text>
+          <text class="f-desc">Mistakes</text>
+        </view>
+      </view>
+      
+      <view class="func-card wordbook-style" bindtap="navigateToWordbook">
+        <view class="f-icon-box">⭐️</view>
+        <view class="f-text-box">
+          <text class="f-title">生词收藏</text>
+          <text class="f-desc">Favorites</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 5. 每日单词 (一行两列) -->
     <view class="section-header">
       <view class="section-title">
         <text>每日单词</text>
         <text class="section-tag">Word</text>
       </view>
       <view class="refresh-btn" bindtap="refreshDaily">
-        <text>🔄 换一换</text>
+        <text>🔄 换一组</text>
       </view>
     </view>
     
-    <!-- [修改] 使用 Grid 布局容器 -->
     <view class="daily-word-grid">
-      <block wx:for="{{dailyWordList}}" wx:key="id">
-        <view class="card item-card word-card-mini">
-          <view class="info-col">
-            <view class="row-flex">
-              <text class="sw-text">{{item.swahili}}</text>
-              <view class="play-btn" bindtap="playAudio" data-item="{{item}}">🔊</view>
-            </view>
-            
-            <view class="homonym-box">
-              <text class="tag">谐音</text>
-              <text class="hm-text">{{item.xieyin}}</text>
-            </view>
-
-            <view class="trans-box">
-              <text class="cn-text">{{item.chinese}}</text>
-              <text class="en-text">{{item.english}}</text>
-            </view>
+      <block wx:for="{{dailyWords}}" wx:key="id">
+        <view class="word-card-refined">
+          <!-- 顶部：发音 -->
+          <view class="wc-header">
+            <view class="wc-play-btn" bindtap="playAudio" data-type="word" data-item="{{item}}">🔊</view>
           </view>
           
-          <!-- <view class="card-footer-mini">
-            <view class="action-fav" bindtap="toggleDailyFav" data-type="word" data-index="{{index}}">
-              <text class="fav-icon {{item.isFav ? 'active' : ''}}">{{item.isFav ? '❤️' : '🤍'}}</text>
+          <!-- 中间：核心单词 -->
+          <view class="wc-body">
+            <text class="wc-sw">{{item.swahili}}</text>
+            <view class="wc-homonym">
+              <text>{{item.xieyin}}</text>
             </view>
-            <view class="action-fix"><text>纠错</text></view>
-          </view> -->
-          
+          </view>
+
+          <!-- 底部：释义 -->
+          <view class="wc-footer">
+            <text class="wc-cn">{{item.chinese}}</text>
+            <text class="wc-en">{{item.english}}</text>
+          </view>
         </view>
       </block>
     </view>
 
-    <!-- 4. [中插] 广告轮播图 -->
+    <!-- 6. 广告位 -->
     <!-- <swiper class="banner-swiper middle" autoplay="true" interval="4000" circular="true" indicator-dots="false">
       <block wx:for="{{middleBanners}}" wx:key="*this">
         <swiper-item>
@@ -112,37 +124,45 @@
       </block>
     </swiper> -->
 
-    <!-- 5. 每日短语 -->
+    <!-- 7. 每日短语 (一行一列，两行数据) -->
     <view class="section-header">
       <view class="section-title">
-        <text>每日一句</text>
+        <text>每日短语</text>
         <text class="section-tag">Phrase</text>
       </view>
     </view>
 
-    <view class="card item-card phrase-layout" wx:for="{{dailyPhraseList}}" wx:key="*this">
-      <view class="phrase-header">
-        <text class="sw-sentence">{{item.swahili}}</text>
-        <view class="play-btn large" bindtap="playAudio" data-item="{{item}}">🔊</view>
-      </view>
-      <view class="homonym-row">
-        <text class="tag">谐音</text>
-        <text class="hm-sentence">{{item.xieyin}}</text>
-      </view>
-      <view class="meaning-col">
-        <text class="cn-text">{{item.chinese}}</text><view></view>
-        <text class="en-text">{{item.english}}</text>
-      </view>
-      <!-- <view class="card-footer">
-        <view class="action-fav" bindtap="toggleDailyFav" data-type="phrase">
-          <text class="fav-icon {{dailyPhrase.isFav ? 'active' : ''}}">{{dailyPhrase.isFav ? '❤️' : '🤍'}}</text>
-          <text class="fav-label">收藏</text>
+    <!-- 使用列表循环展示两个短语 -->
+    <block wx:for="{{dailyPhrase}}" wx:key="id" wx:for-item="item">
+      <view class="phrase-card-refined" style="margin-bottom: 24rpx;">
+        <view class="pc-content">
+          <view class="pc-row-top">
+            <text class="pc-sw">{{item.swahili}}</text>
+            <view class="pc-play-btn" bindtap="playAudio" data-item="{{item}}" data-type="phrase">🔊</view>
+          </view>
+          
+          <view class="pc-homonym-bar">
+            <text class="tag">谐音</text>
+            <text class="text">{{item.xieyin}}</text>
+          </view>
+
+          <view class="pc-trans-box">
+            <text class="pc-cn">{{item.chinese}}</text>
+            <text class="pc-en">{{item.english}}</text>
+          </view>
         </view>
-        <view class="action-fix"><text>纠错</text></view>
-      </view> -->
-    </view>
+
+        <!-- <view class="pc-action-bar">
+          <view class="pc-action-item">
+            <text class="icon">✍️</text>
+            <text class="label">纠错反馈</text>
+          </view>
+        </view> -->
+      </view>
+    </block>
+
+    <!-- 底部留白 -->
+    <!-- <view style="height: 40rpx;"></view> -->
 
   </view>
-
-  <welcome-modal />
 </view>

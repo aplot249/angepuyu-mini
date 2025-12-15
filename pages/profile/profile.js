@@ -10,7 +10,10 @@ Page({
     // 弹窗相关数据
     showFeedbackModal: false,
     feedbackContent: '',
-    feedbackLen: 0
+    feedbackLen: 0,
+
+    FlipautoPlayfayin:app.globalData.userInfo.FlipautoPlayfayin || false,
+    NextautoPlayfayin:app.globalData.userInfo.NextautoPlayfayin || false
   },
 
   onShow() {
@@ -58,7 +61,16 @@ Page({
         }
       })
   },
-
+  SetFlipautoPlayfayin(){
+    this.setData({FlipautoPlayfayin:!this.data.FlipautoPlayfayin})
+    app.globalData.userInfo.FlipautoPlayfayin = this.data.FlipautoPlayfayin
+    app.saveData()
+  },
+  SetNextautoPlayfayin(){
+    this.setData({NextautoPlayfayin:!this.data.NextautoPlayfayin})
+    app.globalData.userInfo.NextautoPlayfayin = this.data.NextautoPlayfayin
+    app.saveData()
+  },
   navigateToAbout() {
     wx.navigateTo({ url: '/pages/about/about' });
   },

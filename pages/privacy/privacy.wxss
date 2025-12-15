@@ -30,7 +30,7 @@
 }
 
 .p {
-  font-size: var(--text-sm);
+  font-size: var(--text-main);
   color: var(--text-main);
   line-height: 1.6;
   display: block;

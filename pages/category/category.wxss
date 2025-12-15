@@ -21,7 +21,8 @@
 .nav-item.active {
   color: var(--primary);
   font-weight: bold;
-  background: #fff;
+  /* background: #fff; */
+  background: var(--bg-color);
   font-size: var(--text-base);
 }
 
@@ -102,12 +103,14 @@
   width: 180rpx;
   height: 40rpx;
   border-radius: 20%;
-  background-color: #FFF3E0; /*暖色背景*/
+  /* 暖色背景 */
+  /* background-color: #FFF3E0;  */
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  box-shadow: 0 4rpx 8rpx rgba(0,0,0,0.05);
+  /* box-shadow: 0 4rpx 8rpx rgba(0,0,0,0.05); */
+  /* box-shadow: 0 1rpx 2rpx rgba(0,0,0,0.05); */
 }
 
 .circle-btn:active {
@@ -122,5 +125,4 @@
   /* border:1px solid; */
   /* color: #FF7043; */
   color: var(--text-sub);
-
 }

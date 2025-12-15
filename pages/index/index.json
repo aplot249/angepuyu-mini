@@ -1,6 +1,6 @@
 {
-  "navigationStyle": "custom",
   "navigationBarTextStyle": "black",
+  "navigationStyle": "custom",
   "usingComponents": {
     "welcome-modal": "/components/welcome-modal/welcome-modal"
   }

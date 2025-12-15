@@ -84,7 +84,7 @@
 .title { font-size: var(--text-lg); font-weight: bold; color: var(--text-main); } /* 原 34rpx */
 
 .content-text {
-  font-size: var(--text-base); /* 原 28rpx */
+  font-size: var(--text-main); /* 原 28rpx */
   color: var(--text-main);
   line-height: 1.8;
   opacity: 0.9;

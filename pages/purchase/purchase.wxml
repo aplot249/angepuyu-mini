@@ -44,25 +44,25 @@
   <view class="purchase-list">
     
     <!-- 选项 1 -->
-    <view class="card purchase-item" bindtap="buyPoints" data-amount="{{priceList[0].points}}" data-price="{{priceList[0].price}}" data-desp="{{priceList[0].product}}">
+    <view class="card purchase-item" bindtap="buyPoints" data-amount="{{priceList[0].points}}" data-price="{{priceList[0].price}}" data-desp="{{priceList[0].name}}">
       <view class="item-left">
         <view class="coin-icon">💰</view>
         <view class="item-info">
           <view class="item-title">{{priceList[0].points}} 点数</view>
-          <view class="item-desc">{{priceList[0].product}}</view>
+          <view class="item-desc">{{priceList[0].name}}</view>
         </view>
       </view>
       <view class="price-btn">¥ {{priceList[0].price}}元</view>
     </view>
 
     <!-- 选项 2 (推荐) -->
-    <view class="card purchase-item recommend" bindtap="buyPoints" data-amount="{{priceList[1].points}}" data-price="{{priceList[1].price}}" data-desp="{{priceList[1].product}}">
+    <view class="card purchase-item recommend" bindtap="buyPoints" data-amount="{{priceList[1].points}}" data-price="{{priceList[1].price}}" data-desp="{{priceList[1].name}}">
       <view class="recommend-tag">HOT</view>
       <view class="item-left">
         <view class="coin-icon infinite">♾️</view>
         <view class="item-info">
-          <view class="item-title text-purple">{{priceList[1].points}} 点数</view>
-          <view class="item-desc">{{priceList[1].product}}</view>
+          <view class="item-title text-purple">{{priceList[1].points > 100000 ?'无限':priceList[1].points}} 点数</view>
+          <view class="item-desc">{{priceList[1].name}}</view>
         </view>
       </view>
       <view class="price-btn purple">¥ {{priceList[1].price}}元</view>

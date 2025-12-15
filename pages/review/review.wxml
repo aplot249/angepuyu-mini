@@ -1,27 +1,27 @@
 <view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
   
   <!-- 1. 顶部动态区域 -->
-  <view class="home-header" style="padding-top: {{totalNavHeight}}px; min-height: {{totalNavHeight + 140}}px;">
+  <!-- style="padding-top: {{totalNavHeight}}px; min-height: {{totalNavHeight + 0}}px;" -->
+  <view class="home-header"  style="padding-top: 20rpx">
     <view class="header-bg"></view>
     
     <view class="header-content">
       <!-- 场景 A: 第一张卡片 - 显示问候 -->
-      <block wx:if="{{currentIndex === 0}}">
+      <!-- wx:if="{{currentIndex === 0}}" -->
+      <block>
         <view class="greeting-box">
           <text class="greeting-title">Jambo! 👋</text>
-          <view class="gl"></view>
           <text class="greeting-sub">新的一天，开始积累词汇吧</text>
         </view>
         <!-- <view class="today-goal">
           <text class="goal-label">今日目标</text>
           <text class="goal-val">{{wordList.length}} 词</text>
         </view> -->
-      </block>
+      <!-- </block> -->
 
       <!-- 场景 B: 学习进行中 - 显示指标 -->
-      <block wx:else>
+      <!-- <block wx:else> -->
         <view class="stats-dashboard">
-          
           <!-- 5个网格数据 -->
           <view class="stats-grid">
             <view class="stat-item">
@@ -45,7 +45,7 @@
             </view> -->
             <view class="stat-line"></view>
             <view class="stat-item" bind:tap="goPurchase">
-              <text class="stat-num highlight">{{points}}</text>
+              <text class="stat-num highlight">{{points>100?'充足':points}}</text>
               <text class="stat-label">剩余积分</text>
             </view>
           </view>

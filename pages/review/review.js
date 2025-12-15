@@ -1,5 +1,6 @@
 const app = getApp();
 import {http} from '../../requests/index'
+import { eventBus } from '../../utils/eventBus.js';
 
 Page({
   data: {
@@ -28,8 +29,14 @@ Page({
   onLoad() {
     this.calcNavBar();
   },
-
+  UserInfoPointsChange(value){
+    console.log(value)
+    this.setData({
+      points:value
+    })
+  },
   onShow() {
+    eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
       // 直接从我的收藏里取
     http('/web/randomcard/','get').then(res=>{
       this.setData({
@@ -49,8 +56,12 @@ Page({
   },
 
   onHide(){
-    app.globalData.userInfo.points = this.data.points
-    app.saveData()
+    eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+    http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+      console.log('已更新积分')
+    })
+    // app.globalData.userInfo.points = this.data.points
+    // app.saveData()
     this.setData({
       points:null,
       wordList:[],
@@ -97,6 +108,8 @@ Page({
           points: this.data.points - 3 > 0 ? this.data.points - 3 : 0,
           currentIndex: e.detail.current,
         });
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
         // 到最后一个了,就增加
         if(this.data.currentIndex === this.data.wordList.length-1){
           if(this.data.noLoad==true){
@@ -142,7 +155,9 @@ Page({
     // 查看斯语答案时候自动发音
     if(!item.isFlipped){
       let xiaohao = item.fayin ? item.xiaohao : 0
-      app.playAudio(item.fayin,xiaohao,item.swahili)
+      if(app.globalData.userInfo.FlipautoPlayfayin){
+        app.playAudio(item.fayin,xiaohao,item.swahili)
+      }
     }
     this.setData({
       [key]: !this.data.wordList[index].isFlipped
@@ -230,6 +245,8 @@ Page({
     if(!app.globalData.userInfo.hasSharedToday){
       app.globalData.userInfo.hasSharedToday = true
       this.setData({ points: this.data.points+20 });
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {

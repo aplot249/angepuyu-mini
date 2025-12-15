@@ -29,8 +29,8 @@ Page({
       '新版本增加了“短语纠错”功能，快来试试吧。',
       '每日签到可领取积分奖励，别忘记哦。'
     ],
-    dailyWordList:[],
-    dailyPhraseList:[],
+    dailyWords:[],
+    dailyPhrase:[],
   },
   onLoad() {
     this.calcNavBar();
@@ -40,8 +40,8 @@ Page({
       this.setData({
         banners:res.carousel,
         announcements:res.noticeBar,
-        dailyWordList:res.tuijianWords,
-        dailyPhraseList:res.tuijianPhrases
+        dailyWords:res.tuijianWords,
+        dailyPhrase:res.tuijianPhrases
       })
     })
   },
@@ -91,13 +91,17 @@ Page({
   navigateToReview() {
     wx.navigateTo({ url: '/pages/review/review' });
   },
-
   // [新增] 跳转到每日练习
   navigateToQuiz() {
-    console.log('app.globalData.userInfo',app.globalData.userInfo)
-    wx.navigateTo({ url: '/pages/quiz/quiz?from=index' })
+    wx.switchTab({ url: '/pages/quiz/quiz' })
   },
-    
+  navigateToMistake() {
+    wx.navigateTo({ url: '/pages/mistake/mistake' })
+  },   
+  navigateToWordbook(){
+    wx.navigateTo({ url: '/pages/wordbook/wordbook' })
+  }, 
+  
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0

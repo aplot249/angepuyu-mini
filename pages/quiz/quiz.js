@@ -1,5 +1,6 @@
 const app = getApp();
 import {http} from '../../requests/index'
+import { eventBus } from '../../utils/eventBus.js';
 
 Page({
   data: {
@@ -31,7 +32,14 @@ Page({
     ],
     noLoad:false
   },
+  UserInfoPointsChange(value){
+    console.log(value)
+    this.setData({
+      points:value
+    })
+  },
   onShow() {
+    eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
@@ -52,6 +60,10 @@ Page({
     // wx.setNavigationBarTitle({ title: '每日练习' });
   },
   onHide(){
+    eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+    http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+      console.log('已更新积分')
+    })
     app.globalData.userInfo.points = this.data.points
     app.saveData()
     this.setData({
@@ -104,7 +116,15 @@ Page({
           points:this.data.points - 2 > 0 ? this.data.points - 2 : 0,
           currentIndex: e.detail.current 
         });
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
+        // 判断自动发音
+        if(app.globalData.userInfo.NextautoPlayfayin){
+          let item = this.data.quizList[this.data.currentIndex]
+          let xiaohao = item.fayin ? item.xiaohao : 0
+          app.playAudio(item.fayin,xiaohao,item.title)
+        }
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
 
         // 到最后一个了,就增加
@@ -163,6 +183,8 @@ Page({
         completedCount: this.data.completedCount + 1,
         points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
       })
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
       // 答对自动跳下一题 (延迟体验更好)
       // setTimeout(() => {
       //   this.autoNext();
@@ -177,6 +199,8 @@ Page({
           wrongCount:res.count, //错题总数
           points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
         })
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
       })
       // [修复] 如果是最后一题，答错也需要在延迟后进入结算，否则用户无路可走
       // if (qindex === this.data.quizList.length - 1) {
@@ -280,6 +304,8 @@ Page({
     if(!app.globalData.userInfo.hasSharedToday){
       app.globalData.userInfo.hasSharedToday = true
       this.setData({ points: this.data.points + 20});
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {
