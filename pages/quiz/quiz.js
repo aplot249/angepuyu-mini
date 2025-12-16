@@ -8,8 +8,10 @@ Page({
     isDarkMode: false,
     currentIndex: 0,
     
-    // 统计数据
-    score: 60,         // 初始积分 (模拟)
+    // 统计数据20 
+    score: 0, //总得分
+    rightNum:0,
+    eachItemScore:0,
     points:app.globalData.userInfo.points,
 
     completedCount: 0, // 已做题数
@@ -44,6 +46,7 @@ Page({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
       points:app.globalData.userInfo.points,
+      quizCountOption:wx.getStorageSync('quizCountOption') || 10
     });
     http('/web/randomquestion/','get').then(res=>{
       this.setData({
@@ -123,7 +126,8 @@ Page({
         if(app.globalData.userInfo.NextautoPlayfayin){
           let item = this.data.quizList[this.data.currentIndex]
           let xiaohao = item.fayin ? item.xiaohao : 0
-          app.playAudio(item.fayin,xiaohao,item.title)
+          // console.log('item',item.swahili)
+          app.playAudio(item.fayin,xiaohao,item.swahili)
         }
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
 
@@ -156,9 +160,19 @@ Page({
     let xiaohao = item.fayin ? item.xiaohao : 0
     app.playAudio(item.fayin,xiaohao,item.title)
   },
-
+  caculateScore(){
+    console.log("22222222")
+    this.setData({
+      isFinished:true
+    })
+    let score = Math.floor(100 / this.data.completedCount * this.data.rightNum)
+    this.setData({
+      score:score
+    })
+  },
   // 答题逻辑
   selectOption(e) {
+    let that = this
     const { qindex, oindex,oanswer } = e.currentTarget.dataset;
     const question = this.data.quizList[qindex];
     console.log(question.chinese,oanswer,question.chinese===oanswer)
@@ -180,9 +194,14 @@ Page({
       wx.vibrateShort(); // 震动反馈
       // 做对做错，扣1积分
       this.setData({
+        rightNum:this.data.rightNum + 1,
         completedCount: this.data.completedCount + 1,
         points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
       })
+      if(this.data.completedCount % this.data.quizCountOption === 0){
+        console.log('ffffffffff')
+        that.caculateScore()
+      }
       app.globalData.userInfo.points = this.data.points
       app.saveData()
       // 答对自动跳下一题 (延迟体验更好)
@@ -192,13 +211,20 @@ Page({
     } else {
       wx.vibrateLong();
       console.log('dacuo',question)
-      http('/web/mistake/','post',{'ctitemid':question.id,'answers':JSON.stringify(question.options)}).then(res=>{
+      // oanswer
+      // JSON.stringify(question.options)
+      http('/web/mistake/','post',{'ctitemid':question.id,'answers':oanswer}).then(res=>{
         console.log('ress9',res)
         // 做对做错，扣1积分
         this.setData({
+          completedCount: this.data.completedCount + 1,
           wrongCount:res.count, //错题总数
           points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
         })
+        if(this.data.completedCount % this.data.quizCountOption === 0){
+          console.log('ffffffffff')
+          that.caculateScore()
+        }
         app.globalData.userInfo.points = this.data.points
         app.saveData()
       })
@@ -257,7 +283,9 @@ Page({
       quizList: resetList,
       currentIndex: 0,
       score: 0,
-      isFinished: false
+      isFinished: false,
+      completedCount:0,
+      rightNum:0
     });
   },
   continueQuiz(){

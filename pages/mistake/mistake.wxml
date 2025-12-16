@@ -5,7 +5,7 @@
     <view class="stats-bg"></view>
     <view class="stats-content">
       <view class="stats-column">
-        <text class="stats-num">{{mistakeList.length}}</text>
+        <text class="stats-num">{{nomasteredCount}}</text>
         <text class="stats-label">待攻克错题</text>
       </view>
       <view class="stats-divider"></view>
@@ -17,51 +17,68 @@
   </view>
 
   <!-- 错题列表 -->
-  <scroll-view scroll-y class="mistake-list" wx:if="{{mistakeList.length > 0}}">
+  <view class="mistake-list" wx:if="{{mistakeList.length > 0}}">
     <block wx:for="{{mistakeList}}" wx:key="id">
-      <view class="mistake-card">
+      
+      <!-- [修改] 绑定点击整个卡片播放音频 -->
+      <view class="mistake-card" bindtap="playAudio" data-word="{{item}}">
         
-        <!-- 左侧高亮边条 (根据错误次数变色) -->
-        <view class="severity-bar {{item.errorCount > 3 ? 'high' : 'normal'}}"></view>
+        <!-- [已移除] 左侧高亮边条 -->
 
         <view class="card-content">
           <view class="card-top">
             <view class="word-info">
-              <text class="sw-word">{{item.question}}</text>
+              <text class="sw-word">{{item.swahili}}</text>
               <view class="tag-row">
-                <text class="tag-error">错误 {{item.errorCount}} 次</text>
-                <text class="tag-time">{{item.lastDate}}</text>
+                <text class="tag-error">错误 {{item.num}} 次</text>
+                <text class="tag-time">{{item.create_time}}</text>
               </view>
             </view>
-            <view class="play-btn-mini" catchtap="playAudio" data-word="{{item.question}}">🔊</view>
+            <!-- 小喇叭图标作为视觉提示 -->
+            <view class="play-icon-mini">🔊</view>
           </view>
           
           <view class="card-middle">
-            <text class="cn-hint">正确释义：{{item.answerStr}}</text>
+            <!-- 正确释义 -->
+            <view style="margin-bottom: 8rpx;">
+              <text class="cn-hint">✅ 正确：{{item.chinese}}</text>
+            </view>
+            <!-- [新增] 混淆释义 -->
+            <view>
+              <text class="cn-hint" style="color: #BF360C; opacity: 0.8;">❌ 易混：{{item.answers || '暂无记录'}}</text>
+            </view>
           </view>
 
+          <!-- [修改] 底部只保留“我学会了”按钮 -->
           <view class="card-bottom">
-            <view class="btn-master" bindtap="markAsMastered" data-id="{{item.id}}">
+            <view class="btn-master" catchtap="markAsMastered" data-id="{{item.id}}">
               <text>✅ 我学会了</text>
-            </view>
-            <view class="btn-quiz" bindtap="goToQuiz" data-id="{{item.id}}">
-              <text>⚔️ 去攻克</text>
             </view>
           </view>
         </view>
 
       </view>
     </block>
+
+    <!-- 加载状态提示 -->
+    <view class="loading-more">
+      <block wx:if="{{isLoading}}">
+        <text>🔄 加载中...</text>
+      </block>
+      <block wx:elif="{{!hasMore}}">
+        <text>— 没有更多错题了 —</text>
+      </block>
+    </view>
+    
     <!-- 底部垫高 -->
     <view style="height: 60rpx;"></view>
-  </scroll-view>
+  </view>
 
   <!-- 空状态 -->
-  <view class="empty-state" wx:else>
+  <view class="empty-state" wx:if="{{!isLoading && mistakeList.length === 0}}">
     <view class="empty-icon">🎉</view>
     <text class="empty-text">太棒了！错题本空空如也</text>
     <text class="empty-sub">快去每日练习挑战新题目吧</text>
-    <view class="btn-go-quiz" bindtap="goHomeQuiz">去练习</view>
   </view>
 
 </view>

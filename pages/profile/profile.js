@@ -13,7 +13,12 @@ Page({
     feedbackLen: 0,
 
     FlipautoPlayfayin:app.globalData.userInfo.FlipautoPlayfayin || false,
-    NextautoPlayfayin:app.globalData.userInfo.NextautoPlayfayin || false
+    NextautoPlayfayin:app.globalData.userInfo.NextautoPlayfayin || false,
+
+    // [修改] 做题数量配置相关
+    quizCountOption: 10,
+    quizCountIndex: 0, // 默认索引
+    quizOptions: ['10道', '20道', '50道'],
   },
 
   onShow() {
@@ -23,6 +28,34 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     this.updateFontLabel(app.globalData.fontSizeLevel);
+
+    // 读取本地存储的设置并同步 Picker 索引
+    const savedCount = wx.getStorageSync('quizCountOption');
+    if (savedCount) {
+      // 查找对应的索引，如 '10道' 对应 10
+      const idx = this.data.quizOptions.findIndex(item => parseInt(item) === savedCount);
+      this.setData({ 
+        quizCountOption: savedCount,
+        quizCountIndex: idx >= 0 ? idx : 0 
+      });
+    }
+  },
+
+  // [修改] 处理 Picker 选择器变更
+  bindQuizCountChange(e) {
+    const idx = e.detail.value;
+    const optionStr = this.data.quizOptions[idx];
+    const val = parseInt(optionStr); // 从 '10道' 提取数字 10
+    this.setData({
+      quizCountIndex: idx,
+      quizCountOption: val
+    });
+    // 保存设置到本地缓存
+    wx.setStorageSync('quizCountOption', val);
+    wx.showToast({
+      title: `已设置为 ${optionStr}`,
+      icon: 'none'
+    });
   },
 
   // --- 登录与用户信息 ---

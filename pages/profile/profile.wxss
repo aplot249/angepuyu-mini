@@ -240,6 +240,14 @@
   margin-top: 30rpx;
 }
 
+/* Picker 组件也作为 menu-item，需要确保宽度占满 */
+picker.menu-item { width: 100%; display: block; }
+
+/* Picker 内部布局模拟 Flex 行 */
+.picker-inner {
+  display: flex; justify-content: space-between; align-items: center; width: 100%;
+}
+
 .menu-item {
   display: flex;
   justify-content: space-between;

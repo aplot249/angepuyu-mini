@@ -145,6 +145,21 @@
       </view>
     </view>
 
+    <!-- [修改] 每组题数设置 - 改为 Picker 选择器 -->
+    <picker class="picker-full-width" bindchange="bindQuizCountChange" value="{{quizCountIndex}}" range="{{quizOptions}}" range-key="">
+      <view class="menu-item">
+        <view class="menu-left">
+          <view class="menu-icon cyan">🔢</view>
+          <text>做题练习每组题数</text>
+        </view>
+        <view class="menu-right">
+          <!-- 显示当前选中的值 -->
+          <text class="status-text">{{quizOptions[quizCountIndex]}}道</text>
+          <text class="arrow">></text>
+        </view>
+      </view>
+    </picker>
+
     <view class="menu-title margintop30">其他相关</view>
 
     <view class="menu-item" bindtap="navigateToContribute" wx:if="{{userInfo.isRecorder}}">

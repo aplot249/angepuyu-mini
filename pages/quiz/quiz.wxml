@@ -81,7 +81,7 @@
       <view class="result-score">{{score}}分</view>
       <view class="result-desc">
         {{score >= 80 ? '太棒了！你的斯瓦西里语水平突飞猛进！' : (score >= 60 ? '不错哦，继续保持！' : '不要灰心，多练习几次就记住了。')}}
-        本次练习共做 {{completedCount}} 题，错 {{wrongCount}} 题。继续加油！
+        本次练习共做 {{completedCount}} 题，错 {{completedCount - rightNum}} 题。继续加油！
       </view>
       <view class="result-actions">
         <button class="action-btn btn-share" open-type="share">分享成绩</button>

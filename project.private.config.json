@@ -31,6 +31,13 @@
           "launchMode": "default"
         },
         {
+          "name": "pages/mistake/mistake",
+          "pathName": "pages/mistake/mistake",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "pages/quiz/quiz",
           "pathName": "pages/quiz/quiz",
           "query": "",
