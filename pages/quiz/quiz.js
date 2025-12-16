@@ -46,7 +46,7 @@ Page({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
       points:app.globalData.userInfo.points,
-      quizCountOption:wx.getStorageSync('quizCountOption') || 10
+      quizCountOption:wx.getStorageSync('quizCountOption') || 5
     });
     http('/web/randomquestion/','get').then(res=>{
       this.setData({
@@ -78,6 +78,7 @@ Page({
       wrongCount: 0,     // 错题数
       isFinished: false,
       showNoPointsModal: false, // 积分不足弹窗控制
+      score:0,
     })
   },
   shuffle(array) {
@@ -168,6 +169,9 @@ Page({
     let score = Math.floor(100 / this.data.completedCount * this.data.rightNum)
     this.setData({
       score:score
+    })
+    http('/user/scorerecord/','post',{"score":score}).then(res=>{
+        console.log('score',res)
     })
   },
   // 答题逻辑
@@ -337,7 +341,7 @@ Page({
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {
-        title: '坦桑华人学斯语，我在这里做了30个斯语题目，快来一起吧。',
+        title: '坦桑华人学斯语，快来一起吧。',
         path: '/pages/quiz/quiz',
         imageUrl: '/images/share-cover.png', // 假设有分享图
       }

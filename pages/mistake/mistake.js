@@ -68,8 +68,11 @@ Page({
 
   // 点击卡片播放音频
   playAudio(e) {
-    const word = e.currentTarget.dataset.word;
+    const item = e.currentTarget.dataset.word;
     wx.vibrateShort(); // 轻微震动反馈
+    let xiaohao = item.fayin ? item.xiaohao : 0
+    // console.log('item',item.swahili)
+    app.playAudio(item.fayin,xiaohao,item.swahili)
     wx.showToast({ title: `播放: ${word}`, icon: 'none' });
   },
 
