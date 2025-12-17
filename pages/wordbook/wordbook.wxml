@@ -14,8 +14,8 @@
     </view>
 
     <view class="segment-tab">
-      <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词本</view>
-      <view class="segment-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-idx="1">短语集</view>
+      <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词</view>
+      <view class="segment-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-idx="1">短语</view>
     </view>
   </view>
 

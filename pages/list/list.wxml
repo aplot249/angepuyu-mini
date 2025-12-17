@@ -5,8 +5,8 @@
     <input class="main-search" placeholder="搜索单词或短语..." bindinput="onSearch" value="{{keyword}}" placeholder-class="ph-color"/>
     
     <view class="segment-tab">
-      <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词本</view>
-      <view class="segment-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-idx="1">短语集</view>
+      <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词</view>
+      <view class="segment-item {{currentTab === 1 ? 'active' : ''}}" bindtap="switchTab" data-idx="1">短语</view>
     </view>
   </view>
 
@@ -18,7 +18,7 @@
       <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMore">
         
         <block wx:for="{{wordList}}" wx:key="id">
-          <view class="card item-card word-layout">
+          <view class="card item-card word-layout" bind:tap="playAudio" data-type="word" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">
             <view class="card-main">
               <!-- [修改] 核心信息放左侧 -->
               <view class="info-col">
@@ -72,7 +72,7 @@
       <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMore">
         
         <block wx:for="{{phraseList}}" wx:key="id">
-          <view class="card item-card phrase-layout">
+          <view class="card item-card phrase-layout" bind:tap="playAudio" data-type="phrase" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">
             <!-- 顶部：斯语长句 + 播放 -->
             <view class="phrase-header">
               <text class="sw-sentence">{{item.swahili}}</text>

@@ -1,3 +1,5 @@
+/* --- 移除重复的字体变量定义，直接继承 app.wxss --- */
+
 .container {
   min-height: 100vh;
   background-color: var(--bg-color);
@@ -14,7 +16,7 @@
   overflow: hidden;
   margin-bottom: 20rpx;
   box-shadow: 0 4rpx 20rpx rgba(141, 110, 99, 0.1);
-  flex-shrink: 0; /* 防止被挤压 */
+  flex-shrink: 0;
 }
 
 .stats-bg {
@@ -35,8 +37,17 @@
   flex: 1; display: flex; flex-direction: column; align-items: center;
 }
 
-.stats-num { font-size: 60rpx; font-weight: 900; color: #fff; text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.2); }
-.stats-label { font-size: 24rpx; color: rgba(255,255,255,0.9); font-weight: bold; margin-top: 6rpx; }
+/* 使用全局变量控制字体大小 */
+.stats-num { 
+  font-size: var(--text-xxl); 
+  font-weight: 900; color: #fff; 
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.2); 
+}
+.stats-label { 
+  font-size: var(--text-sm); 
+  color: rgba(255,255,255,0.9); 
+  font-weight: bold; margin-top: 6rpx; 
+}
 
 .stats-divider {
   width: 2rpx; height: 60rpx; background: rgba(255,255,255,0.4);
@@ -57,18 +68,14 @@
   display: flex;
   overflow: hidden;
   border: 1rpx solid rgba(254, 201, 157, 0.15);
-  position: relative; /* 为了点击效果 */
+  position: relative;
 }
 
 .mistake-card:active {
-  background-color: rgba(0,0,0,0.02); /* 点击反馈 */
+  background-color: rgba(0,0,0,0.02);
   transform: scale(0.99);
   transition: transform 0.1s;
 }
-
-.severity-bar { width: 10rpx; height: auto; min-height: 100%; }
-.severity-bar.normal { background: #FFCCBC; }
-.severity-bar.high { background: #D84315; }
 
 .card-content {
   flex: 1; padding: 30rpx;
@@ -76,14 +83,23 @@
 
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16rpx; }
 .word-info { display: flex; flex-direction: column; }
-.sw-word { font-size: 40rpx; font-weight: 900; color: var(--text-main); margin-bottom: 12rpx; }
+
+/* 单词字体大小跟随设置 */
+.sw-word { 
+  font-size: var(--text-xl); 
+  font-weight: 900; color: var(--text-main); margin-bottom: 12rpx; 
+}
 
 .tag-row { display: flex; align-items: center; }
 .tag-error {
-  font-size: 20rpx; color: #D84315; background: #FBE9E7;
+  font-size: var(--text-xs); 
+  color: #D84315; background: #FBE9E7;
   padding: 4rpx 10rpx; border-radius: 8rpx; margin-right: 12rpx; font-weight: bold;
 }
-.tag-time { font-size: 20rpx; color: var(--text-sub); }
+.tag-time { 
+  font-size: var(--text-xs); 
+  color: var(--text-sub); 
+}
 
 .play-icon-mini {
   font-size: 32rpx; opacity: 0.5; color: #FF7043;
@@ -95,7 +111,12 @@
   background: rgba(0,0,0,0.02);
   border-radius: 12rpx;
 }
-.cn-hint { font-size: 28rpx; color: var(--text-sub); font-weight: 500; }
+/* 释义字体大小跟随设置 */
+.cn-hint { 
+  font-size: var(--text-base); 
+  color: var(--text-sub); font-weight: 500; 
+  line-height: 1.5;
+}
 
 .card-bottom { display: flex; justify-content: flex-end; }
 
@@ -103,8 +124,9 @@
   padding: 12rpx 30rpx;
   border-radius: 35rpx;
   display: flex; align-items: center; justify-content: center;
-  font-size: 24rpx; font-weight: bold;
-  background: #E8F5E9; color: #2E7D32; /* 绿色系表示已完成/学会 */
+  font-size: var(--text-sm); 
+  font-weight: bold;
+  background: #E8F5E9; color: #2E7D32;
   border: 1rpx solid #C8E6C9;
 }
 .dark-mode .btn-master { background: #1B5E20; color: #E8F5E9; border-color: #2E7D32; }
@@ -113,7 +135,7 @@
 .loading-more {
   text-align: center;
   padding: 20rpx;
-  font-size: 24rpx;
+  font-size: var(--text-sm);
   color: var(--text-sub);
 }
 
@@ -127,5 +149,11 @@
   background: #FFF3E0; width: 180rpx; height: 180rpx;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
-.empty-text { font-size: 32rpx; font-weight: bold; color: var(--text-main); margin-bottom: 10rpx; }
-.empty-sub { font-size: 24rpx; color: var(--text-sub); margin-bottom: 50rpx; }
+.empty-text { 
+  font-size: var(--text-lg); 
+  font-weight: bold; color: var(--text-main); margin-bottom: 10rpx; 
+}
+.empty-sub { 
+  font-size: var(--text-sm); 
+  color: var(--text-sub); margin-bottom: 50rpx; 
+}

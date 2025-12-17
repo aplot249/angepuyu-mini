@@ -92,17 +92,18 @@
     
     <view class="daily-word-grid">
       <block wx:for="{{dailyWords}}" wx:key="id">
-        <view class="word-card-refined">
+        <view class="word-card-refined" bind:tap="playAudio" data-type="word" data-item="{{item}}">
           <!-- 顶部：发音 -->
           <view class="wc-header">
-            <view class="wc-play-btn" bindtap="playAudio" data-type="word" data-item="{{item}}">🔊</view>
+            <view class="wc-play-btn" catch:tap="playAudio" data-type="word" data-item="{{item}}">🔊</view>
           </view>
           
           <!-- 中间：核心单词 -->
           <view class="wc-body">
             <text class="wc-sw">{{item.swahili}}</text>
             <view class="wc-homonym">
-              <text>{{item.xieyin}}</text>
+              <text class="xytag">谐音</text>
+              <text class="xieyin">{{item.xieyin}}</text>
             </view>
           </view>
 
@@ -133,12 +134,12 @@
     </view>
 
     <!-- 使用列表循环展示两个短语 -->
-    <block wx:for="{{dailyPhrase}}" wx:key="id" wx:for-item="item">
-      <view class="phrase-card-refined" style="margin-bottom: 24rpx;">
+    <block wx:for="{{dailyPhrase}}" wx:key="id" wx:for-item="item" >
+      <view class="phrase-card-refined" style="margin-bottom: 24rpx;" bindtap="playAudio" data-item="{{item}}" data-type="phrase">
         <view class="pc-content">
           <view class="pc-row-top">
             <text class="pc-sw">{{item.swahili}}</text>
-            <view class="pc-play-btn" bindtap="playAudio" data-item="{{item}}" data-type="phrase">🔊</view>
+            <view class="pc-play-btn" catch:tap="playAudio" data-item="{{item}}" data-type="phrase">🔊</view>
           </view>
           
           <view class="pc-homonym-bar">

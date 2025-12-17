@@ -120,7 +120,8 @@
   align-self: flex-start;
 }
 .tag {
-  font-size: 20rpx;
+  /* font-size: 20rpx; */
+  font-size: var(--text-main);
   background: #FFCCBC;
   color: #BF360C;
   padding: 2rpx 8rpx;
