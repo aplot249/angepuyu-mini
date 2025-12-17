@@ -107,7 +107,17 @@ Page({
     }
     this.playMusic(nextIndex);
   },
-
+  jiucuoCtitem(e){
+    console.log('e',e)
+    let id = e.target.dataset.dd
+    http(`/web/updatectitem/${id}/`,'post',{'isWrong':true}).then(res=>{
+      console.log('已反馈')
+      wx.showToast({
+        title:"已反馈，谢谢",
+        icon:"none"
+      })
+    })
+  },
   onShow() {
     this.setData({
       fontSizeLevel: app.globalData.fontSizeLevel,

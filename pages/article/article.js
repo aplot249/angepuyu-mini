@@ -4,7 +4,7 @@ const app = getApp();
 const ARTICLES = {
   1: {
     id: 1,
-    image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&q=80',
+    image: 'https://siyu.jsxinlingdi.com/media/swiper/1.jpg',
     category: '生活哲学',
     title: 'Hakuna Matata',
     subtitle: '不仅仅是一句电影台词',
@@ -25,7 +25,7 @@ const ARTICLES = {
   },
   2: {
     id: 2,
-    image: 'https://images.unsplash.com/photo-1547471080-7541e89a43ca?w=800&q=80',
+    image: 'https://siyu.jsxinlingdi.com/media/swiper/2.png',
     category: '自然之旅',
     title: 'Safari 的真谛',
     subtitle: '一场关于灵魂的远行',

@@ -52,8 +52,8 @@
               </view>
               
               <!-- 右下：纠错 (小) -->
-              <view class="action-fix" catchtap="onCorrection" data-item="{{item}}">
-                <text>纠错</text>
+              <view class="action-fix">
+                <text catchtap="jiucuoCtitem" data-dd="{{item.id}}">纠错</text>
               </view>
             </view>
           </view>
@@ -97,8 +97,8 @@
                 <text class="fav-icon {{item.isFav ? 'active' : ''}}">{{item.isFav ? '❤️' : '🤍'}}</text>
                 <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '移出单词本' : '加入单词本'}}</text>
               </view>
-              <view class="action-fix" catchtap="onCorrection" data-item="{{item}}">
-                <text>纠错</text>
+              <view class="action-fix" catchtap="jiucuoCtitem" data-item="{{item}}">
+                <text catchtap="jiucuoCtitem" data-dd="{{item.id}}">纠错</text>
               </view>
             </view>
           </view>

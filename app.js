@@ -139,7 +139,7 @@ App({
     if (xiaohao > this.globalData.userInfo.points){
       wx.showModal({
         title: '积分不足，无法听音频',
-        content: '1、通过签到、分享赚取积分或者\n2：直接购买积分',
+        content: '1、通过签到、分享赚取积分或\n2：直接购买积分',
         confirmText:'购买积分',
         complete: (res) => {
           if (res.cancel) {}

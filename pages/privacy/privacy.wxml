@@ -1,31 +1,96 @@
 <view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
-  <view class="privacy-content card">
-    <view class="title">隐私保护指引</view>
-    <view class="update-time">更新日期：2025年11月27日</view>
+  
+  <view class="doc-header">
+    <view class="doc-title">用户隐私保护指引</view>
+    <view class="doc-update-time">更新日期：2025年12月17日</view>
+  </view>
+
+  <view class="doc-content">
     
     <view class="section">
-      <view class="h3">1. 引言</view>
-      <text class="p">欢迎使用坦坦斯语Swahili（以下简称“本软件”）。我们非常重视您的隐私保护和个人信息安全。本隐私保护指引将帮助您了解我们如何收集、使用和存储您的个人信息。</text>
+      <view class="p">欢迎您使用“坦坦斯语 Swahili”（以下简称“本小程序”）。我们非常重视您的隐私保护和个人信息安全。本指引将帮助您了解我们如何收集、使用和存储您的个人信息。</view>
     </view>
 
     <view class="section">
-      <view class="h3">2. 我们收集的信息</view>
-      <text class="p">为了提供更好的服务，我们可能会收集以下信息：</text>
-      <text class="li">• 您的用户昵称、头像（用于个人中心展示）。</text>
-      <text class="li">• 您的学习记录、收藏词条（用于同步学习进度）。</text>
-      <text class="li">• 录音数据（仅当您使用“录音贡献”功能时，且需您主动授权麦克风权限）。</text>
+      <view class="h3">1. 我们收集的信息</view>
+      <view class="p">为了向您提供完整的斯瓦希里语学习服务，我们需要收集以下类型的信息：</view>
+      
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content"><text class="strong">用户信息：</text>当您选择登录时，我们会收集您的微信昵称和头像，仅用于在“个人中心”展示及生成学习海报。</view>
+      </view>
+      
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content"><text class="strong">学习数据：</text>包括您的<text class="highlight">当前积分、签到记录、做题练习成绩、每日学习时长</text>。这些数据用于生成您的学习报告和排行榜。</view>
+      </view>
+
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content"><text class="strong">个性化偏好：</text>我们会记录您选择的<text class="highlight">行业词库分类</text>（如医疗、建筑、旅游等），以便优先为您推荐相关的学习卡片。</view>
+      </view>
+
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content"><text class="strong">收藏与错题记录：</text>当您使用“生词收藏”或在做题中答错时，我们会将相关词条ID存储在您的<text class="highlight">“单词本”和“错题本”</text>数据库中，以便为您提供针对性的复习功能。</view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="h3">2. 信息的存储</view>
+      <view class="p">我们会采取合理可行的措施保护您的个人信息。</view>
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content">您的学习进度和偏好设置将存储在安全的云端服务器中，以便您在不同设备间同步进度。</view>
+      </view>
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content">部分临时数据（如每组做题数量设置、字体大小偏好）可能存储在您的设备本地缓存中。</view>
+      </view>
     </view>
 
     <view class="section">
       <view class="h3">3. 信息的使用</view>
-      <text class="p">我们承诺不会将您的个人信息用于本指引未列明的其他用途。您的信息仅用于：</text>
-      <text class="li">• 提供个性化的学习服务。</text>
-      <text class="li">• 优化软件功能和用户体验。</text>
+      <view class="p">我们仅将收集的信息用于以下目的：</view>
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content">提供基础的学习功能，包括卡片展示、发音播放和习题判定。</view>
+      </view>
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content">根据您的错题记录，在“错题本”中为您生成复习计划。</view>
+      </view>
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content">积分系统结算，用于兑换应用内的虚拟权益或解锁词库。</view>
+      </view>
     </view>
 
     <view class="section">
-      <view class="h3">4. 联系我们</view>
-      <text class="p">如您对本隐私协议有任何疑问，请通过“我的-意见反馈”联系我们。</text>
+      <view class="h3">4. 第三方服务</view>
+      <view class="p">为了实现音频播放和数据统计功能，本小程序可能会调用微信官方提供的基础能力接口。我们不会主动向任何无关第三方共享您的个人信息。</view>
     </view>
+
+    <view class="section">
+      <view class="h3">5. 您的权利</view>
+      <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content"><text class="strong">管理错题与收藏：</text>您可以随时在“单词本”或“错题本”中移除特定的词条，相关记录将从您的云端数据中删除。</view>
+      </view>
+      <!-- <view class="li">
+        <text class="dot">●</text>
+        <view class="li-content"><text class="strong">清除数据：</text>您可以在“个人中心”的设置项中选择清除做题历史记录。</view>
+      </view> -->
+    </view>
+
+    <view class="section">
+      <view class="h3">6. 联系我们</view>
+      <view class="p">如您对本隐私协议有任何疑问或建议，可通过“个人中心-意见反馈”功能与我们联系。</view>
+    </view>
+
+  </view>
+
+  <view class="doc-footer">
+    <button class="btn-agree" bindtap="goBack">我已阅读并同意</button>
   </view>
 </view>

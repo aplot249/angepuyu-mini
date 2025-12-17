@@ -6,9 +6,9 @@ Page({
     isDarkMode: false,
     // 图片资源配置
     assets: {
-      bg: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80',
-      logo: 'https://placehold.co/200x200/ffffff/2DD4BF?text=LOGO',
-      qr: 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tanzania-swahili-app.com'
+      bg: 'https://siyu.jsxinlingdi.com/static/bg.png',
+      logo: 'https://siyu.jsxinlingdi.com/static/logo.jpg',
+      qr: 'https://siyu.jsxinlingdi.com/static/mini.png'
     }
   },
 
@@ -55,7 +55,7 @@ Page({
         try {
           // [新增] 设置全局圆角剪切路径
           // 对应 CSS 中的 border-radius: 40rpx，这里近似取 20px
-          this.drawRoundedRect(ctx, 0, 0, 375, 667, 20);
+          this.drawRoundedRect(ctx, 0, 0, 375, 667, 0);
           ctx.clip();
 
           // 1. 绘制白色背景
@@ -112,7 +112,7 @@ Page({
           // 7. 绘制功能网格背景
           const gridY = 360;
           this.drawFeatureItem(ctx, 20, gridY, '📚', '行业词库', '覆盖华人多个行业', '#FFF8F3', '#00695C', '#E0F2F1');
-          this.drawFeatureItem(ctx, 192, gridY, '🗣️', '真人发音', '地道斯语朗读', '#FFF8F3', '#D84315', '#FBE9E7');
+          this.drawFeatureItem(ctx, 192, gridY, '🗣️', '真人发音', '地道斯语发音', '#FFF8F3', '#D84315', '#FBE9E7');
           this.drawFeatureItem(ctx, 20, gridY + 110, '💾', '词语收藏', '随时随地复习', '#FFF8F3', '#EF6C00', '#FFF3E0');
           this.drawFeatureItem(ctx, 192, gridY + 110, '👓', '长辈关怀', '超大字体护眼', '#FFF8F3', '#8E24AA', '#F3E5F5');
 
@@ -252,9 +252,9 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '我在用坦桑通学斯语，工程/生活词汇全都有！',
+      title: '我在用坦坦斯语学斯语，工程/生活词汇全都有！',
       path: '/pages/index/index',
-      imageUrl: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80'
+      imageUrl: this.data.assets.bg
     }
   }
 })

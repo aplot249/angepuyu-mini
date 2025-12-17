@@ -67,7 +67,17 @@ Page({
     app.updateThemeSkin(app.globalData.isDarkMode);
     this.refreshFavStatus();
   },
-
+  jiucuoCtitem(e){
+    console.log('e',e)
+    let id = e.target.dataset.dd
+    http(`/web/updatectitem/${id}/`,'post',{'isWrong':true}).then(res=>{
+      console.log('已反馈')
+      wx.showToast({
+        title:"已反馈，谢谢",
+        icon:"none"
+      })
+    })
+  },
   fetchData() {  
     if(this.data.currentTab == 0) {  //是单词
       http(`/web/ctiemBySub/?subid=${this.data.subid}&wp=${this.data.currentTab}&page=${this.data.pageWord}&search=${this.data.keyword}`,'GET').then(res=>{

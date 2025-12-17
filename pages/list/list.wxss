@@ -150,7 +150,7 @@
 
 /* --- 2. 短语卡片样式 (Phrase Layout) --- */
 .phrase-layout {
-  border-left: 8rpx solid var(--secondary); /* 左侧彩色条装饰 */
+  /* border-left: 8rpx solid var(--secondary); 左侧彩色条装饰 */
 }
 
 .phrase-header {

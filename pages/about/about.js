@@ -28,7 +28,7 @@ Page({
   
   onShareAppMessage() {
     return {
-      title: '坦桑通 - 用代码连接中坦友谊',
+      title: '坦坦斯语-坦桑华人的斯语学习平台',
       path: '/pages/about/about'
     }
   }

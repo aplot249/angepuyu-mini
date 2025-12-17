@@ -113,7 +113,8 @@ b { color: var(--secondary); font-weight: bold; margin: 0 4rpx; }
 
 .feature-list { padding-left: 10rpx; }
 .feat-item {
-  font-size: var(--text-base); /* 原 28rpx */
+  font-size: var(--text-main); /* 原 28rpx */
+  line-height: 1.5;
   color: var(--text-main);
   margin-bottom: 12rpx;
   display: flex; align-items: flex-start;

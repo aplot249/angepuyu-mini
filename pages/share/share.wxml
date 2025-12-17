@@ -6,11 +6,11 @@
   <!-- HTML 海報預覽區域 -->
   <view class="poster-card">
     <view class="poster-header">
-      <image class="header-bg" src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80" mode="aspectFill"></image>
+      <image class="header-bg" src="{{assets.bg}}" mode="aspectFill"></image>
       <view class="overlay"></view>
       <view class="app-branding">
         <!-- Logo -->
-        <image class="logo-box" src="https://placehold.co/200x200/ffffff/2DD4BF?text=LOGO"></image>
+        <image class="logo-box" src="{{assets.logo}}"></image>
         <view class="app-name">坦坦斯语Swahili</view>
         <view class="app-slogan">沟通无界 · 闯荡坦桑更轻松</view>
       </view>
@@ -30,23 +30,23 @@
       <view class="feature-item">
         <view class="icon-circle orange">🗣️</view>
         <view class="feat-title">真人发音</view>
-        <view class="feat-desc">地道斯语朗读，边听边学不露怯</view>
+        <view class="feat-desc">地道斯语发音，边听边学不露怯</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle blue">💾</view>
-        <view class="feat-title">词语收藏</view>
+        <view class="feat-title">单词本、错题本</view>
         <view class="feat-desc">一键加入生词本，随时随地复习</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle purple">👓</view>
         <view class="feat-title">长辈关怀</view>
-        <view class="feat-desc">超大字体+夜间模式，护眼更清晰</view>
+        <view class="feat-desc">超大字体、夜间模式，护眼更清晰</view>
       </view>
     </view>
 
     <view class="poster-footer">
       <view class="qr-placeholder">
-        <image src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://tanzania-swahili-app.com" class="qr-img"></image>
+        <image src="{{assets.qr}}" class="qr-img"></image>
       </view>
       <view class="scan-tip">
         <text class="tip-bold">长按识别小程序码</text>

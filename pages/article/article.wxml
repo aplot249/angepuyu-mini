@@ -26,8 +26,8 @@
       <view class="author-info">
         <image class="avatar" src="https://ui-avatars.com/api/?name=S&background=FF8A65&color=fff" mode="aspectFill"></image>
         <view class="author-text">
-          <text class="name">坦坦斯语小编</text>
-          <text class="date">{{article.date}} · {{article.readTime}}分钟阅读</text>
+          <text class="name">坦坦斯语Three</text>
+          <!-- <text class="date">{{article.date}} · {{article.readTime}}分钟阅读</text> -->
         </view>
       </view>
       <!-- <view class="action-btn" bindtap="toggleFav">

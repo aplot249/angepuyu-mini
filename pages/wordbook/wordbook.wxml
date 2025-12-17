@@ -74,8 +74,8 @@
                   <text class="fav-icon active">❤️</text>
                   <text class="fav-label active">移出单词本</text>
                 </view>
-                <view class="action-fix" catchtap="notImplemented">
-                  <text>纠错</text>
+                <view class="action-fix">
+                  <text catchtap="jiucuoCtitem" data-dd="{{item.id}}">纠错</text>
                 </view>
               </view>
             </view>
@@ -132,8 +132,8 @@
                   <text class="fav-icon active">❤️</text>
                   <text class="fav-label active">移出单词本</text>
                 </view>
-                <view class="action-fix" catchtap="notImplemented">
-                  <text>纠错</text>
+                <view class="action-fix" >
+                  <text catchtap="jiucuoCtitem" data-dd="{{item.id}}">纠错</text>
                 </view>
               </view>
             </view>
