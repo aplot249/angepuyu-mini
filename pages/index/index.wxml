@@ -159,11 +159,12 @@
             <text class="label">纠错反馈</text>
           </view>
         </view> -->
+
       </view>
     </block>
 
     <!-- 底部留白 -->
     <!-- <view style="height: 40rpx;"></view> -->
-
+    <welcome-modal></welcome-modal>
   </view>
 </view>

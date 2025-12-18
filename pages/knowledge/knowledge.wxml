@@ -1,0 +1,77 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <!-- 1. 顶部导航栏 -->
+  <view class="nav-header">
+    <scroll-view class="tab-scroll" scroll-x enable-flex scroll-with-animation scroll-left="{{scrollLeft}}">
+      <view class="tab-container">
+        <block wx:for="{{categories}}" wx:key="id">
+          <view 
+            class="tab-item {{currentTab === index ? 'active' : ''}}" 
+            bindtap="switchTab" 
+            data-index="{{index}}"
+          >
+            <text class="tab-text">{{item.name}}</text>
+            <view class="tab-line" wx:if="{{currentTab === index}}"></view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 2. 滑动内容区 -->
+  <swiper 
+    class="content-swiper" 
+    current="{{currentTab}}" 
+    duration="300" 
+    bindchange="onSwiperChange"
+  >
+    <block wx:for="{{categories}}" wx:key="id" wx:for-item="cat">
+      <swiper-item>
+        <scroll-view 
+          scroll-y 
+          class="list-scroll" 
+          bindscrolltolower="loadMoreData"
+          enhanced
+          show-scrollbar="false"
+        >
+          
+          <!-- 文章列表 -->
+          <view class="article-list">
+            <block wx:for="{{cat.articles}}" wx:key="id" wx:for-item="article">
+              <view class="article-card" bindtap="navigateToDetail" data-id="{{article.id}}">
+                
+                <!-- 左侧：文本信息 -->
+                <view class="info-box">
+                  <text class="title">{{article.title}}</text>
+                  <text class="summary">{{article.summary}}</text>
+                  
+                  <view class="meta-row">
+                    <view class="author-box">
+                      <image class="author-avatar" src="{{article.avatar}}" mode="aspectFill"></image>
+                      <text class="author-name">{{article.author}}</text>
+                    </view>
+                    <text class="date">{{article.date}}</text>
+                  </view>
+                </view>
+
+                <!-- 右侧：封面图 -->
+                <image class="cover-img" src="{{article.cover}}" mode="aspectFill" lazy-load></image>
+              </view>
+            </block>
+          </view>
+
+          <!-- 加载状态 -->
+          <view class="loading-state">
+            <text wx:if="{{cat.isLoading}}">🔄 加载中...</text>
+            <text wx:elif="{{!cat.hasMore}}">- 到底啦 -</text>
+          </view>
+          
+          <!-- 底部留白 -->
+          <view style="height: 40rpx;"></view>
+
+        </scroll-view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+</view>

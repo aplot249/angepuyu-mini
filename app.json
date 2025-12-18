@@ -13,7 +13,8 @@
     "pages/privacy/privacy",
     "pages/about/about",
     "pages/article/article",
-    "pages/mistake/mistake"
+    "pages/mistake/mistake",
+    "pages/knowledge/knowledge"
   ],
   "window": {
     "backgroundTextStyle": "light",

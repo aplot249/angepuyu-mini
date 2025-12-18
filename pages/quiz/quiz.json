@@ -3,6 +3,7 @@
   "navigationBarTextStyle": "white",
   "usingComponents": {
     "vip-modal": "/components/vip-modal/vip-modal",
-    "points-modal": "/components/points-modal/points-modal"
+    "points-modal": "/components/points-modal/points-modal",
+    "welcome-modal": "/components/welcome-modal/welcome-modal"
   }
 }

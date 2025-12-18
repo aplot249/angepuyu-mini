@@ -116,5 +116,6 @@
   <points-modal visible="{{showNoPointsModal}}" />
 
   <!-- <vip-modal visible="{{showNoPointsModal}}" /> -->
+  <welcome-modal></welcome-modal>
   
 </view>

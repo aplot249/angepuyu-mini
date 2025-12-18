@@ -197,7 +197,8 @@ Page({
     }
 
     wx.showLoading({ title: '正在上传...', mask: true });
-    fileupload(`/web/updatectitem/${this.data.id}/`,this.data.tempAudioPath,'fayin',formData).then(res=>{
+    let fayin = 'fayin'+app.globalData.userInfo.luyinpindao  //确定音频频道
+    fileupload(`/web/updatectitem/${this.data.id}/`,this.data.tempAudioPath,fayin,formData).then(res=>{
       console.log('res',res)
       wx.hideLoading();
       // wx.showLoading({ title: '正在上传...', mask: fa });

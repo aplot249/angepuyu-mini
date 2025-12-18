@@ -234,4 +234,7 @@
       </view>
     </view>
   </view>
+
+  <welcome-modal></welcome-modal>
+
 </view>

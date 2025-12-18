@@ -25,13 +25,13 @@
 
     <view class="form-group">
       <view class="label">中文含义 (Chinese)</view>
-      <input class="input-field" disabled placeholder="输入中文翻译" model:value="{{chinese}}" />
+      <input class="input-field" placeholder="输入中文翻译" model:value="{{chinese}}" />
     </view>
     <view class="divider"></view>
 
     <view class="form-group">
       <view class="label">中文谐音 (Homonym)</view>
-      <input class="input-field" disabled placeholder="例如: 撒鲁机" model:value="{{homonym}}" />
+      <input class="input-field" placeholder="例如: 撒鲁机" model:value="{{homonym}}" />
     </view>
   </view>
 

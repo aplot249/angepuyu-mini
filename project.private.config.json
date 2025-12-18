@@ -24,11 +24,18 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/mistake/mistake",
-          "pathName": "pages/mistake/mistake",
+          "name": "pages/knowledge/knowledge",
+          "pathName": "pages/knowledge/knowledge",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/mistake/mistake",
+          "pathName": "pages/mistake/mistake",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/mistake/mistake",

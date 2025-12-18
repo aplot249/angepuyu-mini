@@ -1,8 +1,8 @@
 import { eventBus } from '../utils/eventBus.js';
 
 // const baseHOST = 'http://127.0.0.1:8000'
-const baseHOST = 'https://siyu.jsxinlingdi.com'
-// const baseHOST = 'http://192.168.0.67:8000'
+// const baseHOST = 'https://siyu.jsxinlingdi.com'
+const baseHOST = 'http://192.168.1.181:8000'
 const baseImgUrl = baseHOST + '/media'
 
 function request(url, method = 'POST', data = {}) {
@@ -52,7 +52,7 @@ function request(url, method = 'POST', data = {}) {
             const currentPage = pages[pages.length - 1];
             const currentRoute = '/'+currentPage.route; // 例如：'pages/index/index'
             console.log('currentRoute',currentRoute)
-            if (data.detail == 'JWT Token已过期！' || data.detail == '身份认证信息未提供。') {
+            if (data.detail == 'JWT Token已过期！' || data.detail == '身份认证信息未提供。' || data.detail =='用户不存在！') {
               wx.showModal({
                   title: '请先登录，才能进行后续操作',
                   confirmText: "确认登录",
