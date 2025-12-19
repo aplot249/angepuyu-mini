@@ -79,6 +79,25 @@
       </view>
     </view>
 
+    <!-- [新增] 4.5 扩展功能区：知识库与社区 -->
+    <view class="func-grid-row">
+      <view class="func-card knowledge-style" bindtap="navigateToKnowledge">
+        <view class="f-icon-box">📚</view>
+        <view class="f-text-box">
+          <text class="f-title">知识库</text>
+          <text class="f-desc">Library</text>
+        </view>
+      </view>
+      
+      <view class="func-card community-style" bindtap="navigateToCommunity">
+        <view class="f-icon-box">💬</view>
+        <view class="f-text-box">
+          <text class="f-title">交流社区</text>
+          <text class="f-desc">Community</text>
+        </view>
+      </view>
+    </view>
+
     <!-- 5. 每日单词 (一行两列) -->
     <view class="section-header">
       <view class="section-title">

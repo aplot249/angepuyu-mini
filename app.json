@@ -14,7 +14,8 @@
     "pages/about/about",
     "pages/article/article",
     "pages/mistake/mistake",
-    "pages/knowledge/knowledge"
+    "pages/knowledge/knowledge",
+    "pages/community/community"
   ],
   "window": {
     "backgroundTextStyle": "light",

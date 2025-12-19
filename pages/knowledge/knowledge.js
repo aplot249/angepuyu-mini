@@ -25,7 +25,12 @@ Page({
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     wx.setNavigationBarTitle({ title: '知识库' });
-
+    http('/web/knowledgetype/','GET').then(res=>{
+      console.log('res',res)
+      this.setData({
+        categories:res
+      })
+    })
     // 初始化加载第一个Tab的数据
     if (this.data.categories[0].articles.length === 0) {
       this.loadDataForTab(0);
@@ -59,62 +64,71 @@ Page({
 
   // 加载数据逻辑 (模拟)
   loadDataForTab(tabIndex) {
+    // 切到某一个id了，得到这一个分类
     const category = this.data.categories[tabIndex];
+    // console.log('category111',category)
     if (category.isLoading || !category.hasMore) return;
     // 设置加载状态
     const loadingKey = `categories[${tabIndex}].isLoading`;
-    this.setData({ [loadingKey]: true });
+    this.setData({ [loadingKey]: true });  //这一个分类正在加载
+    http(`/web/knowledgearticles/?id=${category.id}`,'GET').then(newArticles=>{
+        console.log('articles',newArticles)
+        const articlesKey = `categories[${tabIndex}].articles`;
+        const pageKey = `categories[${tabIndex}].page`;
+        const loadingKey = `categories[${tabIndex}].isLoading`;
+        const hasMoreKey = `categories[${tabIndex}].hasMore`;
+        this.setData({
+          [articlesKey]: category.articles.concat(newArticles.results), //当前分类的文章，增加6条数据
+          [pageKey]: category.page + 1, //当前分类的页码加1
+          [loadingKey]: false,  //停止加载
+          // 模拟最多加载3页
+          [hasMoreKey]: category.page < newArticles.totalPageNum //模拟最多加载3页面 
+        });
+    })
 
-    setTimeout(() => {
-      // 模拟生成数据
-      const newArticles = Array.from({ length: 6 }, (_, i) => ({
-        id: Date.now() + i,
-        title: this.getTitle(tabIndex, category.page, i),
-        summary: '这是斯瓦希里语学习的详细指南，帮助您快速掌握基础语法和日常对话技巧，深入了解坦桑尼亚文化。',
-        author: '晓乐老师',
-        avatar: 'https://ui-avatars.com/api/?name=Ed&background=FF8A65&color=fff',
-        date: '2025-12-18',
-        cover: this.getCover(tabIndex, i)
-      }));
-      const articlesKey = `categories[${tabIndex}].articles`;
-      const pageKey = `categories[${tabIndex}].page`;
-      const loadingKey = `categories[${tabIndex}].isLoading`;
-      const hasMoreKey = `categories[${tabIndex}].hasMore`;
-      this.setData({
-        [articlesKey]: category.articles.concat(newArticles),
-        [pageKey]: category.page + 1,
-        [loadingKey]: false,
-        // 模拟最多加载3页
-        [hasMoreKey]: category.page < 3 
-      });
-    }, 800);
-
-    // http('/web/knowledgetype/','GET').then(res=>{
-    //   console.log('res',res)
+    // setTimeout(() => {
+    //   // 模拟生成数据，该分类产生了6条文章数据
+    //   const newArticles = Array.from({ length: 6 }, (_, i) => ({
+    //     id: Date.now() + i,
+    //     title: this.getTitle(tabIndex, category.page, i),
+    //     summary: '这是斯瓦希里语学习的详细指南，帮助您快速掌握基础语法和日常对话技巧，深入了解坦桑尼亚文化。',
+    //     author: '晓乐老师',
+    //     avatar: 'https://ui-avatars.com/api/?name=Ed&background=FF8A65&color=fff',
+    //     date: '2025-12-18',
+    //     cover: this.getCover(tabIndex, i)
+    //   }));
+    //   const articlesKey = `categories[${tabIndex}].articles`;
+    //   const pageKey = `categories[${tabIndex}].page`;
+    //   const loadingKey = `categories[${tabIndex}].isLoading`;
+    //   const hasMoreKey = `categories[${tabIndex}].hasMore`;
     //   this.setData({
-    //     categories:res
-    //   })
-    // })
+    //     [articlesKey]: category.articles.concat(newArticles), //当前分类的文章，增加6条数据
+    //     [pageKey]: category.page + 1, //当前分类的页码加1
+    //     [loadingKey]: false,  //停止加载
+    //     // 模拟最多加载3页
+    //     [hasMoreKey]: category.page < 3 //模拟最多加载3页面 
+    //   });
+    // }, 800);
   },
 
   // 辅助：生成模拟标题
-  getTitle(tab, page, index) {
-    const types = ['语法', '文化', '旅游', '商务'];
-    const type = types[tab] || '资讯';
-    return `【${type}】第${page}期：斯瓦西里语${type}详解指南 ${index + 1}`;
-  },
+  // getTitle(tab, page, index) {
+  //   const types = ['语法', '文化', '旅游', '商务'];
+  //   const type = types[tab] || '资讯';
+  //   return `【${type}】第${page}期：斯瓦西里语${type}详解指南 ${index + 1}`;
+  // },
 
   // 辅助：生成模拟封面
-  getCover(tab, index) {
-    // 随机几张图
-    const imgs = [
-      'https://images.unsplash.com/photo-1547471080-7541e89a43ca?w=400&q=80',
-      'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&q=80',
-      'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400&q=80',
-      'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&q=80'
-    ];
-    return imgs[(tab + index) % imgs.length];
-  },
+  // getCover(tab, index) {
+  //   // 随机几张图
+  //   const imgs = [
+  //     'https://images.unsplash.com/photo-1547471080-7541e89a43ca?w=400&q=80',
+  //     'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&q=80',
+  //     'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400&q=80',
+  //     'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=400&q=80'
+  //   ];
+  //   return imgs[(tab + index) % imgs.length];
+  // },
 
   navigateToDetail(e) {
     const id = e.currentTarget.dataset.id;

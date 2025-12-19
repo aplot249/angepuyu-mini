@@ -101,7 +101,12 @@ Page({
   navigateToWordbook(){
     wx.navigateTo({ url: '/pages/wordbook/wordbook' })
   }, 
-  
+  navigateToKnowledge() {
+    wx.navigateTo({ url: '/pages/knowledge/knowledge' });
+  },
+  navigateToCommunity() {
+    wx.navigateTo({ url: '/pages/community/community' });
+  },
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0

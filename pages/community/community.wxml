@@ -1,0 +1,76 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <!-- 顶部搜索与分类 -->
+  <view class="header-section">
+    <view class="search-bar">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索话题或关键词" placeholder-class="ph-style" disabled />
+    </view>
+    <view class="tab-row">
+      <block wx:for="{{tabs}}" wx:key="id">
+        <view class="tab-item {{currentTab === index ? 'active' : ''}}" bindtap="switchTab" data-index="{{index}}">
+          <text>{{item.name}}</text>
+          <view class="tab-line" wx:if="{{currentTab === index}}"></view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <scroll-view scroll-y class="post-list" bindscrolltolower="loadMore">
+    <block wx:for="{{postList}}" wx:key="id">
+      <view class="post-card" bindtap="goToDetail" data-id="{{item.id}}">
+        
+        <!-- 用户信息栏 -->
+        <view class="card-header">
+          <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+          <view class="user-meta">
+            <text class="nickname">{{item.nickname}}</text>
+            <text class="time">{{item.time}}</text>
+          </view>
+          <!-- 悬赏标记 -->
+          <view class="bounty-tag" wx:if="{{item.bounty > 0}}">
+            <text>💎 {{item.bounty}}</text>
+          </view>
+        </view>
+
+        <!-- 内容区域 -->
+        <view class="card-body">
+          <view class="post-title" wx:if="{{item.title}}">{{item.title}}</view>
+          <view class="post-content">{{item.content}}</view>
+          
+          <!-- 图片九宫格 -->
+          <view class="img-grid" wx:if="{{item.images.length > 0}}">
+            <block wx:for="{{item.images}}" wx:key="*this" wx:for-item="img">
+              <image class="grid-img" src="{{img}}" mode="aspectFill" catchtap="previewImage"></image>
+            </block>
+          </view>
+        </view>
+
+        <!-- 底部互动栏 -->
+        <view class="card-footer">
+          <view class="tag-box">
+            <text class="topic-tag">#{{item.topic}}</text>
+          </view>
+          <view class="action-row">
+            <view class="action-btn">
+              <text>💬 {{item.comments}}</text>
+            </view>
+            <view class="action-btn" catchtap="onLike" data-index="{{index}}">
+              <text>{{item.isLiked ? '❤️' : '🤍'}} {{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+
+      </view>
+    </block>
+    <view class="loading-tips">没有更多内容了</view>
+  </scroll-view>
+
+  <!-- 悬浮发帖按钮 -->
+  <view class="fab-btn" bindtap="goToPost">
+    <text class="plus-icon">➕</text>
+    <text class="fab-text">发帖</text>
+  </view>
+
+</view>

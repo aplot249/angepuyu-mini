@@ -181,6 +181,18 @@
   border: 1rpx solid rgba(255, 235, 59, 0.2);
 }
 
+/* [新增] 知识库与社区配色 */
+.knowledge-style {
+  background: linear-gradient(135deg, #E1BEE7 0%, #CE93D8 100%);
+  border: 1rpx solid rgba(156, 39, 176, 0.2);
+}
+
+.community-style {
+  background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+  border: 1rpx solid rgba(76, 175, 80, 0.2);
+}
+
+
 .dark-mode .review-style {
   background: #006064;
   border-color: rgba(0, 188, 212, 0.1);
@@ -353,7 +365,8 @@
   align-items: center;
   /* max-width: 90%; */
 }
-.xytag{
+
+.xytag {
   font-size: var(--text-main);
   color: #BF360C;
   background: #FFCCBC;
@@ -361,7 +374,8 @@
   border-radius: 6rpx;
   margin-right: 12rpx;
 }
-.xieyin{
+
+.xieyin {
   background: #F5F5F5;
   padding: 4rpx 12rpx;
   border-radius: 16rpx;
