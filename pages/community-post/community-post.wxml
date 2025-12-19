@@ -1,0 +1,64 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  <view class="editor-box">
+    <input class="title-input" placeholder="请输入标题 (可选)" placeholder-class="ph-color" bindinput="onTitleInput" />
+    <textarea 
+      class="content-input" 
+      placeholder="在这里分享你的想法，或描述你的问题..." 
+      placeholder-class="ph-color"
+      maxlength="500"
+      bindinput="onContentInput"
+    ></textarea>
+    
+    <!-- [修复] 图片上传区域 -->
+    <view class="img-uploader">
+      <!-- 已选图片预览 -->
+      <block wx:for="{{images}}" wx:key="*this">
+        <view class="preview-wrap">
+          <image class="preview-img" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-src="{{item}}"></image>
+          <view class="del-btn" catchtap="removeImage" data-index="{{index}}">×</view>
+        </view>
+      </block>
+      
+      <!-- 添加按钮 -->
+      <view class="upload-btn" bindtap="chooseImage" wx:if="{{images.length < 9}}">
+        <text>📷 添加图片</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="setting-list">
+    <!-- [修复] 话题选择，添加点击事件 -->
+    <view class="setting-item" bindtap="chooseTopic">
+      <view class="label-row">
+        <text class="label-main">选择话题</text>
+      </view>
+      <text class="value">{{topic}} ></text>
+    </view>
+
+    <!-- 积分悬赏开关 -->
+    <view class="setting-item">
+      <view class="label-row">
+        <text class="label-main">积分悬赏</text>
+        <text class="sub-label">消耗积分获取更多关注</text>
+      </view>
+      <switch color="#FF7043" bindchange="onBountyChange" />
+    </view>
+
+    <!-- 悬赏金额选择 (当开关打开时显示) -->
+    <view class="bounty-selector" wx:if="{{isBounty}}">
+      <block wx:for="{{[10, 20, 50]}}" wx:key="*this">
+        <view 
+          class="bounty-opt {{bountyAmount === item ? 'active' : ''}}" 
+          bindtap="selectBounty" 
+          data-amount="{{item}}"
+        >
+          💎 {{item}}
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <view class="footer-btn">
+    <view class="btn-submit" bindtap="submitPost">发布</view>
+  </view>
+</view>

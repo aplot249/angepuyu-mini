@@ -47,7 +47,7 @@
                   
                   <view class="meta-row">
                     <view class="author-box">
-                      <image class="author-avatar" src="{{article.avatar}}" mode="aspectFill"></image>
+                      <image class="author-avatar" src="{{baseImgUrl+'/'+article.avatar}}" mode="aspectFill"></image>
                       <text class="author-name">{{article.author}}</text>
                     </view>
                     <text class="date">{{article.date}}</text>
@@ -55,7 +55,7 @@
                 </view>
 
                 <!-- 右侧：封面图 -->
-                <image class="cover-img" src="{{article.cover}}" mode="aspectFill" lazy-load></image>
+                <image class="cover-img" src="{{baseImgUrl+'/'+article.cover}}" mode="aspectFill" lazy-load></image>
               </view>
             </block>
           </view>

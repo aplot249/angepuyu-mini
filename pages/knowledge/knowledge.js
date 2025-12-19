@@ -1,5 +1,5 @@
 const app = getApp();
-import {http} from '../../requests/index'
+import {http,baseImgUrl} from '../../requests/index'
 
 Page({
   data: {
@@ -8,13 +8,13 @@ Page({
     
     currentTab: 0,
     scrollLeft: 0, // 顶部Tab滚动位置
-
+    baseImgUrl:baseImgUrl,
     // 标签页配置及对应数据
     categories: [
-      { id: 1, name: '语法入门', page: 1, hasMore: true, isLoading: false, articles: [] },
-      { id: 2, name: '文化习俗', page: 1, hasMore: true, isLoading: false, articles: [] },
-      { id: 3, name: '旅游攻略', page: 1, hasMore: true, isLoading: false, articles: [] },
-      { id: 4, name: '商务礼仪', page: 1, hasMore: true, isLoading: false, articles: [] },
+      // { id: 1, name: '语法入门', page: 1, hasMore: true, isLoading: false, articles: [] },
+      // { id: 2, name: '文化习俗', page: 1, hasMore: true, isLoading: false, articles: [] },
+      // { id: 3, name: '旅游攻略', page: 1, hasMore: true, isLoading: false, articles: [] },
+      // { id: 4, name: '商务礼仪', page: 1, hasMore: true, isLoading: false, articles: [] },
     ]
   },
 
@@ -30,11 +30,11 @@ Page({
       this.setData({
         categories:res
       })
+      // 初始化加载第一个Tab的数据
+      // if (this.data.categories[0].articles == undefined || this.data.categories[0].articles.length === 0) {
+        this.loadDataForTab(0);
+      // }
     })
-    // 初始化加载第一个Tab的数据
-    if (this.data.categories[0].articles.length === 0) {
-      this.loadDataForTab(0);
-    }
   },
 
   // 切换 Tab
@@ -46,15 +46,16 @@ Page({
   // Swiper 切换回调
   onSwiperChange(e) {
     const idx = e.detail.current;
+    console.log('idx',idx)
     this.setData({ currentTab: idx });
     
     // 自动滚动顶部 Tab
     this.setData({ scrollLeft: (idx - 1) * 60 });
-
+    console.log('this.data.categories[idx].articles',this.data.categories[idx])
     // 如果该Tab没有数据，则加载
-    if (this.data.categories[idx].articles.length === 0) {
-      this.loadDataForTab(idx);
-    }
+    // if (this.data.categories[idx].articles.length === 0 || undefined) {
+      this.loadDataForTab(idx)
+    // }
   },
 
   // 触底加载更多
@@ -66,49 +67,29 @@ Page({
   loadDataForTab(tabIndex) {
     // 切到某一个id了，得到这一个分类
     const category = this.data.categories[tabIndex];
-    // console.log('category111',category)
-    if (category.isLoading || !category.hasMore) return;
+    console.log('category111',category)
+    let hasMore = category.hasMore === undefined ? true :category.hasMore
+    console.log('hasMore',hasMore)
+    if (category.isLoading || !hasMore) return;
     // 设置加载状态
     const loadingKey = `categories[${tabIndex}].isLoading`;
     this.setData({ [loadingKey]: true });  //这一个分类正在加载
-    http(`/web/knowledgearticles/?id=${category.id}`,'GET').then(newArticles=>{
-        console.log('articles',newArticles)
+    let page = category.page === undefined ? 1: category.page
+    console.log('currentPage',page)
+    http(`/web/knowledgearticles/?id=${category.id}&page=${page}`,'GET').then(res=>{
+        console.log('articles',res)
         const articlesKey = `categories[${tabIndex}].articles`;
         const pageKey = `categories[${tabIndex}].page`;
         const loadingKey = `categories[${tabIndex}].isLoading`;
         const hasMoreKey = `categories[${tabIndex}].hasMore`;
         this.setData({
-          [articlesKey]: category.articles.concat(newArticles.results), //当前分类的文章，增加6条数据
-          [pageKey]: category.page + 1, //当前分类的页码加1
+          [articlesKey]: category.articles.concat(res.results), //当前分类的文章，增加6条数据
+          [pageKey]: page +1 , //当前分类的页码加1
           [loadingKey]: false,  //停止加载
           // 模拟最多加载3页
-          [hasMoreKey]: category.page < newArticles.totalPageNum //模拟最多加载3页面 
+          [hasMoreKey]: page < res.totalPageNum //模拟最多加载3页面 
         });
     })
-
-    // setTimeout(() => {
-    //   // 模拟生成数据，该分类产生了6条文章数据
-    //   const newArticles = Array.from({ length: 6 }, (_, i) => ({
-    //     id: Date.now() + i,
-    //     title: this.getTitle(tabIndex, category.page, i),
-    //     summary: '这是斯瓦希里语学习的详细指南，帮助您快速掌握基础语法和日常对话技巧，深入了解坦桑尼亚文化。',
-    //     author: '晓乐老师',
-    //     avatar: 'https://ui-avatars.com/api/?name=Ed&background=FF8A65&color=fff',
-    //     date: '2025-12-18',
-    //     cover: this.getCover(tabIndex, i)
-    //   }));
-    //   const articlesKey = `categories[${tabIndex}].articles`;
-    //   const pageKey = `categories[${tabIndex}].page`;
-    //   const loadingKey = `categories[${tabIndex}].isLoading`;
-    //   const hasMoreKey = `categories[${tabIndex}].hasMore`;
-    //   this.setData({
-    //     [articlesKey]: category.articles.concat(newArticles), //当前分类的文章，增加6条数据
-    //     [pageKey]: category.page + 1, //当前分类的页码加1
-    //     [loadingKey]: false,  //停止加载
-    //     // 模拟最多加载3页
-    //     [hasMoreKey]: category.page < 3 //模拟最多加载3页面 
-    //   });
-    // }, 800);
   },
 
   // 辅助：生成模拟标题

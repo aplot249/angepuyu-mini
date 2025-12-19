@@ -1,0 +1,55 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <!-- 帖子正文 -->
+  <scroll-view scroll-y class="detail-scroll">
+    <view class="detail-card">
+      <view class="user-row">
+        <image class="avatar" src="{{post.avatar}}" mode="aspectFill"></image>
+        <view class="info">
+          <text class="nick">{{post.nickname}}</text>
+          <text class="time">{{post.time}}</text>
+        </view>
+        <view class="bounty-badge" wx:if="{{post.bounty > 0}}">
+          悬赏 💎{{post.bounty}}
+        </view>
+      </view>
+
+      <view class="content-body">
+        <view class="d-title">{{post.title}}</view>
+        <text class="d-text">{{post.content}}</text>
+      </view>
+
+      <view class="stat-row">
+        <text>阅读 1205</text>
+        <text> • 评论 {{comments.length}}</text>
+      </view>
+    </view>
+
+    <!-- 评论区 -->
+    <view class="comment-section">
+      <view class="section-head">全部评论</view>
+      
+      <block wx:for="{{comments}}" wx:key="id">
+        <view class="comment-item">
+          <image class="c-avatar" src="{{item.avatar}}"></image>
+          <view class="c-content">
+            <view class="c-head">
+              <text class="c-nick">{{item.nickname}}</text>
+              <text class="c-floor">{{index + 1}}楼</text>
+            </view>
+            <text class="c-text">{{item.content}}</text>
+            <text class="c-time">{{item.time}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+    
+    <view style="height: 120rpx;"></view>
+  </scroll-view>
+
+  <!-- 底部评论栏 -->
+  <view class="bottom-bar">
+    <input class="comment-input" placeholder="说点什么..." placeholder-class="ph-color" bindconfirm="sendComment" value="{{inputValue}}" />
+    <view class="send-btn" bindtap="sendComment">发送</view>
+  </view>
+</view>

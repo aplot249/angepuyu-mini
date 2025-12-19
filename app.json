@@ -15,7 +15,9 @@
     "pages/article/article",
     "pages/mistake/mistake",
     "pages/knowledge/knowledge",
-    "pages/community/community"
+    "pages/community/community",
+    "pages/community-post/community-post",
+    "pages/community-detail/community-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

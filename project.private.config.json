@@ -31,6 +31,13 @@
           "launchMode": "default"
         },
         {
+          "name": "pages/community/community",
+          "pathName": "pages/community/community",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "pages/knowledge/knowledge",
           "pathName": "pages/knowledge/knowledge",
           "query": "",
