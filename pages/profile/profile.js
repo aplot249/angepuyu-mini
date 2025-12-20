@@ -7,6 +7,7 @@ Page({
     fontSizeLevel: 1,
     fontSizeLabel: '标准',
     isDarkMode: false,
+
     // 弹窗相关数据
     showFeedbackModal: false,
     feedbackContent: '',
@@ -15,6 +16,17 @@ Page({
     FlipautoPlayfayin:app.globalData.userInfo.FlipautoPlayfayin || false,
     NextautoPlayfayin:app.globalData.userInfo.NextautoPlayfayin || false,
 
+    // [新增] 播放倍速配置相关
+    playRateValue: 1.0,
+    playRateIndex: 2, // 默认对应 1.0x
+    playRateOptions: ['0.5x', '0.75x', '1.0x', '1.25x', '1.5x', '2.0x'],
+    
+    // [新增] 发音音色配置相关
+    voiceIndex: 0,
+    // voiceOptions: ['标准女声', '标准男声', '温柔女声', '磁性男声'],
+    // voiceOptions: ['男声1号', '男声2号', '女声1号'],
+    // voiceOptionsJSON: app.globalData.fayintype,
+    voiceOptions:[],
     // [修改] 做题数量配置相关
     quizCountOption: 10,
     quizCountIndex: 0, // 默认索引
@@ -22,10 +34,13 @@ Page({
   },
 
   onShow() {
+    let tmp = []
+    app.globalData.fayintype.forEach(i=>tmp.push(i.name))
     this.setData({ 
       userInfo: app.globalData.userInfo,
       fontSizeLevel: app.globalData.fontSizeLevel,
-      isDarkMode: app.globalData.isDarkMode
+      isDarkMode: app.globalData.isDarkMode,
+      voiceOptions:tmp
     });
     this.updateFontLabel(app.globalData.fontSizeLevel);
 
@@ -39,6 +54,17 @@ Page({
         quizCountIndex: idx >= 0 ? idx : 0 
       });
     }
+
+    // [新增] 读取播放倍速设置
+    const savedRate = wx.getStorageSync('playRate');
+    if (savedRate) {
+      const idx = this.data.playRateOptions.findIndex(item => parseFloat(item) === savedRate);
+      this.setData({
+        playRateValue: savedRate,
+        playRateIndex: idx >= 0 ? idx : 2
+      });
+    }
+
   },
 
   // [修改] 处理 Picker 选择器变更
@@ -56,6 +82,41 @@ Page({
       title: `已设置为 ${optionStr}`,
       icon: 'none'
     });
+  },
+
+  // [新增] 处理播放倍速选择
+  bindPlayRateChange(e) {
+    const idx = e.detail.value;
+    const optionStr = this.data.playRateOptions[idx];
+    const val = parseFloat(optionStr); // 提取数值，如 1.5
+    this.setData({
+      playRateIndex: idx,
+      playRateValue: val
+    });
+    // 保存设置
+    wx.setStorageSync('playRate', val);
+    // 如果有全局 globalData 也可以同步
+    if (app.globalData) {
+      app.globalData.playRate = val;
+    }
+    wx.showToast({ title: `倍速已设为 ${optionStr}`, icon: 'none' });
+  },
+
+  // [新增] 处理音色选择
+  bindVoiceChange(e) {
+    const idx = e.detail.value;
+    const voice = this.data.voiceOptions[idx];
+    // if(voice ==){
+
+    // }else{
+
+    // }
+    this.setData({ voiceIndex: idx });
+    // 保存设置
+    let voiceSet = app.globalData.fayintype.filter(i=>i.name==voice)[0].xuhao
+    wx.setStorageSync('voiceType', voiceSet ? voiceSet : '');
+    if (app.globalData) { app.globalData.voiceType = voice; }
+    wx.showToast({ title: `已切换为 ${voice}`, icon: 'none' });
   },
 
   // --- 登录与用户信息 ---

@@ -156,7 +156,11 @@ Page({
     if(!item.isFlipped){
       let xiaohao = item.fayin ? item.xiaohao : 0
       if(app.globalData.userInfo.FlipautoPlayfayin){
-        app.playAudio(item.fayin,xiaohao,item.swahili)
+        // app.playAudio(item.fayin,xiaohao,item.swahili)
+        let voiceType = wx.getStorageSync('voiceType')
+        let fayin = "fayin"+voiceType
+        console.log(fayin,item[fayin])
+        app.playAudio(item[fayin],xiaohao,item.swahili)
       }
     }
     this.setData({
@@ -168,7 +172,11 @@ Page({
     // 阻止冒泡防止翻转
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao,item.title)
+    let voiceType = wx.getStorageSync('voiceType')
+    let fayin = "fayin"+voiceType
+    console.log(fayin,item[fayin])
+    app.playAudio(item[fayin],xiaohao,item.title)
+    // app.playAudio(item.fayin,xiaohao,item.title)
     // wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
   },
 

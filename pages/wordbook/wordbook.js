@@ -617,7 +617,11 @@ Page({
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao,item.swahili)
+    let voiceType = wx.getStorageSync('voiceType')
+    let fayin = "fayin"+voiceType
+    console.log(fayin,item[fayin])
+    app.playAudio(item[fayin],xiaohao,item.swahili)
+    // app.playAudio(item.fayin,xiaohao,item.swahili)
   },
 
   // 导出文档

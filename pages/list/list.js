@@ -172,7 +172,10 @@ Page({
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao,item.title)
+    let voiceType = wx.getStorageSync('voiceType')
+    let fayin = "fayin"+voiceType
+    console.log(fayin,item[fayin])
+    app.playAudio(item[fayin],xiaohao,item.swahili)
   },
 
   toggleFav(e) {

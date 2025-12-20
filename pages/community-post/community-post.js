@@ -13,10 +13,17 @@ Page({
     
     // [新增] 图片和话题数据
     images: [],
-    topic: '#日常交流'
+    topic: '#日常交流',
+    topicList:[]
   },
 
   onShow() {
+    http('/web/topictype/','GET').then(res=>{
+      console.log('res',res)
+      this.setData({
+        topicList:res
+      })
+    })
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode 
@@ -75,12 +82,15 @@ Page({
 
   // [新增] 选择话题
   chooseTopic() {
-    const topics = ['#日常交流', '#语音纠正', '#生活分享', '#求助提问', '#资源互换'];
+    // const topics = ['#日常交流', '#语音纠正', '#生活分享', '#求助提问', '#资源互换'];
+    let ll = []
+    this.data.topicList.forEach(item=>ll.push(item.name))
+    console.log('ll',ll)
     wx.showActionSheet({
-      itemList: topics,
+      itemList: ll,
       success: (res) => {
         this.setData({
-          topic: topics[res.tapIndex]
+          topic: this.data.topicList[res.tapIndex].name
         });
       }
     });
@@ -98,11 +108,14 @@ Page({
     if (!this.data.content) {
       return wx.showToast({ title: '请输入内容', icon: 'none' });
     }
+    let imgs = []
+    this.data.images.forEach(i=>imgs.push(i.split('/').slice(-1)[0]))
+    console.log('imgs',imgs)
     const postData = {
       title: this.data.title,
       content: this.data.content,
-      images: this.data.images,
-      topic: this.data.topic,
+      images: imgs,
+      type: this.data.topic,
       isBounty: this.data.isBounty,
       bountyAmount: this.data.bountyAmount
     };
@@ -127,6 +140,11 @@ Page({
     http('/web/topic/','post',data).then(res=>{
       console.log('results',res)
       wx.hideLoading();
+      wx.showToast({
+        title:"发布成功",
+        icon:"none"
+      })
+      wx.navigateBack();
     })
     // setTimeout(() => {
     //   wx.hideLoading();

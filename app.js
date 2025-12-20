@@ -159,6 +159,10 @@ App({
       innerAudioContext.title = title
       let fayin = mp3 ? mp3 : baseImgUrl+'/zanwufayin.mp3'
       innerAudioContext.src = fayin
+      // console.log('app.js ',fayin)
+      // 设置音速
+      let playbackRate = wx.getStorageSync('playRate')
+      innerAudioContext.playbackRate = playbackRate
       this.globalData.userInfo.points -= xiaohao
       http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
         console.log('已同步')

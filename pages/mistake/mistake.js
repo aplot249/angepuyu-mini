@@ -72,7 +72,10 @@ Page({
     wx.vibrateShort(); // 轻微震动反馈
     let xiaohao = item.fayin ? item.xiaohao : 0
     // console.log('item',item.swahili)
-    app.playAudio(item.fayin,xiaohao,item.swahili)
+    let voiceType = wx.getStorageSync('voiceType')
+    let fayin = "fayin"+voiceType
+    console.log(fayin,item[fayin])
+    app.playAudio(item[fayin],xiaohao,item.swahili)
     wx.showToast({ title: `播放: ${word}`, icon: 'none' });
   },
 

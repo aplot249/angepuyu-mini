@@ -31,6 +31,7 @@ Page({
     ],
     dailyWords:[],
     dailyPhrase:[],
+    fayintype:[]
   },
   onLoad() {
     this.calcNavBar();
@@ -41,8 +42,11 @@ Page({
         banners:res.carousel,
         announcements:res.noticeBar,
         dailyWords:res.tuijianWords,
-        dailyPhrase:res.tuijianPhrases
+        dailyPhrase:res.tuijianPhrases,
+        // fayintype:res.fayintype
       })
+      wx.setStorageSync('fayintype', JSON.stringify(res.fayintype))
+      app.globalData.fayintype = res.fayintype
     })
   },
 
@@ -110,7 +114,10 @@ Page({
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao,item.swahili)
+    let voiceType = wx.getStorageSync('voiceType')
+    let fayin = "fayin"+voiceType
+    console.log(fayin,item[fayin])
+    app.playAudio(item[fayin],xiaohao,item.swahili)
   },
 
   refreshDaily() {

@@ -128,7 +128,10 @@ Page({
           let item = this.data.quizList[this.data.currentIndex]
           let xiaohao = item.fayin ? item.xiaohao : 0
           // console.log('item',item.swahili)
-          app.playAudio(item.fayin,xiaohao,item.swahili)
+          let voiceType = wx.getStorageSync('voiceType')
+          let fayin = "fayin"+voiceType
+          console.log(fayin,item[fayin])
+          app.playAudio(item[fayin],xiaohao,item.swahili)
         }
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
 
@@ -159,7 +162,10 @@ Page({
   playAudio(e) {
     const item = e.currentTarget.dataset.item;
     let xiaohao = item.fayin ? item.xiaohao : 0
-    app.playAudio(item.fayin,xiaohao,item.title)
+    let voiceType = wx.getStorageSync('voiceType')
+    let fayin = "fayin"+voiceType
+    console.log(fayin,item[fayin])
+    app.playAudio(item[fayin],xiaohao,item.title)
   },
   caculateScore(){
     console.log("22222222")

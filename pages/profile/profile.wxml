@@ -87,6 +87,45 @@
       </view>
     </view>
 
+    <!-- [新增] 播放倍速设置 -->
+    <picker 
+      class="menu-item" 
+      bindchange="bindPlayRateChange" 
+      value="{{playRateIndex}}" 
+      range="{{playRateOptions}}"
+    >
+      <view class="picker-inner">
+        <view class="menu-left">
+          <view class="menu-icon pink">⏩</view>
+          <text>音频播放倍速</text>
+        </view>
+        <view class="menu-right">
+          <text class="status-text">{{playRateOptions[playRateIndex]}}</text>
+          <text class="arrow">></text>
+        </view>
+      </view>
+    </picker>
+
+
+    <!-- [新增] 发音音色设置 -->
+    <picker 
+      class="menu-item" 
+      bindchange="bindVoiceChange" 
+      value="{{voiceIndex}}" 
+      range="{{voiceOptions}}"
+    >
+      <view class="picker-inner">
+        <view class="menu-left">
+          <view class="menu-icon indigo">🗣️</view>
+          <text>发音音色</text>
+        </view>
+        <view class="menu-right">
+          <text class="status-text">{{voiceOptions[voiceIndex]}}</text>
+          <text class="arrow">></text>
+        </view>
+      </view>
+    </picker>
+
     <!-- <view class="menu-item" bindtap="navigateToMistake">
       <view class="menu-left">
         <view class="menu-icon purple">📓</view>
@@ -162,6 +201,15 @@
 
     <view class="menu-title margintop30">其他相关</view>
 
+    <!-- [新增] 联系在线客服 -->
+    <button class="menu-item contact-btn" open-type="contact">
+      <view class="menu-left">
+        <view class="menu-icon teal">🎧</view>
+        <text>联系在线客服</text>
+      </view>
+      <text class="arrow">></text>
+    </button>
+    
     <view class="menu-item" bindtap="navigateToContribute" wx:if="{{userInfo.isRecorder}}">
       <view class="menu-left">
         <view class="menu-icon red">🎙️</view>
@@ -186,14 +234,6 @@
       <text class="arrow">></text>
     </view>
 
-    <view class="menu-item" bindtap="navigateToAbout">
-      <view class="menu-left">
-        <view class="menu-icon orange">ℹ️</view>
-        <text>关于软件</text>
-      </view>
-      <text class="arrow">></text>
-    </view>
-    
     <view class="menu-item" bindtap="navigateToPrivacy">
       <view class="menu-left">
         <view class="menu-icon gray">🔒</view>
@@ -202,14 +242,23 @@
       <text class="arrow">></text>
     </view>
 
+    <view class="menu-item" bindtap="navigateToAbout">
+      <view class="menu-left">
+        <view class="menu-icon orange">ℹ️</view>
+        <text>关于软件</text>
+      </view>
+      <text class="arrow">></text>
+    </view>
+
     <!-- [修改] 绑定新的弹窗方法 -->
-    <view class="menu-item" bindtap="showFeedback">
+    <!-- <view class="menu-item" bindtap="showFeedback">
       <view class="menu-left">
         <view class="menu-icon green">💬</view>
         <text>意见反馈</text>
       </view>
       <text class="arrow">></text>
-    </view>
+    </view> -->
+
   </view>
   
   <view class="footer">Version 1.0.0</view>
