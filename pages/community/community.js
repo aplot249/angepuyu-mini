@@ -177,6 +177,15 @@ Page({
     const likeKey = `tabs[${tabIdx}].list[${itemIdx}].isLiked`;
     const numKey = `tabs[${tabIdx}].list[${itemIdx}].likes`;
     
+    if(tabItem.isLiked){  //就是取消
+      http('/web/topiclike/','DELETE',{"topic":tabItem.id}).then(res=>{
+        console.log('itemid',res)
+      })
+    }else{
+      http('/web/topiclike/','POST',{"topic":tabItem.id}).then(res=>{
+        console.log('itemid',res)
+      })
+    }
     this.setData({
       [likeKey]: !tabItem.isLiked,
       [numKey]: tabItem.isLiked ? tabItem.likes - 1 : tabItem.likes + 1

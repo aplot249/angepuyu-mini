@@ -2,7 +2,7 @@
   
   <!-- 顶部搜索与分类 -->
   <view class="header-section">
-    <view class="search-bar">
+    <!-- <view class="search-bar">
       <text class="search-icon">🔍</text>
       <input 
         class="search-input" 
@@ -11,7 +11,7 @@
         bindconfirm="onSearch"
         confirm-type="search"
       />
-    </view>
+    </view> -->
     <view class="tab-row">
       <block wx:for="{{tabs}}" wx:key="id">
         <view class="tab-item {{currentTab === index ? 'active' : ''}}" bindtap="switchTab" data-index="{{index}}">
@@ -64,7 +64,7 @@
                   <!-- 图片九宫格 -->
                   <view class="img-grid" wx:if="{{item.images.length > 0}}">
                     <block wx:for="{{item.images}}" wx:key="*this" wx:for-item="img">
-                      <image class="grid-img" src="{{baseImgUrl+'/'+img}}" mode="aspectFill" catchtap="previewImage" data-current="{{img}}" data-urls="{{item.images}}"></image>
+                      <image class="grid-img" src="{{baseImgUrl+'/'+img}}" mode="aspectFill" catchtap="previewImage" data-current="{{baseImgUrl+'/'+img}}" data-urls="{{item.images}}"></image>
                     </block>
                   </view>
                 </view>

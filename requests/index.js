@@ -1,8 +1,8 @@
 import { eventBus } from '../utils/eventBus.js';
 
 // const baseHOST = 'http://127.0.0.1:8000'
-const baseHOST = 'https://siyu.jsxinlingdi.com'
-// const baseHOST = 'http://192.168.0.67:8000'
+// const baseHOST = 'https://siyu.jsxinlingdi.com'
+const baseHOST = 'http://192.168.0.67:8000'
 // const baseHOST =  'http://192.168.1.181:8000'
 const baseImgUrl = baseHOST + '/media'
 
@@ -162,15 +162,26 @@ function fileupload(url, filePath, name, formData = {}) {
       timeout: '5000',
       success: res => {
         const { statusCode, data } = res;
-        if (res.statusCode == 200) {
-          resolve(data);
-        } else {
-          if (statusCode == 401) {
+        // console.log('eeeeeeeeeee',statusCode)
+        switch(statusCode){
+          case 200:
+            resolve(JSON.parse(data))
+            break;
+          case 201:
+            resolve(JSON.parse(data))
+            break;            
+          case 204:
+            resolve(JSON.parse(data))
+            break;            
+          case 401:
             var errMsg = '未授权，请重新登录';
-          } else if (statusCode == 403) {
+            reject(JSON.parse(data)); // 将错误抛出
+            break;
+          case 403:
             var errMsg = '禁止访问';
             const app = getApp();
             const newInfo = {
+              // ...this.data.userInfo,
               isLoggedIn: false,
               hasSharedToday: app.globalData.userInfo.hasSharedToday,
               hasSignedIn: app.globalData.userInfo.hasSignedIn,
@@ -178,24 +189,86 @@ function fileupload(url, filePath, name, formData = {}) {
             wx.setStorageSync('token', '')
             app.globalData.userInfo = newInfo;
             app.saveData();
-          } else if (statusCode === 404) {
+            console.log('data',data)
+            const pages = getCurrentPages();
+            const currentPage = pages[pages.length - 1];
+            const currentRoute = '/'+currentPage.route; // 例如：'pages/index/index'
+            console.log('currentRoute',currentRoute)
+            if (data.detail == 'JWT Token已过期！' || data.detail == '身份认证信息未提供。' || data.detail =='用户不存在！') {
+              wx.showModal({
+                  title: '请先登录，才能进行后续操作',
+                  confirmText: "确认登录",
+                  success: (res) => {
+                    if (res.confirm) {
+                      wx.getUserProfile({
+                        desc: '需微信授权登录',
+                        success: (res) => {
+                          wx.showToast({
+                            title: '正在登录...',
+                            icon: "none"
+                          })
+                          wx.login({
+                            timeout: 8000,
+                            success: r => {
+                              console.log(r.code)
+                              let data = {
+                                code: r.code,
+                                gender: res.userInfo.gender,
+                                wxnickname: res.userInfo.nickName,
+                              }
+                              wx.request({
+                                url: baseHOST+'/user/openid/',
+                                header: header,
+                                method: 'post',
+                                data: data,
+                                timeout: '8000',
+                                success: res => {
+                                  console.log('登录信息：', res.data)
+                                  const newInfo = {
+                                    ...res.data.user,
+                                    isLoggedIn: true,
+                                  };
+                                  app.globalData.userInfo = newInfo;
+                                  app.globalData.userCreated =  res.data.created
+                                  eventBus.emit('userNewCreated', app.globalData.userCreated);
+                                  app.saveData();
+                                  wx.showToast({
+                                    title: '登录成功',
+                                    icon: 'none'
+                                  });
+                                  wx.setStorageSync('token', res.data.token)
+                                  wx.reLaunch({
+                                    url: currentRoute,
+                                  })
+                                }
+                              })
+                            }
+                          })
+                        }
+                      })
+                    }
+                  }
+                }
+              )
+            }            
+            reject(JSON.parse(data)); // 将错误抛出
+            break;  
+          case 404:
             var errMsg = '资源不存在';
             console.error('404错误: 接口不存在或资源未找到', res);
             wx.showToast({
               title: '内容不存在',
               icon: 'none'
             });
-          } else if (res.statusCode == 429) {
+            reject(JSON.parse(data)); // 将错误抛出
+            break;           
+          case 429:
             var errMsg = '频率太快';
-          } else {
+            reject(JSON.parse(data)); // 将错误抛出
+            break;
+          default:
             var errMsg = '服务器错误';
-          }
-          // wx.showToast({
-          //   title: errMsg,
-          //   icon: 'none'
-          // })
-          // console.log(errMsg)
-          reject(res.data) // 将错误抛出
+            reject(JSON.parse(data)); // 将错误抛出
         }
       },
       fail: err => {
@@ -205,7 +278,7 @@ function fileupload(url, filePath, name, formData = {}) {
           title: '网络连接失败',
           icon: 'none'
         });
-        reject(res.data)
+        reject(JSON.parse(data)); // 将错误抛出
       },
       complete: () => {
         // wx.hideLoading();

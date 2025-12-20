@@ -1,4 +1,5 @@
 const app = getApp();
+import {http,fileupload} from '../../requests/index'
 
 Page({
   data: {
@@ -39,9 +40,13 @@ Page({
       sourceType: ['album', 'camera'],
       success: (res) => {
         const tempFiles = res.tempFiles.map(file => file.tempFilePath);
-        this.setData({
-          images: this.data.images.concat(tempFiles)
-        });
+        // 这里处理图片上传
+        fileupload('/web/topicimg/',tempFiles[0],'img').then(res=>{
+          console.log('img',res.img)
+          this.setData({
+            images: this.data.images.concat(res.img)
+          });
+        })
       }
     });
   },
@@ -59,6 +64,11 @@ Page({
   removeImage(e) {
     const index = e.currentTarget.dataset.index;
     const newImages = this.data.images;
+    let ss = newImages[index].split('/').pop()
+    console.log(ss)
+    http('/web/topicimg/','delete',{"img":ss}).then(res=>{
+      console.log('sss',res)
+    })
     newImages.splice(index, 1);
     this.setData({ images: newImages });
   },
@@ -88,7 +98,6 @@ Page({
     if (!this.data.content) {
       return wx.showToast({ title: '请输入内容', icon: 'none' });
     }
-
     const postData = {
       title: this.data.title,
       content: this.data.content,
@@ -97,7 +106,6 @@ Page({
       isBounty: this.data.isBounty,
       bountyAmount: this.data.bountyAmount
     };
-
     if (this.data.isBounty) {
       wx.showModal({
         title: '确认发布',
@@ -116,12 +124,16 @@ Page({
   doPost(data) {
     console.log('Posting data:', data);
     wx.showLoading({ title: '发布中...' });
-    setTimeout(() => {
+    http('/web/topic/','post',data).then(res=>{
+      console.log('results',res)
       wx.hideLoading();
-      wx.showToast({ title: '发布成功', icon: 'success' });
-      setTimeout(() => {
-        wx.navigateBack();
-      }, 1000);
-    }, 1000);
+    })
+    // setTimeout(() => {
+    //   wx.hideLoading();
+    //   wx.showToast({ title: '发布成功', icon: 'success' });
+    //   setTimeout(() => {
+    //     wx.navigateBack();
+    //   }, 1000);
+    // }, 1000);
   }
 })
