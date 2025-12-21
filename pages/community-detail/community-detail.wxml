@@ -4,13 +4,13 @@
   <scroll-view scroll-y class="detail-scroll">
     <view class="detail-card">
       <view class="user-row">
-        <image class="avatar" src="{{post.avatar}}" mode="aspectFill"></image>
+        <image class="avatar" src="{{post.author.avatarUrl}}" mode="aspectFill"></image>
         <view class="info">
-          <text class="nick">{{post.nickname}}</text>
+          <text class="nick">{{post.author.nickname}}</text>
           <text class="time">{{post.time}}</text>
         </view>
-        <view class="bounty-badge" wx:if="{{post.bounty > 0}}">
-          悬赏 💎{{post.bounty}}
+        <view class="bounty-badge" wx:if="{{post.author.points > 0}}">
+          悬赏 💎{{post.author.points}}
         </view>
       </view>
 
@@ -49,7 +49,7 @@
 
   <!-- 底部评论栏 -->
   <view class="bottom-bar">
-    <input class="comment-input" placeholder="说点什么..." placeholder-class="ph-color" bindconfirm="sendComment" value="{{inputValue}}" />
+    <input class="comment-input" placeholder="说点什么..." placeholder-class="ph-color" bindconfirm="sendComment" model:value="{{inputValue}}" />
     <view class="send-btn" bindtap="sendComment">发送</view>
   </view>
 </view>

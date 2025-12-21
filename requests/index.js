@@ -1,7 +1,7 @@
 import { eventBus } from '../utils/eventBus.js';
 
-// const baseHOST =  'http://192.168.1.181:8000'
-const baseHOST = 'https://siyu.jsxinlingdi.com'
+const baseHOST =  'http://192.168.1.181:8000'
+// const baseHOST = 'https://siyu.jsxinlingdi.com'
 // const baseHOST = 'http://192.168.0.67:8000'
 const baseImgUrl = baseHOST + '/media'
 
