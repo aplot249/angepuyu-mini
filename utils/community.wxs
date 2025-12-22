@@ -1,0 +1,14 @@
+
+  // 定义一个截取函数
+  var subLastFive = function(val) {
+    if (!val) return '';
+    // 如果长度不足5位，直接返回原字符串
+    if (val.length <= 5) {
+      return val;
+    }
+    // 使用 slice(-5) 截取后5位
+    return val.slice(-5);
+  }
+  
+  // 导出函数
+  module.exports.subLastFive = subLastFive;

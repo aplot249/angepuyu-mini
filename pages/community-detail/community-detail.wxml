@@ -6,50 +6,102 @@
       <view class="user-row">
         <image class="avatar" src="{{post.author.avatarUrl}}" mode="aspectFill"></image>
         <view class="info">
-          <text class="nick">{{post.author.nickname}}</text>
+          <wxs src="../../utils/community.wxs" module="utils" />
+          <text class="nick">{{post.author.nickname ? post.author.nickname : '用户'+utils.subLastFive(post.author.openid)}}</text>
           <text class="time">{{post.time}}</text>
         </view>
-        <view class="bounty-badge" wx:if="{{post.author.points > 0}}">
-          悬赏 💎{{post.author.points}}
+        
+        <!-- 右侧操作区 -->
+        <view class="right-actions">
+          <!-- wx:if="{{post.bounty > 0}}" -->
+          <view class="bounty-badge" >  
+            <!-- 悬赏 💎{{post.bounty}} -->
+            {{post.create_time}}
+          </view>
+          
+          <!-- [新增] 帖子删除按钮 (仅自己可见) -->
+          <view class="delete-post-btn" wx:if="{{post.isSelf}}" data-id="{{post.id}}" bindtap="deletePost">
+            🗑️ 删除
+          </view>
         </view>
       </view>
 
       <view class="content-body">
         <view class="d-title">{{post.title}}</view>
         <text class="d-text">{{post.content}}</text>
+        <!-- [新增] 图片展示区域 -->
+        <view class="img-list" wx:if="{{post.images && post.images.length > 0}}">
+          <block wx:for="{{post.images}}" wx:key="*this">
+            <image 
+              class="post-img" 
+              src="{{baseImgUrl + '/'+item.img}}" 
+              mode="widthFix" 
+              bindtap="previewImage" 
+              data-current="{{ baseImgUrl+ '/'+ item.img}}" 
+            ></image>
+          </block>
+        </view>
       </view>
 
       <view class="stat-row">
-        <text>阅读 1205</text>
+        <!-- <text>阅读 1205</text> -->
         <text> • 评论 {{comments.length}}</text>
       </view>
     </view>
 
     <!-- 评论区 -->
     <view class="comment-section">
-      <view class="section-head">全部评论</view>
+      <view class="section-head">全部评论 ({{comments.length}})</view>
       
-      <block wx:for="{{comments}}" wx:key="id">
-        <view class="comment-item">
-          <image class="c-avatar" src="{{item.avatar}}"></image>
-          <view class="c-content">
-            <view class="c-head">
-              <text class="c-nick">{{item.nickname}}</text>
-              <text class="c-floor">{{index + 1}}楼</text>
+      <!-- 有评论时显示列表 -->
+      <block wx:if="{{comments.length > 0}}">
+        <block wx:for="{{comments}}" wx:key="id">
+          <view class="comment-item">
+            <image class="c-avatar" src="{{item.author.avatarUrl}}"></image>
+            <view class="c-content">
+              <view class="c-head">
+                <text class="c-nick">{{item.author.nickname ? item.author.nickname : '用户'+utils.subLastFive(item.author.openid)}}</text>
+                <text class="c-floor">{{index + 1}}楼</text>
+              </view>
+              
+              <text class="c-text">{{item.content}}</text>
+              
+              <view class="c-footer">
+                <text class="c-time">{{item.create_time}}</text>
+                <!-- 仅自己发送的显示删除 -->
+                <view 
+                  class="delete-text" 
+                  wx:if="{{item.isSelf}}" 
+                  catchtap="deleteComment" 
+                  data-index="{{index}}"
+                >删除</view>
+              </view>
             </view>
-            <text class="c-text">{{item.content}}</text>
-            <text class="c-time">{{item.time}}</text>
           </view>
-        </view>
+        </block>
       </block>
+
+      <!-- 无评论时的空状态 -->
+      <view class="empty-comment" wx:else>
+        <text class="empty-icon">💬</text>
+        <text class="empty-text">还没有人评论，快来抢沙发吧~</text>
+      </view>
+
     </view>
     
-    <view style="height: 120rpx;"></view>
+    <!-- 底部垫高 -->
+    <view style="height: 180rpx;"></view>
   </scroll-view>
 
   <!-- 底部评论栏 -->
   <view class="bottom-bar">
-    <input class="comment-input" placeholder="说点什么..." placeholder-class="ph-color" bindconfirm="sendComment" model:value="{{inputValue}}" />
+    <input 
+      class="comment-input" 
+      placeholder="说点什么..." 
+      placeholder-class="ph-color" 
+      bindconfirm="sendComment" 
+      model:value="{{inputValue}}" 
+    />
     <view class="send-btn" bindtap="sendComment">发送</view>
   </view>
 </view>

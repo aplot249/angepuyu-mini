@@ -84,14 +84,7 @@ Page({
   },
 
   onLoad() {
-    http('/web/topictype/','GET').then(res=>{
-      console.log('res',res)
-      this.setData({
-        tabs:res
-      })
-      // 初始化加载第一个Tab的数据
-      this.loadDataForTab(0);
-    })
+
   },
 
   onShow() {
@@ -100,11 +93,24 @@ Page({
       fontSizeLevel: app.globalData.fontSizeLevel 
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
+    http('/web/topictype/','GET').then(res=>{
+      console.log('res',res)
+      this.setData({
+        tabs:res
+      })
+      let currentTab = app.globalData.currentTab ? app.globalData.currentTab : 0
+      // 初始化加载第一个Tab的数据
+      console.log('currentTab',currentTab)
+      // 选中那个tab
+      this.setData({ currentTab: currentTab });
+      this.loadDataForTab(currentTab);
+    })
   },
 
   // 切换 Tab (点击顶部)
   switchTab(e) {
     const idx = e.currentTarget.dataset.index;
+    app.globalData.currentTab = idx
     this.setData({ currentTab: idx });
   },
 
@@ -112,7 +118,7 @@ Page({
   onSwiperChange(e) {
     const idx = e.detail.current;
     this.setData({ currentTab: idx });
-    
+    app.globalData.currentTab = idx
     // 如果该Tab没有数据，则自动加载
     if (this.data.tabs[idx].list.length === 0) {
       this.loadDataForTab(idx);

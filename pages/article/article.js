@@ -31,11 +31,11 @@ const ARTICLES = {
     subtitle: '一场关于灵魂的远行',
     date: '2025-11-20',
     readTime: 5,
-    intro: '提到 Safari，你想到的是猎枪还是相机？在斯瓦西里语中，这个词原本只是意味着一段旅程。',
+    intro: '提到 Safari，你想到的是猎枪还是相机？在斯瓦希里语中，这个词原本只是意味着一段旅程。',
     content: [
       {
         sw: "Safari njema",
-        cn: "意思是“旅途愉快”。Safari 源自阿拉伯语，在斯瓦西里语中泛指任何旅行。如今，它已成为全世界通用的词汇，特指去非洲看野生动物。",
+        cn: "意思是“旅途愉快”。Safari 源自阿拉伯语，在斯瓦希里语中泛指任何旅行。如今，它已成为全世界通用的词汇，特指去非洲看野生动物。",
       },
       {
         sw: "Simba ndiye mfalme wa porini",
@@ -49,7 +49,7 @@ const ARTICLES = {
     image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&q=80',
     category: '情感表达',
     title: 'Nakupenda',
-    subtitle: '斯瓦西里语中的爱意',
+    subtitle: '斯瓦希里语中的爱意',
     date: '2025-11-15',
     readTime: 2,
     intro: '非洲的浪漫含蓄而热烈。学会用当地语言表达爱与感谢，能瞬间拉近彼此的距离。',

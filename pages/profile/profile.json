@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "个人中心",
+  "navigationBarTitleText": "更多功能",
   "enablePullDownRefresh": false,
   "welcome-modal": "/components/welcome-modal/welcome-modal"
 }

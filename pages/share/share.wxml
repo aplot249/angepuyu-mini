@@ -18,29 +18,39 @@
 
     <view class="intro-section">
       <text class="highlight-text">专为坦桑尼亚华人打造</text>
-      <text class="sub-text">无论你做工程建设、商务考察还是日常生活，坦坦斯语都是你最贴心的语言助手。</text>
+      <text class="sub-text">无论你做工程建设、商务考察还是日常生活，“坦坦斯语”都是你贴心的语言助手。</text>
     </view>
 
     <view class="features-grid">
       <view class="feature-item">
         <view class="icon-circle teal">📚</view>
         <view class="feat-title">行业词库</view>
-        <view class="feat-desc">覆盖工程/餐饮/物流等多个行业</view>
+        <view class="feat-desc">覆盖华人多种从事行业</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle orange">🗣️</view>
         <view class="feat-title">真人发音</view>
-        <view class="feat-desc">地道斯语发音，边听边学不露怯</view>
+        <view class="feat-desc">地道斯语发音、语音切换、倍速播放</view>
       </view>
       <view class="feature-item">
-        <view class="icon-circle blue">💾</view>
-        <view class="feat-title">单词本、错题本</view>
-        <view class="feat-desc">一键加入生词本，随时随地复习</view>
+        <view class="icon-circle purple">👓</view>
+        <view class="feat-title">学习方式多样</view>
+        <view class="feat-desc">卡片学习、做题练习、串联听音</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle purple">👓</view>
         <view class="feat-title">长辈关怀</view>
         <view class="feat-desc">超大字体、夜间模式，护眼更清晰</view>
+      </view>
+      <view class="feature-item">
+        <view class="icon-circle blue">💾</view>
+        <view class="feat-title">知识库</view>
+        <view class="feat-desc">了解更多斯语语法、文化</view>
+      </view>
+      <view class="feature-item">
+        <view class="icon-circle purple">👓</view>
+        <view class="feat-title">交流社区</view>
+        <view class="feat-desc">求助、讨论更简单</view>
       </view>
     </view>
 
@@ -50,7 +60,7 @@
       </view>
       <view class="scan-tip">
         <text class="tip-bold">长按识别小程序码</text>
-        <text class="tip-small">即刻开启斯瓦西里语学习之旅</text>
+        <text class="tip-small">即刻开启斯瓦希里语学习之旅</text>
       </view>
     </view>
   </view>

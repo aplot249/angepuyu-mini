@@ -24,11 +24,18 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/community-post/community-post",
-          "pathName": "pages/community-post/community-post",
+          "name": "pages/share/share",
+          "pathName": "pages/share/share",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/community-post/community-post",
+          "pathName": "pages/community-post/community-post",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/community/community",

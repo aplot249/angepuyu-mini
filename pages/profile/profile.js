@@ -301,19 +301,19 @@ Page({
   }
     if(this.data.userInfo.hasSharedToday) return;
     wx.navigateTo({ url: '/pages/share/share' });
-    app.globalData.userInfo.points += 15;
+    app.globalData.userInfo.points += 50;
     app.globalData.userInfo.hasSharedToday = true;
     app.saveData();
     this.setData({ userInfo: app.globalData.userInfo });
     http('/user/userinfo/','post',{"points":app.globalData.userInfo.points}).then(res=>{
       this.setData({ userInfo: app.globalData.userInfo });
-      wx.showToast({ title: '分享奖励 +15', icon: 'success' });
+      wx.showToast({ title: '分享奖励 +50', icon: 'success' });
     })
   },
 
   onShareAppMessage() {
     return {
-      title: '我正在用坦坦斯语学习斯瓦西里语，快来一起吧！',
+      title: '我正在用坦坦斯语学习斯瓦希里语，快来一起吧！',
       path: '/pages/index/index',
       // imageUrl: 'https://images.unsplash.com/photo-1547471080-7541e89a43ca?w=600&q=80'
     }

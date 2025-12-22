@@ -96,7 +96,7 @@ Page({
   // getTitle(tab, page, index) {
   //   const types = ['语法', '文化', '旅游', '商务'];
   //   const type = types[tab] || '资讯';
-  //   return `【${type}】第${page}期：斯瓦西里语${type}详解指南 ${index + 1}`;
+  //   return `【${type}】第${page}期：斯瓦希里语${type}详解指南 ${index + 1}`;
   // },
 
   // 辅助：生成模拟封面

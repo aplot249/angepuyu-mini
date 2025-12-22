@@ -11,7 +11,7 @@ Page({
     // 统计数据20 
     score: 0, //总得分
     rightNum:0,
-    eachItemScore:0,
+    // eachItemScore:0,
     points:app.globalData.userInfo.points,
 
     completedCount: 0, // 已做题数
@@ -41,12 +41,13 @@ Page({
     })
   },
   onShow() {
+    // 监听本页面弹窗的积分购买事件
     eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
       points:app.globalData.userInfo.points,
-      quizCountOption:wx.getStorageSync('quizCountOption') || 5
+      quizCountOption:wx.getStorageSync('quizCountOption') || 10
     });
     http('/web/randomquestion/','get').then(res=>{
       this.setData({
@@ -54,7 +55,7 @@ Page({
         quizList:res.data,
         wrongCount:res.mistakeCount,
         currentIndex:0,
-        eachItemScore:Math.round(100/this.data.quizList.length),
+        // eachItemScore:Math.round(100/this.data.quizList.length),
       })
       let lingyu = this.data.quizList[this.data.currentIndex].lingyu
       this.getRelatedAnswer(lingyu,this.data.currentIndex)
@@ -63,7 +64,9 @@ Page({
     // wx.setNavigationBarTitle({ title: '每日练习' });
   },
   onHide(){
+    // 移除本页面的积分购买事件监听
     eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+    // 更新后端积分
     http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
       console.log('已更新积分')
     })
@@ -79,8 +82,11 @@ Page({
       isFinished: false,
       showNoPointsModal: false, // 积分不足弹窗控制
       score:0,
+      completedCount:0,
+      rightNum:0
     })
   },
+  // 打乱做题选项
   shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -114,6 +120,10 @@ Page({
         })
         app.globalData.userInfo.points = this.data.points
         app.saveData()
+        // 为0 ，更新积分
+        http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+          console.log('已更新积分')
+        })
       }else{
         // 遍历题，扣2积分
         this.setData({
@@ -124,33 +134,29 @@ Page({
         app.saveData()
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
         // 判断自动发音
-        if(app.globalData.userInfo.NextautoPlayfayin){
+        if(app.globalData.userInfo.NextautoPlayfayin){    //开启了滑下一个自动发音
           let item = this.data.quizList[this.data.currentIndex]
-          let xiaohao = item.fayin ? item.xiaohao : 0
-          // console.log('item',item.swahili)
-          let voiceType = wx.getStorageSync('voiceType')
-          let fayin = "fayin"+voiceType
-          console.log(fayin,item[fayin])
-          app.playAudio(item[fayin],xiaohao,item.swahili)
+          let xiaohao = item.fayin ? item.xiaohao : 0    //按发音存不存在，确定消耗
+          let voiceType = wx.getStorageSync('voiceType')    //确定发音音色
+          let fayin = "fayin"+voiceType   //确定发音音色
+          console.log(fayin,item[fayin])    //输出发音音色、音色发音链接
+          app.playAudio(item[fayin],xiaohao,item.swahili) //进行发音
         }
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
-
-        // 到最后一个了,就增加
-        if(this.data.currentIndex === this.data.quizList.length-1){
-          if(this.data.noLoad==true){
+        // 切到最后一个题了,判断要不要增加，
+        if(this.data.currentIndex === this.data.quizList.length-1){ 
+          if(this.data.noLoad==true){ //noLoad为true就不增加
               wx.showToast({
                 title: '这是最后一张',
                 icon:'none'
               })
-          }else{
+          }else{  //否则就增加
             http('/web/randomquestion/','get').then(res=>{
               this.data.quizList.push(...res.data)
               this.setData({
                 noLoad:res.tip,
                 quizList:this.data.quizList,
                 wrongCount:res.mistakeCount,
-                // currentIndex:this.data.currentIndex+1,
-                // completedCount:this.data.completedCount+1
               })
             })
           }
@@ -165,10 +171,11 @@ Page({
     let voiceType = wx.getStorageSync('voiceType')
     let fayin = "fayin"+voiceType
     console.log(fayin,item[fayin])
-    app.playAudio(item[fayin],xiaohao,item.title)
+    app.playAudio(item[fayin],xiaohao,item.swahili)
   },
+
   caculateScore(){
-    console.log("22222222")
+    console.log("每组做题结束，弹起弹窗，计算得分")
     this.setData({
       isFinished:true
     })
@@ -197,21 +204,22 @@ Page({
       [answeredKey]: true,
       [choiceKey]: oindex,
       [correctKey]: isCorrect,
-      // score: isCorrect ? this.data.score + this.data.eachItemScore : this.data.score
     });
     console.log('choiceKey',oindex)
     if (isCorrect) {
       wx.vibrateShort(); // 震动反馈
-      // 做对做错，扣1积分
+      // 不管做对还是做错，都扣1积分
       this.setData({
         rightNum:this.data.rightNum + 1,
         completedCount: this.data.completedCount + 1,
-        points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
+        points:this.data.points - 1 > 0 ? this.data.points - 1 : 0  //剩余积分大于0时才减，否则置为0
       })
+      // 完成的数量是每组数量的整数倍时候，出现弹窗计算得分。
       if(this.data.completedCount % this.data.quizCountOption === 0){
         console.log('ffffffffff')
         that.caculateScore()
       }
+      // 把现在的得分保存
       app.globalData.userInfo.points = this.data.points
       app.saveData()
       // 答对自动跳下一题 (延迟体验更好)
@@ -219,10 +227,12 @@ Page({
       //   this.autoNext();
       // }, 1000);
     } else {
+      // 这是做错
       wx.vibrateLong();
       console.log('dacuo',question)
       // oanswer
       // JSON.stringify(question.options)
+      // 做错的题就要后端做记录
       http('/web/mistake/','post',{'ctitemid':question.id,'answers':oanswer}).then(res=>{
         console.log('ress9',res)
         // 做对做错，扣1积分
@@ -298,6 +308,7 @@ Page({
       rightNum:0
     });
   },
+  // 继续做题
   continueQuiz(){
     this.setData({
       isFinished:false
@@ -315,7 +326,7 @@ Page({
           quizList:this.data.quizList,
           wrongCount:res.mistakeCount,
           currentIndex:this.data.currentIndex+1,
-          eachItemScore:Math.round(100/this.data.quizList.length)
+          // eachItemScore:Math.round(100/this.data.quizList.length)
         })
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
         this.getRelatedAnswer(lingyu,this.data.currentIndex)

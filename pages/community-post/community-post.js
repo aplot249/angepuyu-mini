@@ -10,10 +10,9 @@ Page({
     bountyAmount: 10,
     content: '',
     title: '',
-    
     // [新增] 图片和话题数据
     images: [],
-    topic: '#日常交流',
+    topic: '',
     topicList:[]
   },
 
@@ -21,7 +20,8 @@ Page({
     http('/web/topictype/','GET').then(res=>{
       console.log('res',res)
       this.setData({
-        topicList:res
+        topicList:res,
+        topic:res[0].name
       })
     })
     this.setData({ 

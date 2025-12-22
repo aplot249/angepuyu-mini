@@ -4,7 +4,7 @@ import { eventBus } from './utils/eventBus.js';
 App({
   globalData: {
     userInfo: {
-      nickname: "Marafiki", //默认值
+      nickname: "", //默认值
       isRecorder:false,
       hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享
@@ -13,6 +13,7 @@ App({
     userCreated:null,
     fontSizeLevel: 1, 
     isDarkMode: false,
+    currentTab:null
   },
 
   onLaunch() {
@@ -74,7 +75,6 @@ App({
       console.log('New day detected, resetting daily tasks.');
       this.globalData.userInfo.hasSignedIn = false;
       this.globalData.userInfo.hasSharedToday = false;
-      this.globalData.userInfo.points = 50;
       // 保存新日期和重置后的用户数据
       wx.setStorageSync('ts_last_active_date', todayStr);
       this.saveData();
@@ -82,12 +82,6 @@ App({
   },
   saveData() {
     wx.setStorageSync('ts_user', this.globalData.userInfo);
-    // if(this.globalData.userInfo.isLoggedIn){
-      // console.log('userInfo.isLoggedIn',this.globalData.userInfo.isLoggedIn)
-    //   http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
-    //     console.log('已更新积分')
-    //   })
-    // }
   },
   playAudio(mp3,xiaohao,title){
     if(!this.globalData.userInfo.isLoggedIn){
@@ -99,13 +93,13 @@ App({
             wx.getUserProfile({
               desc: '需微信授权登录',
               success: (res) => {
-                wx.showToast({
-                  title: '正在登录...',
-                  icon: "none"
-                })
                 wx.login({
                   timeout: 8000,
                   success: r => {
+                    wx.showToast({
+                      title: '正在登录...',
+                      icon: "none"
+                    })
                     console.log(r.code)
                     http('/user/openid/', 'post', {
                       code: r.code,
@@ -136,21 +130,21 @@ App({
       }
       )
     }else{
-    if (xiaohao > this.globalData.userInfo.points){
-      wx.showModal({
-        title: '积分不足，无法听音频',
-        content: '1、通过签到、分享赚取积分或\n2：直接购买积分',
-        confirmText:'购买积分',
-        complete: (res) => {
-          if (res.cancel) {}
-          if (res.confirm) {
-            wx.navigateTo({
-              url: '/pages/purchase/purchase',
-            })
-          }
-        }
-      })
-    }else{
+    // if (xiaohao > this.globalData.userInfo.points){
+    //   wx.showModal({
+    //     title: '积分不足，无法听音频',
+    //     content: '1、通过签到、分享赚取积分或\n2：直接购买积分',
+    //     confirmText:'购买积分',
+    //     complete: (res) => {
+    //       if (res.cancel) {}
+    //       if (res.confirm) {
+    //         wx.navigateTo({
+    //           url: '/pages/purchase/purchase',
+    //         })
+    //       }
+    //     }
+    //   })
+    // }else{
       wx.showToast({
         title: mp3 == null ? '暂无发音' : '正在播放',
         icon:'none'
@@ -164,11 +158,15 @@ App({
       let playbackRate = wx.getStorageSync('playRate')
       innerAudioContext.playbackRate = playbackRate
       this.globalData.userInfo.points -= xiaohao
+      if(this.globalData.userInfo.points < 0){
+        this.globalData.userInfo.points = 0
+      }
+      this.saveData()
       http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
         console.log('已同步')
         // innerAudioContext.destroy()
       })
-    }   
+    // }   这个的结尾 if (xiaohao > this.globalData.userInfo.points){
    } // 没登录的结尾
   },
 

@@ -106,6 +106,10 @@ Page({
     wx.navigateTo({ url: '/pages/wordbook/wordbook' })
   }, 
   navigateToKnowledge() {
+    // wx.showToast({
+    //   title: '即将上线',
+    //   icon:"none"
+    // })
     wx.navigateTo({ url: '/pages/knowledge/knowledge' });
   },
   navigateToCommunity() {
@@ -113,10 +117,10 @@ Page({
   },
   playAudio(e) {
     let item = e.currentTarget.dataset.item
-    let xiaohao = item.fayin ? item.xiaohao : 0
-    let voiceType = wx.getStorageSync('voiceType')
-    let fayin = "fayin"+voiceType
-    console.log(fayin,item[fayin])
+    let xiaohao = item.fayin ? item.xiaohao : 0 //按发音存不存在，确定消耗
+    let voiceType = wx.getStorageSync('voiceType')  //确定发音音色
+    let fayin = "fayin"+voiceType   //确定发音音色
+    console.log(fayin,item[fayin])  //输出发音音色、音色发音链接
     app.playAudio(item[fayin],xiaohao,item.swahili)
   },
 

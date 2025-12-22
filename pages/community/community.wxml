@@ -12,14 +12,41 @@
         confirm-type="search"
       />
     </view> -->
-    <view class="tab-row">
+
+    <!-- <view class="tab-row">
       <block wx:for="{{tabs}}" wx:key="id">
         <view class="tab-item {{currentTab === index ? 'active' : ''}}" bindtap="switchTab" data-index="{{index}}">
           <text>{{item.name}}</text>
           <view class="tab-line" wx:if="{{currentTab === index}}"></view>
         </view>
       </block>
-    </view>
+    </view> -->
+
+    <!-- [修改] 使用 scroll-view 实现横向滑动 Tab -->
+    <scroll-view 
+      class="tab-scroll" 
+      scroll-x 
+      enable-flex 
+      scroll-with-animation
+      scroll-into-view="tab-{{currentTab}}"
+    >
+      <view class="tab-row">
+        <block wx:for="{{tabs}}" wx:key="id">
+          <view 
+            id="tab-{{index}}"
+            class="tab-item {{currentTab === index ? 'active' : ''}}" 
+            bindtap="switchTab" 
+            data-index="{{index}}"
+          >
+            <text>{{item.name}}</text>
+            <view class="tab-line" wx:if="{{currentTab === index}}"></view>
+          </view>
+        </block>
+        <!-- 右侧占位，防止最后一个 Tab 贴边太紧 -->
+        <view style="width: 30rpx; flex-shrink: 0;"></view>
+      </view>
+    </scroll-view>
+
   </view>
 
   <!-- [新增] Swiper 滑动区域 -->
@@ -42,24 +69,26 @@
           <view class="post-list-container">
             <block wx:for="{{tabItem.list}}" wx:key="id" wx:for-item="item" wx:for-index="postIdx">
               <view class="post-card" bindtap="goToDetail" data-id="{{item.id}}">
-                
+                <!-- [新增] 置顶标签 -->
+                <view class="top-stick-tag" wx:if="{{item.isTop}}">置顶</view>
                 <!-- 用户信息栏 -->
                 <view class="card-header">
-                  <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+                  <image class="avatar" src="{{baseImgUrl +'/'+item.avatar}}" mode="aspectFill"></image>
                   <view class="user-meta">
-                    <text class="nickname">{{item.nickname}}</text>
+                    <wxs src="../../utils/community.wxs" module="utils" />
+                    <text class="nickname">{{item.nickname?item.nickname:'用户'+utils.subLastFive(item.openid)}}</text>
                     <text class="time">{{item.time}}</text>
                   </view>
                   <!-- 悬赏标记 -->
-                  <view class="bounty-tag" wx:if="{{item.bounty > 0}}">
+                  <!-- <view class="bounty-tag" wx:if="{{item.bounty > 0}}">
                     <text>💎 {{item.bounty}}</text>
-                  </view>
+                  </view> -->
                 </view>
 
                 <!-- 内容区域 -->
                 <view class="card-body">
                   <view class="post-title" wx:if="{{item.title}}">{{item.title}}</view>
-                  <view class="post-content">{{item.content}}</view>
+                  <view class="post-content">{{item.content }}</view>
                   
                   <!-- 图片九宫格 -->
                   <view class="img-grid" wx:if="{{item.images.length > 0}}">
@@ -72,7 +101,8 @@
                 <!-- 底部互动栏 -->
                 <view class="card-footer">
                   <view class="tag-box">
-                    <text class="topic-tag">#{{item.topic}}</text>
+                    <!-- <text class="topic-tag">#{{item.topic}}</text> -->
+                    <text class="topic-tag">{{item.create_time}}</text>
                   </view>
                   <view class="action-row">
                     <view class="action-btn">

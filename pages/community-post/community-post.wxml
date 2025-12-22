@@ -5,7 +5,7 @@
       class="content-input" 
       placeholder="在这里分享你的想法，或描述你的问题..." 
       placeholder-class="ph-color"
-      maxlength="500"
+      maxlength="3000"
       bindinput="onContentInput"
     ></textarea>
     
@@ -36,13 +36,13 @@
     </view>
 
     <!-- 积分悬赏开关 -->
-    <view class="setting-item">
+    <!-- <view class="setting-item">
       <view class="label-row">
         <text class="label-main">积分悬赏</text>
         <text class="sub-label">消耗积分获取更多关注</text>
       </view>
       <switch color="#FF7043" bindchange="onBountyChange" />
-    </view>
+    </view> -->
 
     <!-- 悬赏金额选择 (当开关打开时显示) -->
     <view class="bounty-selector" wx:if="{{isBounty}}">

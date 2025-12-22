@@ -51,7 +51,7 @@
 
       <button class="stat-item share-btn" open-type="share" bindtap="handleShareTap">
         <view class="num text-orange">{{userInfo.hasSharedToday ? '已享' : '分享'}}</view>
-        <view class="label">每日+15</view>
+        <view class="label">每日+50</view>
       </button>
 
       <view class="stat-item" bindtap="goPurchase">
@@ -97,7 +97,7 @@
       <view class="picker-inner">
         <view class="menu-left">
           <view class="menu-icon pink">⏩</view>
-          <text>音频播放倍速</text>
+          <text>音频倍速播放</text>
         </view>
         <view class="menu-right">
           <text class="status-text">{{playRateOptions[playRateIndex]}}</text>
@@ -200,15 +200,6 @@
     </picker>
 
     <view class="menu-title margintop30">其他相关</view>
-
-    <!-- [新增] 联系在线客服 -->
-    <button class="menu-item contact-btn" open-type="contact">
-      <view class="menu-left">
-        <view class="menu-icon teal">🎧</view>
-        <text>联系在线客服</text>
-      </view>
-      <text class="arrow">></text>
-    </button>
     
     <view class="menu-item" bindtap="navigateToContribute" wx:if="{{userInfo.isRecorder}}">
       <view class="menu-left">
@@ -250,6 +241,15 @@
       <text class="arrow">></text>
     </view>
 
+    <!-- [新增] 联系在线客服 -->
+    <button class="menu-item contact-btn" open-type="contact">
+      <view class="menu-left">
+        <view class="menu-icon teal">🎧</view>
+        <text>在线客服</text>
+      </view>
+      <text class="arrow">></text>
+    </button>
+    
     <!-- [修改] 绑定新的弹窗方法 -->
     <!-- <view class="menu-item" bindtap="showFeedback">
       <view class="menu-left">
@@ -261,7 +261,7 @@
 
   </view>
   
-  <view class="footer">Version 1.0.0</view>
+  <!-- <view class="footer">Version 1.0.0</view> -->
 
   <!-- [新增] 意见反馈弹窗 -->
   <view class="modal-mask" wx:if="{{showFeedbackModal}}" bindtap="hideFeedback">
