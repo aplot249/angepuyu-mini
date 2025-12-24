@@ -13,7 +13,8 @@ Page({
       // { id: 1, name: '求助悬赏', list: [], page: 1, isLoading: false, hasMore: true },
       // { id: 2, name: '经验分享', list: [], page: 1, isLoading: false, hasMore: true }
     ],
-
+    allcan:false,
+    showFatie:app.globalData.userInfo.is_superuser,
     // 基础演示数据池 (用于生成模拟数据)
     mockDataPool: [
       {
@@ -96,7 +97,8 @@ Page({
     http('/web/topictype/','GET').then(res=>{
       console.log('res',res)
       this.setData({
-        tabs:res
+        tabs:res,
+        allcan:res[0].allcan
       })
       let currentTab = app.globalData.currentTab ? app.globalData.currentTab : 0
       // 初始化加载第一个Tab的数据

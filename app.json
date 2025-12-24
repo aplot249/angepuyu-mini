@@ -17,7 +17,8 @@
     "pages/knowledge/knowledge",
     "pages/community/community",
     "pages/community-post/community-post",
-    "pages/community-detail/community-detail"
+    "pages/community-detail/community-detail",
+    "pages/listening-practice/listening-practice"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -38,10 +39,10 @@
         "selectedIconPath": "/static/images/home-active.png"
       },
       {
-        "pagePath": "pages/community/community",
-        "text": "社区",
-        "iconPath": "/static/images/forum.png",
-        "selectedIconPath": "/static/images/forum-active.png"
+        "pagePath": "pages/quiz/quiz",
+        "text": "做题",
+        "iconPath": "/static/images/edit.png",
+        "selectedIconPath": "/static/images/edit-active.png"
       },
       {
         "pagePath": "pages/category/category",

@@ -55,6 +55,7 @@ Page({
     ]
   },
 
+  // 加载词库分类
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
@@ -82,6 +83,7 @@ Page({
     this.setData({ activeIdx: index });
   },
 
+  // 点击跳转去list客观页面
   goToList(e) {
     const subid = e.currentTarget.dataset.subid;
     const subname = e.currentTarget.dataset.subname;
@@ -90,6 +92,7 @@ Page({
     });
   },
 
+  // 操作收藏或取消分类
   toggleSubFav(e){
     // console.log(e)
     console.log(e.currentTarget.dataset.id)
@@ -126,7 +129,7 @@ Page({
           app.globalData.userInfo.favcat = this.data.favcatList
           app.saveData()
       })
-    }else{
+    }else{  //创建收藏
         http('/web/sublingyufav/','post',{'id':id}).then(res=>{
           // console.log("res词条id",res)
           let favIds = app.globalData.userInfo.favorites

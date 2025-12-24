@@ -3,8 +3,8 @@
   <view class="balance-card">
     <view class="balance-label">当前积分</view>
     <view class="balance-value">
-      <text class="num">{{userInfo.points}}</text>
-      <text class="unit">点</text>
+      <text class="num">{{userInfo.points > 10000?'无限':userInfo.points}}</text>
+      <text class="unit" wx:if="{{userInfo.points}}">点</text>
     </view>
     <view class="bg-decoration"></view>
   </view>
@@ -30,13 +30,13 @@
       <text>单词发音: <text class="highlight-red">-1</text> 点/次</text>
     </view>
     <view class="rule-item">
-      <view class="icon red">🗣️</view>
-      <text>短语发音: <text class="highlight-red">-3</text> 点/次</text>
-    </view>
-    <view class="rule-item">
       <view class="icon red">📄</view>
-      <text>导出文档: <text class="highlight-red">-5</text> 点/词条</text>
+      <text>卡片学习、做题练习: <text class="highlight-red">-2</text> 点/次</text>
     </view>
+    <!-- <view class="rule-item">
+      <view class="icon red">📄🗣️</view>
+      <text>导出文档: <text class="highlight-red">-5</text> 点/词条</text>
+    </view> -->
   </view>
 
   <!-- 充值选项 -->
@@ -48,7 +48,7 @@
       <view class="item-left">
         <view class="coin-icon">💰</view>
         <view class="item-info">
-          <view class="item-title">{{priceList[0].points}} 点数</view>
+          <view class="item-title">{{priceList[0].points}} 点</view>
           <view class="item-desc">{{priceList[0].name}}</view>
         </view>
       </view>
@@ -61,7 +61,7 @@
       <view class="item-left">
         <view class="coin-icon infinite">♾️</view>
         <view class="item-info">
-          <view class="item-title text-purple">{{priceList[1].points > 100000 ?'无限':priceList[1].points}} 点数</view>
+          <view class="item-title text-purple">{{priceList[1].points > 10000 ?'无限':priceList[1].points}} 点</view>
           <view class="item-desc">{{priceList[1].name}}</view>
         </view>
       </view>

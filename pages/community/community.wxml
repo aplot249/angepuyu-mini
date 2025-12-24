@@ -27,6 +27,8 @@
       class="tab-scroll" 
       scroll-x 
       enable-flex 
+      enhanced="{{true}}"
+      show-scrollbar="{{false}}"
       scroll-with-animation
       scroll-into-view="tab-{{currentTab}}"
     >
@@ -132,7 +134,7 @@
   </swiper>
 
   <!-- 悬浮发帖按钮 -->
-  <view class="fab-btn" bindtap="goToPost">
+  <view class="fab-btn" bindtap="goToPost" wx:if="{{allcan}}">
     <text class="plus-icon">➕</text>
     <text class="fab-text">发帖</text>
   </view>

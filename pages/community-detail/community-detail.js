@@ -68,7 +68,8 @@ Page({
     http('/web/topiccomment/', 'post', {
       'topicid': this.data.post.id,
       'content':this.data.inputValue
-    }).then(res => {
+    }).then(
+      res => {
       console.log('res', res)
       const newComment = {...res}
       this.setData({
@@ -79,6 +80,11 @@ Page({
         title: '已评论',
         icon: 'success'
       });
+    },err=>{
+      console.log('xxxxxxxerr',err)
+      wx.showToast({
+        "title":"评论有敏感词"
+      })
     })
   },
 

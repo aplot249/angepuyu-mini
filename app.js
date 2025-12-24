@@ -85,66 +85,52 @@ App({
   },
   playAudio(mp3,xiaohao,title){
     if(!this.globalData.userInfo.isLoggedIn){
-      wx.showModal({
-        title: '请先登录，才能进行后续操作',
-        confirmText: "确认登录",
-        success: (res) => {
-          if (res.confirm) {
-            wx.getUserProfile({
-              desc: '需微信授权登录',
-              success: (res) => {
-                wx.login({
-                  timeout: 8000,
-                  success: r => {
-                    wx.showToast({
-                      title: '正在登录...',
-                      icon: "none"
-                    })
-                    console.log(r.code)
-                    http('/user/openid/', 'post', {
-                      code: r.code,
-                      gender: res.userInfo.gender,
-                      wxnickname: res.userInfo.nickName,
-                    }).then(res => {
-                      console.log('登录信息：', res)
-                      const newInfo = {
-                        ...res.user,
-                        isLoggedIn: true,
-                      };
-                      this.globalData.userInfo = newInfo;
-                      this.globalData.userCreated =  res.created
-                      eventBus.emit('userNewCreated', this.globalData.userCreated);
-                      this.saveData();
-                      wx.showToast({
-                        title: '登录成功',
-                        icon: 'none'
-                      });
-                      wx.setStorageSync('token', res.token)
-                    })
-                  }
-                })
-              }
-            })
-          }
-        }
-      }
-      )
+      // wx.showModal({
+      //   title: '请先登录，才能进行后续操作',
+      //   confirmText: "确认登录",
+      //   success: (res) => {
+      //     if (res.confirm) {
+      //       wx.getUserProfile({
+      //         desc: '需微信授权登录',
+      //         success: (res) => {
+      //           wx.login({
+      //             timeout: 8000,
+      //             success: r => {
+      //               wx.showToast({
+      //                 title: '正在登录...',
+      //                 icon: "none"
+      //               })
+      //               console.log(r.code)
+      //               http('/user/openid/', 'post', {
+      //                 code: r.code,
+      //                 gender: res.userInfo.gender,
+      //                 wxnickname: res.userInfo.nickName,
+      //               }).then(res => {
+      //                 console.log('登录信息：', res)
+      //                 const newInfo = {
+      //                   ...res.user,
+      //                   isLoggedIn: true,
+      //                 };
+      //                 this.globalData.userInfo = newInfo;
+      //                 this.globalData.userCreated =  res.created
+      //                 eventBus.emit('userNewCreated', this.globalData.userCreated);
+      //                 this.saveData();
+      //                 wx.showToast({
+      //                   title: '登录成功',
+      //                   icon: 'none'
+      //                 });
+      //                 wx.setStorageSync('token', res.token)
+      //               })
+      //             }
+      //           })
+      //         }
+      //       })
+      //     }
+      //   }
+      // }
+      // )
+      return
     }else{
-    // if (xiaohao > this.globalData.userInfo.points){
-    //   wx.showModal({
-    //     title: '积分不足，无法听音频',
-    //     content: '1、通过签到、分享赚取积分或\n2：直接购买积分',
-    //     confirmText:'购买积分',
-    //     complete: (res) => {
-    //       if (res.cancel) {}
-    //       if (res.confirm) {
-    //         wx.navigateTo({
-    //           url: '/pages/purchase/purchase',
-    //         })
-    //       }
-    //     }
-    //   })
-    // }else{
       wx.showToast({
         title: mp3 == null ? '暂无发音' : '正在播放',
         icon:'none'
@@ -166,8 +152,7 @@ App({
         console.log('已同步')
         // innerAudioContext.destroy()
       })
-    // }   这个的结尾 if (xiaohao > this.globalData.userInfo.points){
-   } // 没登录的结尾
+    } // 没登录的结尾
   },
 
   changeFontSize() {

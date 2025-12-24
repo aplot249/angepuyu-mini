@@ -1,0 +1,89 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+  
+  <!-- 顶部进度条 -->
+  <view class="progress-bar">
+    <view class="progress-track">
+      <view class="progress-fill" style="width: {{(currentIndex + 1) / questions.length * 100}}%"></view>
+    </view>
+    <text class="progress-text">{{currentIndex + 1}} / {{questions.length}}</text>
+  </view>
+
+  <!-- 听音卡片 -->
+  <view class="audio-section">
+    <view class="speaker-btn {{isPlaying ? 'playing' : ''}}" bindtap="playAudio">
+      <text class="speaker-icon">🔊</text>
+      <view class="wave w1"></view>
+      <view class="wave w2"></view>
+    </view>
+    <text class="hint-text">点击播放音频，将下方单词排序</text>
+  </view>
+
+  <!-- 作答区 (横线) -->
+  <view class="answer-area">
+    <view class="answer-slots">
+      <block wx:for="{{answerSlots}}" wx:key="id">
+        <view class="word-chip filled" bindtap="removeWord" data-index="{{index}}">
+          {{item.text}}
+        </view>
+      </block>
+      <!-- 如果没有选词，显示提示线 -->
+      <view class="placeholder-line" wx:if="{{answerSlots.length === 0}}">
+        请选择下方单词组句
+      </view>
+    </view>
+    
+    <!-- 结果反馈 -->
+    <view class="feedback-box {{checkStatus}}" wx:if="{{checkStatus !== 'idle'}}">
+      <view class="status-icon">{{checkStatus === 'correct' ? '✅ 回答正确' : '❌ 回答错误'}}</view>
+      <view class="correct-answer" wx:if="{{checkStatus === 'wrong'}}">
+        <text class="ca-label">正确句子：</text>
+        <text class="ca-text">{{currentQuestion.sentence}}</text>
+      </view>
+      <view class="translation">{{currentQuestion.translation}}</view>
+    </view>
+  </view>
+
+  <!-- 选词区 -->
+  <view class="word-bank">
+    <block wx:for="{{shuffledWords}}" wx:key="id">
+      <view 
+        class="word-chip bank-item {{item.selected ? 'hidden' : ''}}" 
+        bindtap="selectWord" 
+        data-index="{{index}}"
+      >
+        {{item.text}}
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="footer-action">
+    <!-- 状态：未提交 -->
+    <button 
+      wx:if="{{checkStatus === 'idle'}}" 
+      class="btn check-btn {{answerSlots.length === 0 ? 'disabled' : ''}}" 
+      bindtap="checkAnswer"
+    >
+      检查答案
+    </button>
+
+    <!-- 状态：错误 -->
+    <button 
+      wx:elif="{{checkStatus === 'wrong'}}" 
+      class="btn retry-btn" 
+      bindtap="retryQuestion"
+    >
+      再试一次
+    </button>
+
+    <!-- 状态：正确 -->
+    <button 
+      wx:elif="{{checkStatus === 'correct'}}" 
+      class="btn next-btn" 
+      bindtap="nextQuestion"
+    >
+      下一题
+    </button>
+  </view>
+
+</view>

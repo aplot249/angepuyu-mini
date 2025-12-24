@@ -1,5 +1,4 @@
 {
-  "navigationBarTitleText": "行业分类",
   "enablePullDownRefresh": false,
   "welcome-modal": "/components/welcome-modal/welcome-modal"
 }

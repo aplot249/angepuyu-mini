@@ -66,11 +66,10 @@ Page({
       desp
     } = e.currentTarget.dataset;
     const isUnlimited = parseInt(amount) > 10000;
-
     const content = isUnlimited ?
-      `确认支付 ¥${price} 购买 ${amount} 点数？` :
-      `确认支付 ¥${price} 购买 ${amount} 点数？`;
-
+      `确认支付 ¥${price} 购买 无限 积分？`:
+      `确认支付 ¥${price} 购买 ${amount} 积分？` ;
+    // const content = `确认支付 ¥${price} 购买 ${amount} 积分？`;
     let that = this
     wx.showModal({
       title: '确认支付',

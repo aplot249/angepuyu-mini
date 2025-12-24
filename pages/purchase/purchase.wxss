@@ -12,7 +12,7 @@
 
 .balance-label { font-size: var(--text-sm); opacity: 0.8; margin-bottom: 10rpx; font-weight: bold; }
 .balance-value { display: flex; align-items: baseline; }
-.num { font-size: 80rpx; font-weight: 900; line-height: 1; color: #3E2723; }
+.num { font-size: 60rpx; font-weight: 900; line-height: 1; color: #3E2723; }
 .unit { font-size: var(--text-base); margin-left: 10rpx; font-weight: bold; color: #3E2723; }
 
 .bg-decoration {

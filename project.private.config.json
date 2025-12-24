@@ -24,11 +24,25 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/share/share",
-          "pathName": "pages/share/share",
+          "name": "pages/listening-practice/listening-practice",
+          "pathName": "pages/listening-practice/listening-practice",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/contribute/contribute",
+          "pathName": "pages/contribute/contribute",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "pages/share/share",
+          "pathName": "pages/share/share",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/community-post/community-post",

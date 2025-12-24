@@ -17,7 +17,7 @@ Page({
     
     // 顶部主轮播图 [已更新]
     banners: [],
-
+    hh:null,
     // 中间小轮播图
     // middleBanners: [
     //   'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80',
@@ -47,6 +47,13 @@ Page({
       })
       wx.setStorageSync('fayintype', JSON.stringify(res.fayintype))
       app.globalData.fayintype = res.fayintype
+
+      http('/web/sq/','get').then(res=>{
+        console.log(res)
+        this.setData({
+          hh:res.status
+        })
+      })
     })
   },
 
@@ -105,12 +112,13 @@ Page({
   navigateToWordbook(){
     wx.navigateTo({ url: '/pages/wordbook/wordbook' })
   }, 
-  navigateToKnowledge() {
-    // wx.showToast({
-    //   title: '即将上线',
-    //   icon:"none"
-    // })
-    wx.navigateTo({ url: '/pages/knowledge/knowledge' });
+  navigateToListening() {
+    wx.showToast({
+      title: '即将上线',
+      icon:"none"
+    })
+    return
+    wx.navigateTo({ url: '/pages/listening-practice/listening-practice' });
   },
   navigateToCommunity() {
     wx.navigateTo({ url: '/pages/community/community' });

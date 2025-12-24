@@ -25,7 +25,6 @@ Page({
     // 模拟复习卡片数据
     wordList: []
   },
-
   onLoad() {
     this.calcNavBar();
   },
@@ -33,6 +32,16 @@ Page({
     console.log(value)
     this.setData({
       points:value
+    })
+  },
+  onReady(){
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#FEC99D',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
     })
   },
   onShow() {
@@ -191,7 +200,7 @@ Page({
     // 2. 更新数据 (扣除3分)
     console.log('target',this.data.wordList[this.data.currentIndex])
     let cardid = this.data.wordList[this.data.currentIndex].id
-    // 逻辑：自动滑到下一，并加入已做过
+    // 逻辑：自动滑到下一，并加入已认识
     http('/web/updateusercard/','post',{'ctitemid':cardid,'action':'0'}).then(res=>{
       console.log('标记为已认识',res)
       this.setData({
@@ -199,6 +208,20 @@ Page({
         forgotCount: res.forgotCount,
       });
       wx.showToast({ title: '已记住！', icon: 'success' });
+      // 已认识的，就从生词本里移除
+      
+      http('/web/delfavourite/','DELETE',{'ctitemid':cardid}).then(res=>{
+        wx.showToast({
+          title: '已移出生词本',
+          icon:'none'
+        })
+        // 先删除localStorage和全局的
+        let favIds = app.globalData.userInfo.favorites 
+        favIds.splice(favIds.indexOf(cardid),1)
+        app.globalData.userInfo.favorites = favIds
+        app.saveData()
+      })
+      
     })
     // wx.showToast({ title: '已掌握', icon: 'none' });
     // this.nextCard();

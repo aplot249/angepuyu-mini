@@ -329,6 +329,7 @@
   line-height: 1.1;
   text-align: center;
   margin-bottom: 30rpx;
+  word-break: break-all;
 }
 
 .dark-mode .sw-word-huge {
