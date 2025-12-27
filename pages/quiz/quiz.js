@@ -48,7 +48,8 @@ Page({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
       points:app.globalData.userInfo.points,
-      quizCountOption:wx.getStorageSync('quizCountOption') || 10
+      quizCountOption:wx.getStorageSync('quizCountOption') || 10,
+      points:app.globalData.userInfo.points
     });
     http('/web/randomquestion/','get').then(res=>{
       this.setData({
@@ -56,7 +57,6 @@ Page({
         quizList:res.data,
         wrongCount:res.mistakeCount,
         currentIndex:0,
-        // eachItemScore:Math.round(100/this.data.quizList.length),
       })
       let lingyu = this.data.quizList[this.data.currentIndex].lingyu
       this.getRelatedAnswer(lingyu,this.data.currentIndex)
@@ -86,7 +86,6 @@ Page({
       isFinished: false,
       showNoPointsModal: false, // 积分不足弹窗控制
       score:0,
-      completedCount:0,
       rightNum:0
     })
   },
@@ -103,14 +102,13 @@ Page({
       this.data.quizList[index].answer =  this.data.quizList[index].chinese
       this.data.quizList[index].options = res.data
       this.data.quizList[index].options.push(this.data.quizList[index].chinese)
-      // console.log('this.data.quizList[0].options',this.data.quizList[0].options)
       this.shuffle(this.data.quizList[index].options)
-      // console.log('this.data.quizList[0].options',this.data.quizList[0].options)
       this.setData({
         quizList:this.data.quizList
       })
     })
   },
+  
   onSwiperChange(e) {
     console.log('e.detail.current',e.detail.current)
     // 以前序列小于这次积分，就是向后刷
@@ -265,11 +263,7 @@ Page({
       url: '/pages/mistake/mistake',
     })
   },
-  // goPurchase(){
-  //   wx.navigateTo({
-  //     url: '/pages/purchase/purchase',
-  //   })
-  // },
+
   onConfirmPurchase(e) {
     console.log('用户选择了:', e.detail); // {planId: 3, price: 80, name: "年卡"}
     // 这里调用微信支付接口
@@ -330,7 +324,6 @@ Page({
           quizList:this.data.quizList,
           wrongCount:res.mistakeCount,
           currentIndex:this.data.currentIndex+1,
-          // eachItemScore:Math.round(100/this.data.quizList.length)
         })
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
         this.getRelatedAnswer(lingyu,this.data.currentIndex)
@@ -360,7 +353,6 @@ Page({
       app.globalData.userInfo.points = this.data.points
       app.saveData()
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
-
       return {
         title: '坦桑华人学斯语，快来一起吧。',
         path: '/pages/quiz/quiz',

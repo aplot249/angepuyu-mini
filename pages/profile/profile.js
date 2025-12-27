@@ -106,7 +106,6 @@ Page({
   bindVoiceChange(e) {
     const idx = e.detail.value;
     const voice = this.data.voiceOptions[idx];
-
     this.setData({ voiceIndex: idx });
     // 保存设置
     let voiceSet = app.globalData.fayintype.filter(i=>i.name==voice)[0].xuhao
@@ -175,13 +174,9 @@ Page({
         if (res.confirm) {
           // 重置用户状态，保留积分等数据通常取决于业务需求，这里仅重置登录态
           const newInfo = {
-            // ...this.data.userInfo,
             isLoggedIn: false,
             hasSharedToday: this.data.userInfo.hasSharedToday,
             hasSignedIn: this.data.userInfo.hasSignedIn,
-            // 可选：重置头像和昵称回默认
-            // nickname: "Marafiki", 
-            // avatarUrl: "" 
           };
           wx.setStorageSync('token', '')
           this.setData({ userInfo: newInfo });

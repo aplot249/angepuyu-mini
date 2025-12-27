@@ -1,18 +1,23 @@
 const app = getApp();
 import {http} from '../../requests/index.js'
+import { eventBus } from '../../utils/eventBus.js';
 
 Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
-    
+    startTime:Date.now(),
     currentIndex: 0, // 当前 Swiper 索引
     isPlaying: false,
-
+    score:0,
+    points:'',
     // [新增] 统计数据
     correctCount: 0,
     wrongCount: 0,
-    
+    completedCount: 0, // 已做题数
+    isFinished: false,
+    showNoPointsModal: false, // 积分不足弹窗控制
+    noLoad:'',
     // 题目列表 (包含每道题的独立状态)
     questions: [
       // {
@@ -58,11 +63,19 @@ Page({
       // }
     ]
   },
-
+  UserInfoPointsChange(value){
+    console.log(value)
+    this.setData({
+      points:value
+    })
+  },
   onShow() {
+    eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
     this.setData({
       fontSizeLevel: app.globalData.fontSizeLevel,
-      isDarkMode: app.globalData.isDarkMode
+      isDarkMode: app.globalData.isDarkMode,
+      listenPracticeCountOption:wx.getStorageSync('quizCountOption') || 10,
+      points:app.globalData.userInfo.points,
     });
     if (app.updateThemeSkin) {
       app.updateThemeSkin(app.globalData.isDarkMode);
@@ -79,7 +92,7 @@ Page({
       console.log('ressss',res)
       const initializedQuestions = res.data.map((q, qIndex) => {
         // 生成带唯一ID的单词对象
-        console.log('q.swahili',q.swahili.split(' '))
+        // console.log('q.swahili',q.swahili.split(' '))
         const wordObjects = q.swahili.split(' ').filter(i=>i !== "").map((word, wIndex) => ({
             id: `${q.id}-${wIndex}`, // 唯一ID
             text: word,
@@ -91,27 +104,17 @@ Page({
           shuffledWords: shuffled,
           answerSlots: [],
           status: 'idle'
-        };
-      });
-      console.log('initializedQuestions',initializedQuestions)
+        }
+      })
       this.setData({ 
-        questions: initializedQuestions,
+        questions: this.data.questions.concat(initializedQuestions),
         rightCount: res.rightCount,
-        wrongCount: res.wrongCount
-      });
+        wrongCount: res.wrongCount,
+        noLoad:res.tip,
+        isFinished:false
+      })
     })
   },
-
-  // [新增] 更新统计数据
-  // updateStats() {
-  //   this.data.questions.forEach(q => {
-  //     if (q.status === 'correct') {
-  //       this.data.rightCount++;
-  //     }else{
-  //       this.data.wrongCount++;
-  //     }
-  //   });
-  // },
 
   // 洗牌算法
   shuffleArray(array) {
@@ -124,11 +127,82 @@ Page({
 
   // Swiper 切换事件
   onSwiperChange(e) {
-    const idx = e.detail.current;
-    this.setData({ 
-      currentIndex: idx,
-      isPlaying: false 
-    });
+        // 以前序列小于这次积分，就是向后刷
+    if (this.data.currentIndex < e.detail.current){
+      // 向后刷积分小于0时候
+      if(this.data.points <= 0){
+        this.setData({
+          points:0,
+          currentIndex:e.detail.current - 1,
+          showNoPointsModal:true
+        })
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
+        // 为0 ，更新积分
+        http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+          console.log('已更新积分')
+        })
+      }else{
+        // 遍历题，扣2积分
+        this.setData({
+          points:this.data.points - 2 > 0 ? this.data.points - 2 : 0,
+          currentIndex: e.detail.current 
+        })
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
+        const idx = e.detail.current;
+        this.setData({ 
+          currentIndex: idx,
+        })
+        if(this.data.currentIndex === this.data.questions.length-1){ 
+          if(this.data.noLoad==true){ //noLoad为true就不增加
+              wx.showToast({
+                title: '这是最后一张',
+                icon:'none'
+              })
+          }else{  //否则就增加
+            if(this.data.currentIndex == this.data.questions.length - 1){
+              this.initAllQuestions()
+            }
+          }
+        }
+      }
+    }
+  },
+  onUnload(){
+    console.log('onUnload startTime',this.data.startTime)
+    app.saveStudyTime(this.data.startTime);
+    // 移除本页面的积分购买事件监听
+    eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+    // 更新后端积分
+    http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+      console.log('已更新积分')
+    })
+    app.globalData.userInfo.points = this.data.points
+    app.saveData()
+    this.setData({
+      questions:[],
+      currentIndex: 0,
+      wrongCount: 0,     // 已认识
+      rightCount: 0,    // 不认识
+      completedCount: 0, // 已做题数
+      isFinished: false,
+      showNoPointsModal: false, // 积分不足弹窗控制
+      score:0,
+    })
+  },
+  caculateScore(){
+    console.log("每组做题结束，弹起弹窗，计算得分")
+    this.setData({
+      isFinished:true
+    })
+    let score = Math.floor(100 / this.data.completedCount * this.data.rightCount)
+    this.setData({
+      score:score
+    })
+    http('/user/scorerecord/','post',{"score":score,'type':'1'}).then(res=>{
+        console.log('score',res)
+    })
   },
 
   // 播放当前题目的音频
@@ -156,7 +230,7 @@ Page({
     this.setData({
       [selectedKey]: true,
       [slotsKey]: [...question.answerSlots, wordObj]
-    });
+    })
   },
 
   // 移除单词
@@ -174,7 +248,7 @@ Page({
     this.setData({
       [selectedKey]: false,
       [slotsKey]: newSlots
-    });
+    })
   },
 
   // 检查答案
@@ -186,14 +260,32 @@ Page({
     console.log('userSentence',userSentence)
     const isCorrect = userSentence === question.swahili.split(' ').filter(i=>i !== "").join(' ');
     const statusKey = `questions[${idx}].status`;
+    let that = this;
     if (!isCorrect) {
       if (wx.vibrateLong) wx.vibrateLong();
       http('/web/listenpracticeupdate/','POST',{'ctitem':question.id,'action':'0'}).then(res=>{
         console.log('做错的',res)
+        this.setData({
+          completedCount:this.data.completedCount+1,
+          wrongCount:this.data.wrongCount+1
+        })
+        // 完成的数量是每组数量的整数倍时候，出现弹窗计算得分。
+        if(this.data.completedCount % this.data.listenPracticeCountOption === 0){
+          console.log('xxxxxxxxxxxxxxxxxxxx')
+          that.caculateScore()
+        }
       })
     }else{
       http('/web/listenpracticeupdate/','POST',{'ctitem':question.id,'action':'1'}).then(res=>{
-        console.log('做错的',res)
+        console.log('做对的',res)
+        this.setData({
+          completedCount:this.data.completedCount+1,
+          rightCount:this.data.rightCount+1
+        })
+        if(this.data.completedCount % this.data.listenPracticeCountOption === 0){
+          console.log('rrrrrrrrrrrrrrr')
+          that.caculateScore()
+        }
       })
     }
     this.setData({
@@ -205,27 +297,41 @@ Page({
   retryQuestion() {
     const idx = this.data.currentIndex;
     const question = this.data.questions[idx];
-    
     // 重置状态
     const resetWords = question.shuffledWords.map(w => ({ ...w, selected: false }));
-    
     this.setData({
       [`questions[${idx}].answerSlots`]: [],
       [`questions[${idx}].shuffledWords`]: resetWords,
-      [`questions[${idx}].status`]: 'idle'
-    }, () => {
-      // [新增] 更新统计 (重试会减少错误/正确计数)
-      this.updateStats();
+      [`questions[${idx}].status`]: 'idle',
+      isFinished:false
     });
   },
 
-  // 下一题（滑动到下一页）
+  // // 下一题（滑动到下一页）
   nextQuestion() {
     const nextIdx = this.data.currentIndex + 1;
     if (nextIdx < this.data.questions.length) {
       this.setData({ currentIndex: nextIdx });
     } else {
       wx.showToast({ title: '已是最后一题', icon: 'none' });
+    }
+  },
+  onShareAppMessage(res) {
+    // 关闭弹窗（如果是从弹窗点击分享）
+    if (this.data.showNoPointsModal) {
+      this.setData({ showNoPointsModal: false });
+    }
+    if(!app.globalData.userInfo.hasSharedToday){
+      app.globalData.userInfo.hasSharedToday = true
+      this.setData({ points: this.data.points + 20});
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
+      wx.showToast({ title: '分享积分 +20', icon: 'none' });
+      return {
+        title: '坦桑华人学斯语，快来一起吧。',
+        path: '/pages/quiz/quiz',
+        imageUrl: '/images/share-cover.png', // 假设有分享图
+      }
     }
   }
 })

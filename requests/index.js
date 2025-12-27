@@ -98,7 +98,7 @@ function request(url, method = 'POST', data = {}) {
                                     title: '登录成功',
                                     icon: 'none'
                                   });
-                                  wx.setStorageSync('points',res.data.user.points)
+                                  // wx.setStorageSync('points',res.data.user.points)
                                   wx.setStorageSync('token', res.data.token)
                                   wx.reLaunch({
                                     url: currentRoute,
@@ -241,7 +241,7 @@ function fileupload(url, filePath, name, formData = {}) {
                                     icon: 'none'
                                   });
                                   wx.setStorageSync('token', res.data.token)
-                                  wx.setStorageSync('points',res.data.user.points)
+                                  // wx.setStorageSync('points',res.data.user.points)
                                   wx.reLaunch({
                                     url: currentRoute,
                                   })

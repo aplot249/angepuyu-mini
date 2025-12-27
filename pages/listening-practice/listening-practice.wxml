@@ -4,7 +4,7 @@
   <view class="stats-header">
     <view class="stat-box">
       <view class="stat-content">
-        <text class="stat-num">{{currentIndex + 1}}<text class="stat-total">/{{questions.length}}</text></text>
+        <text class="stat-num">{{completedCount + 1}}<text class="stat-total">/{{questions.length}}</text></text>
         <text class="stat-label">进度</text>
       </view>
     </view>
@@ -18,6 +18,12 @@
       <view class="stat-content">
         <text class="stat-num red">{{wrongCount}}</text>
         <text class="stat-label">错误</text>
+      </view>
+    </view>
+    <view class="stat-box">
+      <view class="stat-content">
+        <text class="stat-num red">{{points>100?'充足':points}}</text>
+        <text class="stat-label">剩余积分</text>
       </view>
     </view>
   </view>
@@ -124,5 +130,27 @@
       </swiper-item>
     </block>
   </swiper>
+
+  <view class="result-overlay {{isFinished ? 'show' : ''}}">
+    <view class="result-card">
+      <view class="result-icon">{{score >= 60 ? '🏆' : '💪'}}</view>
+      <view class="result-title">{{score >= 80 ? '水平不错' : (score >= 60 ? '给你点赞' : '要继续努力')}}</view>
+      <view class="result-score">{{score}}分</view>
+      <view class="result-desc">
+        {{score >= 80 ? '太棒了！你的斯瓦希里语水平突飞猛进！' : (score >= 60 ? '不错哦，继续保持！' : '不要灰心，多练习几次就记住了。')}}
+        <view>本次共做{{completedCount}}道题，错{{completedCount - rightCount}}道题。继续加油！</view>
+      </view>
+      <view class="result-actions">
+        <button class="action-btn btn-share" open-type="share">分享成绩</button>
+        <!-- <view class="action-btn btn-restart" bindtap="retryQuestion">再练一次</view> -->
+        <view class="action-btn btn-continue" bindtap="initAllQuestions">继续练习</view>
+      </view>
+    </view>
+  </view>
+
+  <points-modal visible="{{showNoPointsModal}}" />
+
+  <!-- <vip-modal visible="{{showNoPointsModal}}" /> -->
+  <welcome-modal></welcome-modal>
 
 </view>
