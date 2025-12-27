@@ -19,11 +19,12 @@ Page({
     forgotCount: 0,    // 不认识
     completedCount: 0, // 已做题 (已学习)
     points: app.globalData.userInfo.points,       // 当前积分
-    
+
     showNoPointsModal: false, // 积分不足弹窗控制
 
     // 模拟复习卡片数据
-    wordList: []
+    wordList: [],
+    startTime:Date.now()
   },
   onLoad() {
     this.calcNavBar();
@@ -52,7 +53,8 @@ Page({
         noLoad:res.tip,
         wordList:res.data,
         knownCount: res.knownCount,
-        forgotCount: res.forgotCount
+        forgotCount: res.forgotCount,
+        startTime:Date.now()
       })
     })
     this.setData({ 
@@ -64,7 +66,10 @@ Page({
     // wx.setNavigationBarTitle({ title: '开始学习' });
   },
 
-  onHide(){
+  onUnload(){
+    console.log('onUnload startTime',this.data.startTime)
+    app.saveStudyTime(this.data.startTime);
+
     eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
     http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
       console.log('已更新积分')
@@ -203,28 +208,15 @@ Page({
     // 逻辑：自动滑到下一，并加入已认识
     http('/web/updateusercard/','post',{'ctitemid':cardid,'action':'0'}).then(res=>{
       console.log('标记为已认识',res)
+      wx.showToast({ title: '认识的，跳下一个', icon: 'none' });
       this.setData({
         knownCount: res.knownCount,
         forgotCount: res.forgotCount,
-      });
-      wx.showToast({ title: '已记住！', icon: 'success' });
-      // 已认识的，就从生词本里移除
-      
-      http('/web/delfavourite/','DELETE',{'ctitemid':cardid}).then(res=>{
-        wx.showToast({
-          title: '已移出生词本',
-          icon:'none'
-        })
-        // 先删除localStorage和全局的
-        let favIds = app.globalData.userInfo.favorites 
-        favIds.splice(favIds.indexOf(cardid),1)
-        app.globalData.userInfo.favorites = favIds
-        app.saveData()
-      })
-      
+        // currentIndex:this.data.currentIndex + 1,
+      }); 
     })
     // wx.showToast({ title: '已掌握', icon: 'none' });
-    // this.nextCard();
+    this.nextCard();
   },
 
   // 标记为不认识 (消耗积分)
@@ -245,7 +237,7 @@ Page({
         knownCount: res.knownCount,
         forgotCount: res.forgotCount,
       });
-      wx.showToast({ title: '加入复习', icon: 'none' });
+      wx.showToast({ title: '不认识，加入生词本', icon: 'none' });
     })
     // this.nextCard();
   },

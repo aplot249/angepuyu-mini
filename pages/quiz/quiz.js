@@ -32,7 +32,8 @@ Page({
       //   isCorrect: false
       // }
     ],
-    noLoad:false
+    noLoad:false,
+    startTime:Date.now()
   },
   UserInfoPointsChange(value){
     console.log(value)
@@ -63,7 +64,10 @@ Page({
     app.updateThemeSkin(app.globalData.isDarkMode);
     // wx.setNavigationBarTitle({ title: '每日练习' });
   },
+  // 从一个tabBar切到另一个TabBar只触发onHide，不触发onUnload
   onHide(){
+    console.log('onUnload startTime',this.data.startTime)
+    app.saveStudyTime(this.data.startTime);
     // 移除本页面的积分购买事件监听
     eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
     // 更新后端积分

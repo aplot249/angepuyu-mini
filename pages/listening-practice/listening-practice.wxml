@@ -1,89 +1,128 @@
 <view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
   
-  <!-- 顶部进度条 -->
-  <view class="progress-bar">
-    <view class="progress-track">
-      <view class="progress-fill" style="width: {{(currentIndex + 1) / questions.length * 100}}%"></view>
+  <!-- 顶部数据统计栏 (Quiz 风格悬浮卡片 + 轻微边框) -->
+  <view class="stats-header">
+    <view class="stat-box">
+      <view class="stat-content">
+        <text class="stat-num">{{currentIndex + 1}}<text class="stat-total">/{{questions.length}}</text></text>
+        <text class="stat-label">进度</text>
+      </view>
     </view>
-    <text class="progress-text">{{currentIndex + 1}} / {{questions.length}}</text>
+    <view class="stat-box">
+      <view class="stat-content">
+        <text class="stat-num green">{{rightCount}}</text>
+        <text class="stat-label">正确</text>
+      </view>
+    </view>
+    <view class="stat-box">
+      <view class="stat-content">
+        <text class="stat-num red">{{wrongCount}}</text>
+        <text class="stat-label">错误</text>
+      </view>
+    </view>
   </view>
 
-  <!-- 听音卡片 -->
-  <view class="audio-section">
-    <view class="speaker-btn {{isPlaying ? 'playing' : ''}}" bindtap="playAudio">
-      <text class="speaker-icon">🔊</text>
-      <view class="wave w1"></view>
-      <view class="wave w2"></view>
-    </view>
-    <text class="hint-text">点击播放音频，将下方单词排序</text>
-  </view>
+  <!-- 滑动区域 -->
+  <swiper 
+    class="practice-swiper" 
+    current="{{currentIndex}}" 
+    bindchange="onSwiperChange"
+    duration="300"
+  >
+    <block wx:for="{{questions}}" wx:key="id" wx:for-item="item">
+      <swiper-item class="p-swiper-item">
+        <view class="main-card">
+          
+          <!-- 1. 听音区 -->
+          <view class="audio-section">
+            <view 
+              class="speaker-btn {{isPlaying && currentIndex === index ? 'playing' : ''}}" 
+              bindtap="playAudio" data-item="{{item}}"
+            >
+              <text class="speaker-icon">🔊</text>
+              <view class="wave w1"></view>
+              <view class="wave w2"></view>
+            </view>
+            <text class="hint-text">点击播放音频</text>
+          </view>
 
-  <!-- 作答区 (横线) -->
-  <view class="answer-area">
-    <view class="answer-slots">
-      <block wx:for="{{answerSlots}}" wx:key="id">
-        <view class="word-chip filled" bindtap="removeWord" data-index="{{index}}">
-          {{item.text}}
+          <!-- 2. 作答区 -->
+          <view class="answer-area">
+            <view class="answer-slots">
+              <block wx:for="{{item.answerSlots}}" wx:key="id" wx:for-item="word" wx:for-index="sIdx">
+                <view 
+                  class="word-chip filled" 
+                  catchtap="removeWord" 
+                  data-qindex="{{index}}" 
+                  data-sindex="{{sIdx}}"
+                >
+                  {{word.text}}
+                </view>
+              </block>
+              
+              <view class="placeholder-line" wx:if="{{item.answerSlots.length === 0}}">
+                点击下方单词组句
+              </view>
+            </view>
+            
+            <!-- 结果反馈 -->
+            <view class="feedback-box {{item.status}}" wx:if="{{item.status !== 'idle'}}">
+              <view class="status-row">
+                <text class="status-icon">{{item.status === 'correct' ? '✅ 正确' : '❌ 错误'}}</text>
+              </view>
+              <view class="correct-answer" wx:if="{{item.status === 'wrong'}}">
+                <text class="ca-text">{{item.swahili}}</text>
+              </view>
+              <view class="translation">{{item.chinese}}</view>
+            </view>
+          </view>
+
+          <!-- 3. 选词区 (自动撑满剩余空间) -->
+          <view class="word-bank-container">
+            <view class="word-bank">
+              <block wx:for="{{item.shuffledWords}}" wx:key="id" wx:for-item="word" wx:for-index="wIdx">
+                <view 
+                  class="word-chip bank-item {{word.selected ? 'hidden' : ''}}" 
+                  catchtap="selectWord" 
+                  data-qindex="{{index}}" 
+                  data-windex="{{wIdx}}"
+                >
+                  {{word.text}}
+                </view>
+              </block>
+            </view>
+          </view>
+
+          <!-- 4. 底部按钮 -->
+          <view class="card-footer">
+            <button 
+              wx:if="{{item.status === 'idle'}}" 
+              class="btn check-btn {{item.answerSlots.length === 0 ? 'disabled' : ''}}" 
+              bindtap="checkAnswer"
+            >
+              检查答案
+            </button>
+
+            <button 
+              wx:elif="{{item.status === 'wrong'}}" 
+              class="btn retry-btn" 
+              bindtap="retryQuestion"
+            >
+              再试一次
+            </button>
+
+            <button 
+              wx:elif="{{item.status === 'correct'}}" 
+              class="btn next-btn" 
+              bindtap="nextQuestion"
+            >
+              下一题
+            </button>
+          </view>
+
         </view>
-      </block>
-      <!-- 如果没有选词，显示提示线 -->
-      <view class="placeholder-line" wx:if="{{answerSlots.length === 0}}">
-        请选择下方单词组句
-      </view>
-    </view>
-    
-    <!-- 结果反馈 -->
-    <view class="feedback-box {{checkStatus}}" wx:if="{{checkStatus !== 'idle'}}">
-      <view class="status-icon">{{checkStatus === 'correct' ? '✅ 回答正确' : '❌ 回答错误'}}</view>
-      <view class="correct-answer" wx:if="{{checkStatus === 'wrong'}}">
-        <text class="ca-label">正确句子：</text>
-        <text class="ca-text">{{currentQuestion.sentence}}</text>
-      </view>
-      <view class="translation">{{currentQuestion.translation}}</view>
-    </view>
-  </view>
-
-  <!-- 选词区 -->
-  <view class="word-bank">
-    <block wx:for="{{shuffledWords}}" wx:key="id">
-      <view 
-        class="word-chip bank-item {{item.selected ? 'hidden' : ''}}" 
-        bindtap="selectWord" 
-        data-index="{{index}}"
-      >
-        {{item.text}}
-      </view>
+      </swiper-item>
     </block>
-  </view>
-
-  <!-- 底部按钮 -->
-  <view class="footer-action">
-    <!-- 状态：未提交 -->
-    <button 
-      wx:if="{{checkStatus === 'idle'}}" 
-      class="btn check-btn {{answerSlots.length === 0 ? 'disabled' : ''}}" 
-      bindtap="checkAnswer"
-    >
-      检查答案
-    </button>
-
-    <!-- 状态：错误 -->
-    <button 
-      wx:elif="{{checkStatus === 'wrong'}}" 
-      class="btn retry-btn" 
-      bindtap="retryQuestion"
-    >
-      再试一次
-    </button>
-
-    <!-- 状态：正确 -->
-    <button 
-      wx:elif="{{checkStatus === 'correct'}}" 
-      class="btn next-btn" 
-      bindtap="nextQuestion"
-    >
-      下一题
-    </button>
-  </view>
+  </swiper>
 
 </view>

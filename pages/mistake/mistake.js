@@ -18,6 +18,7 @@ Page({
     totalPageNum:null,
     isLoading: false,
     hasMore: true,
+    startTime:Date.now()
   },
 
   onShow() {
@@ -29,6 +30,16 @@ Page({
     
     // 每次进入页面重新加载第一页
     this.loadMistakes(true);
+  },
+  onReady(){
+    wx.setNavigationBarColor({
+      frontColor: '#ffffff',
+      backgroundColor: '#FFAB91',
+      animation: {
+        duration: 400,
+        timingFunc: 'easeIn'
+      }
+    })
   },
   // 触底加载更多
   onReachBottom() {
@@ -99,5 +110,9 @@ Page({
         }
       }
     });
+  },
+  onUnload(){
+    console.log('onUnload startTime',this.data.startTime)
+    app.saveStudyTime(this.data.startTime);
   }
 })

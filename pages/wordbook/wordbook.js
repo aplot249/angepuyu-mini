@@ -80,6 +80,7 @@ Page({
     bgAudio.onPause(() => this.setData({ isPlaying: false }));
     bgAudio.onStop(() => this.setData({ isPlaying: false }));
   },
+
   // 串联播放音乐
   playMusic(index) {
     const list = this.data.checkedItems;
@@ -91,10 +92,14 @@ Page({
     const item = list[index];
     // 更新数据索引
     this.setData({ currentAudioIndex: index });
-    // 赋值给 bgAudio (一旦赋值 src，会自动开始播放)
-    bgAudio.title = item.swahili;
-    bgAudio.src = item.fayin; // 必须最后赋值
+
+    let xiaohao = item.fayin ? item.xiaohao : 0
+    let voiceType = wx.getStorageSync('voiceType')
+    let fayin = "fayin"+voiceType
+    console.log(fayin,item[fayin])
+    app.playAudio(item[fayin],xiaohao,item.swahili)
   },
+
   // 串联播放下一条音频
   playNext() {
     let nextIndex = this.data.currentAudioIndex + 1;
@@ -107,6 +112,7 @@ Page({
     }
     this.playMusic(nextIndex);
   },
+
   jiucuoCtitem(e){
     console.log('e',e)
     let id = e.target.dataset.dd
@@ -118,25 +124,22 @@ Page({
       })
     })
   },
+
   onShow() {
     this.setData({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
-
     // this.resetAndLoad() 相当于重置作用
     // this.setTabBarBadge(); // 设置徽标的没用
-
     // [新增] 记录开始时间并更新显示
-    this.startTime = Date.now();
-    this.updateTimeDisplay();
-
     this.setData({
       wordList: [],
       phraseList: [],
       pageWord: 1,
       pagePhrase: 1,
+      startTime:Date.now()
     })
 
     let myFav = JSON.stringify(app.globalData.userInfo.favorites) || []
@@ -148,13 +151,14 @@ Page({
         console.log(res)
         let list = res.results.map(item => ({
           ...item,
-          checked: false
+          checked: false  // 没有被选中
         }));
         this.setData({
           wordList: [...this.data.wordList, ...list],
           pageSize: res.page_size,
           wordsCount: res.count,
           wordsTotalPageNum: res.totalPageNum,
+          hasMoreWords: this.data.pageWord < res.totalPageNum,
         })
         http(`/web/ctiemByFav/?page=1`, 'POST', {
           "q": myFav,
@@ -162,118 +166,21 @@ Page({
         }).then(res => {
           let list = res.results.map(item => ({
             ...item,
-            checked: false
+            checked: false  // 没有被选中
           }));
           this.setData({
             phraseList: [...this.data.phraseList, ...list],
             pageSize: res.page_size,
             phraseCount: res.count,
             phraseTotalPageNum: res.totalPageNum,
+            hasMorePhrases: this.data.pagePhrase < res.totalPageNum,
           })
         })
       }
     )
   },
 
-  // setTabBarBadge() {
-  //   const total = this.data.wordList.length + this.data.phraseList.length;
-  //   if (total > 0) {
-  //     wx.setTabBarBadge({ index: 2, text: String(total) });
-  //   } else {
-  //     wx.removeTabBarBadge({ index: 2 });
-  //   }
-  // },
-
-  // initData(){
-  //   // console.log('fffffffff')
-  //   let that = this
-  //   let myFav = JSON.stringify(app.globalData.userInfo.favorites)
-  //   http(`/web/ctiemByFav/?page=1`, 'POST', {
-  //     "q": myFav,
-  //     'wp': '0'
-  //   }).then(res => {
-  //       console.log(res)
-  //       let list = res.results.map(item => ({
-  //         ...item,
-  //         checked: false
-  //       }));
-  //       this.setData({
-  //         wordList: [...this.data.wordList, ...list],
-  //         pageSize: res.page_size,
-  //         wordsCount: res.count,
-  //         wordsTotalPageNum: res.totalPageNum,
-  //       })
-  //       http(`/web/ctiemByFav/?page=1`, 'POST', {
-  //         "q": myFav,
-  //         'wp': '1'
-  //       }).then(res => {
-  //         let list = res.results.map(item => ({
-  //           ...item,
-  //           checked: false
-  //         }));
-  //         this.setData({
-  //           phraseList: [...this.data.phraseList, ...list],
-  //           pageSize: res.page_size,
-  //           phraseCount: res.count,
-  //           phraseTotalPageNum: res.totalPageNum,
-  //         })
-  //       })
-  //     },
-  //     err => {
-  //       console.log('err', err.detail)
-  //       if (err.detail == 'JWT Token已过期！' || err.detail == '身份认证信息未提供。') {
-  //         wx.showModal({
-  //             title: '请先登录，才能进行后续操作',
-  //             confirmText: "确认登录",
-  //             success: (res) => {
-  //               if (res.confirm) {
-  //                 wx.getUserProfile({
-  //                   desc: '需微信授权登录',
-  //                   success: (res) => {
-  //                     wx.showToast({
-  //                       title: '正在登录...',
-  //                       icon: "none"
-  //                     })
-  //                     wx.login({
-  //                       timeout: 8000,
-  //                       success: r => {
-  //                         console.log(r.code)
-  //                         http('/user/openid/', 'post', {
-  //                           code: r.code,
-  //                           gender: res.userInfo.gender,
-  //                           wxnickname: res.userInfo.nickName,
-  //                         }).then(res => {
-  //                           console.log('登录信息：', res)
-  //                           const newInfo = {
-  //                             ...res.user,
-  //                             isLoggedIn: true,
-  //                           };
-  //                           app.globalData.userInfo = newInfo;
-  //                           app.saveData();
-  //                           wx.showToast({
-  //                             title: '登录成功',
-  //                             icon: 'none'
-  //                           });
-  //                           wx.setStorageSync('token', res.token)
-  //                           wx.reLaunch({
-  //                             url: '/pages/wordbook/wordbook',
-  //                           })
-  //                           // that.onLoad()
-  //                         })
-  //                       }
-  //                     })
-  //                   }
-  //                 })
-  //               }
-  //             }
-  //           }
-  //         )
-  //       }
-  //   })
-  // },
-
   // --- 拖拽与菜单逻辑 ---
-
   // 触摸开始
   // 触摸移动的
   onFabTouchStart(e) {
@@ -335,7 +242,7 @@ Page({
     if (type == 'word') {
       let myFav = JSON.stringify(app.globalData.userInfo.favorites)
       http(`/web/ctiemByFav/?page=${this.data.pageWord}&search=${this.data.searchText}`, 'POST', {
-        "q": myFav,
+        // "q": myFav,
         'wp': '0'
       }).then(
         res => {
@@ -355,7 +262,7 @@ Page({
     } else {
       let myFav = JSON.stringify(app.globalData.userInfo.favorites)
       http(`/web/ctiemByFav/?page=${this.data.pagePhrase}&search=${this.data.searchText}`, 'POST', {
-        "q": myFav,
+        // "q": myFav,
         'wp': '1'
       }).then(
         res => {
@@ -377,28 +284,26 @@ Page({
 
   // 只有取消收藏
   toggleFav(e) {
-    const id = e.currentTarget.dataset.id;
-    http('/web/delfavourite/','DELETE',{'ctitemid':id}).then(res=>{
-      wx.showToast({
-        title: '已取消收藏',
-        icon:'none'
-      })
-      // 先删除localStorage和全局的
-      let favIds = app.globalData.userInfo.favorites 
-      favIds.splice(favIds.indexOf(id),1)
-      app.globalData.userInfo.favorites = favIds
-      app.saveData()
-
-      // 再从对应的单词、短语词条里删除
-      if(this.data.currentTab == 0){
-        this.data.wordList.splice(this.data.wordList.findIndex(i=>i.id==id),1)
-        this.setData({
-          wordList:this.data.wordList
-        })
-      }else{
-        this.data.phraseList.splice(this.data.phraseList.findIndex(i=>i.id==id),1)
-        this.setData({
-          phraseList:this.data.phraseList
+    wx.showModal({
+      title: '确认',
+      content: '确定已经掌握这个词了吗？移出后可在词库分类中找到。',
+      success: (res) => {
+        const id = e.currentTarget.dataset.id;
+        // 当点击我已掌握按钮后，对这个单词从不认识变成为已经认识
+        http(`/web/updateusercard/${id}/`,'PUT',{'action':'0'}).then(res=>{
+          console.log('rererr',res)
+          if(this.data.currentTab == 0){
+            this.data.wordList.splice(this.data.wordList.findIndex(i=>i.id==res.ctitem),1)
+            this.setData({
+              wordList:this.data.wordList
+            })
+          }else{
+            this.data.phraseList.splice(this.data.phraseList.findIndex(i=>i.id==res.ctitem),1)
+            console.log('this.data.phraseList',this.data.phraseList)
+            this.setData({
+              phraseList:this.data.phraseList
+            })
+          }
         })
       }
     })
@@ -426,13 +331,14 @@ Page({
   switchTab(e) {
     const idx = parseInt(e.currentTarget.dataset.idx);
     this.setData({
-      currentTab: idx
+      currentTab: idx,
     });
   },
+
   // 窗口滑动切换
   onSwiperChange(e) {
     this.setData({
-      currentTab: e.detail.current
+      currentTab: e.detail.current,
     });
   },
 
@@ -460,7 +366,7 @@ Page({
 
   // [新增] 跳转到每日练习
   navigateToQuiz() {
-    wx.navigateTo({ url: '/pages/quiz/quiz' });
+    wx.switchTab({ url: '/pages/quiz/quiz' });
   },
     
   // 单个勾选/取消勾选
@@ -526,8 +432,9 @@ Page({
     });
   },
 
-  onHide() {
-    this.saveStudyTime();
+  onUnload(){
+    console.log('onUnload startTime',this.data.startTime)
+    app.saveStudyTime(this.data.startTime);
     this.setData({
       wordList: [],
       phraseList: [],
@@ -537,58 +444,6 @@ Page({
       hasMorePhrases: true
     });
   },
-  onUnload(){
-    this.saveStudyTime();
-  },
-
-  // [新增] 计算并保存时长逻辑
-  saveStudyTime() {
-    if (!this.startTime) return;
-    const now = Date.now();
-    // 计算停留秒数
-    const duration = Math.floor((now - this.startTime) / 1000); 
-    
-    if (duration > 0) {
-        // 累加到全局数据
-        app.globalData.userInfo.totalStudyTime = (app.globalData.userInfo.totalStudyTime || 0) + duration;
-        app.saveData();
-        http('/user/userinfo/','post',{"totalStudyTime":app.globalData.userInfo.totalStudyTime}).then(res=>{
-            console.log('已记录')
-        })
-        // 重置开始时间，防止重复累加 (如果onHide后没被销毁又onShow)
-        this.startTime = now;
-        this.updateTimeDisplay();
-    }
-  },
-
-      // [新增] 格式化显示时长
-  updateTimeDisplay() {
-    const totalSeconds = app.globalData.userInfo.totalStudyTime || 0;
-    let displayStr = '';
-    if (totalSeconds < 60) {
-        displayStr = '少于1分钟';
-    } else if (totalSeconds < 3600) {
-        displayStr = `${Math.floor(totalSeconds / 60)}分钟`;
-    } else {
-        const h = Math.floor(totalSeconds / 3600);
-        const m = Math.floor((totalSeconds % 3600) / 60);
-        displayStr = `${h}小时 ${m}分钟`;
-    }
-    this.setData({ studyTimeDisplay: displayStr });
-  },
-
-  // resetAndLoad() {
-  //   this.setData({
-  //     wordList: [],
-  //     phraseList: [],
-  //     pageWord: 1,
-  //     pagePhrase: 1,
-  //     hasMoreWords: true,
-  //     hasMorePhrases: true,
-  //   });
-  //   this.loadFavorites('word');
-  //   this.loadFavorites('phrase');
-  // },
 
   // 全不选 (重置所有)
   unselectAll() {
@@ -613,7 +468,7 @@ Page({
     });
   },
 
-  // 单挑发音
+  // 单条发音
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0
@@ -631,12 +486,6 @@ Page({
       title: '请先勾选词条',
       icon: 'none'
     });
-
-    // const cost = count * 5;
-    // if (app.globalData.userInfo.points < cost) return wx.showToast({
-    //   title: `需 ${cost} 点数`,
-    //   icon: 'none'
-    // });
 
     wx.showModal({
       title: '确认导出',

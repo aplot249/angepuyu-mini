@@ -22,7 +22,7 @@ Page({
     playRateOptions: ['0.5x', '0.75x', '1.0x', '1.25x', '1.5x', '2.0x'],
     
     // [新增] 发音音色配置相关
-    voiceIndex: 0,
+    voiceIndex: '',  //做到后台推荐
     // voiceOptions: ['标准女声', '标准男声', '温柔女声', '磁性男声'],
     // voiceOptions: ['男声1号', '男声2号', '女声1号'],
     // voiceOptionsJSON: app.globalData.fayintype,
@@ -106,11 +106,7 @@ Page({
   bindVoiceChange(e) {
     const idx = e.detail.value;
     const voice = this.data.voiceOptions[idx];
-    // if(voice ==){
 
-    // }else{
-
-    // }
     this.setData({ voiceIndex: idx });
     // 保存设置
     let voiceSet = app.globalData.fayintype.filter(i=>i.name==voice)[0].xuhao

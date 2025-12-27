@@ -80,9 +80,11 @@ App({
       this.saveData();
     }
   },
+
   saveData() {
     wx.setStorageSync('ts_user', this.globalData.userInfo);
   },
+
   playAudio(mp3,xiaohao,title){
     if(!this.globalData.userInfo.isLoggedIn){
       // wx.showModal({
@@ -199,5 +201,40 @@ App({
       });
       wx.setBackgroundColor({ backgroundColor: '#FAFAF9' });
     }
+  },
+
+  // [新增] 计算并保存时长逻辑
+  saveStudyTime(startTime) {
+    // if (!this.startTime) return;
+    const now = Date.now();
+    // 计算停留秒数
+    const duration = Math.floor((now - startTime) / 1000); 
+    if (duration > 0) {
+        // 累加到全局数据
+        this.globalData.userInfo.totalStudyTime = (this.globalData.userInfo.totalStudyTime || 0) + duration;
+        this.saveData();
+        http('/user/userinfo/','post',{"totalStudyTime":this.globalData.userInfo.totalStudyTime}).then(res=>{
+            console.log('已记录学习时长')
+        })
+    }
+  },
+
+  // [新增] 格式化显示时长
+  updateTimeDisplay() {
+    // 把 app里的全局统计秒数时间转为可读时间
+    const totalSeconds = app.globalData.userInfo.totalStudyTime || 0;
+    let displayStr = '';
+    if (totalSeconds < 60) {
+        displayStr = '少于1分钟';
+    } else if (totalSeconds < 3600) {
+        displayStr = `${Math.floor(totalSeconds / 60)}分钟`;
+    } else {
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        displayStr = `${h}小时 ${m}分钟`;
+    }
+    // this.setData({ studyTimeDisplay: displayStr });
+    return displayStr
   }
+
 })

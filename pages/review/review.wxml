@@ -110,13 +110,14 @@
                   </view>
 
                   <view class="action-grid">
-                    <view class="action-btn forgot-btn" catchtap="markForgot" data-ctitem="{{item.id}}">
-                      <text class="btn-emoji">🤯</text>
-                      <text>不认识</text>
-                    </view>
                     <view class="action-btn known-btn" catchtap="markKnown" data-ctitem="{{item.id}}">
                       <text class="btn-emoji">😎</text>
                       <text>认识</text>
+                    </view>
+
+                    <view class="action-btn forgot-btn" catchtap="markForgot" data-ctitem="{{item.id}}">
+                      <text class="btn-emoji">🤯</text>
+                      <text>不认识</text>
                     </view>
                   </view>
 

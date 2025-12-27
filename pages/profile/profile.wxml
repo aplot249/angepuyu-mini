@@ -117,7 +117,7 @@
       <view class="picker-inner">
         <view class="menu-left">
           <view class="menu-icon indigo">🗣️</view>
-          <text>发音音色</text>
+          <text>发音切换</text>
         </view>
         <view class="menu-right">
           <text class="status-text">{{voiceOptions[voiceIndex]}}</text>

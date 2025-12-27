@@ -65,7 +65,7 @@
       <view class="func-card wordbook-style" bindtap="navigateToWordbook">
         <view class="f-icon-box">⭐️</view>
         <view class="f-text-box">
-          <text class="f-title">不熟生词</text>
+          <text class="f-title">我的生词</text>
           <text class="f-desc">Favorites</text>
         </view>
       </view>

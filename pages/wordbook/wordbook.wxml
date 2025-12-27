@@ -4,14 +4,14 @@
   <view class="fixed-header">
     <view class="search-bar">
       <view class="search-icon">🔍</view>
-      <input class="search-input" placeholder="搜索我的收藏..." bindinput="onSearchInput" value="{{searchText}}" />
+      <input class="search-input" placeholder="在我的生词中查找{{currentTab==0?'单词':'短语'}}..." bindinput="onSearchInput" value="{{searchText}}" />
     </view>
     
-    <view class="study-time-bar">
+    <!-- <view class="study-time-bar">
        <text class="time-icon">⏱</text>
        <text>累计学习时长: </text>
        <text class="time-val">{{studyTimeDisplay}}</text>
-    </view>
+    </view> -->
 
     <view class="segment-tab">
       <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词</view>
@@ -27,7 +27,7 @@
       <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMoreWords">
         <view wx:if="{{wordList.length === 0}}" class="empty-state">
           <view class="empty-icon">📂</view>
-          <text>还没有单词哦，请先在行业分类中选择~</text>
+          <text>还没有生词哦，请先在卡片学习中标记~</text>
         </view>
 
         <block wx:for="{{wordList}}" wx:key="id">
@@ -71,8 +71,8 @@
               <view class="card-footer">
                 <!-- 收藏按钮 (在单词本中默认是已收藏状态) -->
                 <view class="action-fav" catchtap="toggleFav"  data-id="{{item.id}}"> 
-                  <text class="fav-icon active">❤️</text>
-                  <text class="fav-label active">移出单词本</text>
+                  <text class="fav-icon active">❌</text>
+                  <text class="fav-label active">我已掌握</text>
                 </view>
                 <view class="action-fix">
                   <text catchtap="jiucuoCtitem" data-dd="{{item.id}}">纠错</text>
@@ -95,7 +95,7 @@
       <scroll-view scroll-y class="scroll-area" bindscrolltolower="loadMorePhrases">
         <view wx:if="{{phraseList.length === 0}}" class="empty-state">
           <view class="empty-icon">📂</view>
-          <text>还没有单词哦，请先在行业分类中选择~</text>
+          <text>还没有生词哦，请先在卡片学习中标记~</text>
         </view>
 
         <block wx:for="{{phraseList}}" wx:key="id">
@@ -129,8 +129,8 @@
               <!-- 底部操作栏 -->
               <view class="card-footer phrase-footer">
                 <view class="action-fav" catchtap="toggleFav"  data-id="{{item.id}}">
-                  <text class="fav-icon active">❤️</text>
-                  <text class="fav-label active">移出单词本</text>
+                  <text class="fav-icon active">❌</text>
+                  <text class="fav-label active">我已掌握</text>
                 </view>
                 <view class="action-fix" >
                   <text catchtap="jiucuoCtitem" data-dd="{{item.id}}">纠错</text>

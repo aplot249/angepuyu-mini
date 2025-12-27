@@ -46,6 +46,8 @@ Page({
         // fayintype:res.fayintype
       })
       wx.setStorageSync('fayintype', JSON.stringify(res.fayintype))
+      let vv = res.fayintype.filter(i=>i.isTuijian==true)[0].xuhao
+      wx.setStorageSync('voiceType',vv?vv:'')
       app.globalData.fayintype = res.fayintype
 
       http('/web/sq/','get').then(res=>{
@@ -113,11 +115,11 @@ Page({
     wx.navigateTo({ url: '/pages/wordbook/wordbook' })
   }, 
   navigateToListening() {
-    wx.showToast({
-      title: '即将上线',
-      icon:"none"
-    })
-    return
+    // wx.showToast({
+    //   title: '即将上线',
+    //   icon:"none"
+    // })
+    // return
     wx.navigateTo({ url: '/pages/listening-practice/listening-practice' });
   },
   navigateToCommunity() {
