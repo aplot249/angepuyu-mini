@@ -27,9 +27,16 @@ Page({
   },
   
   onShareAppMessage() {
-    return {
-      title: '坦坦斯语-坦桑华人的斯语学习平台',
-      path: '/pages/about/about'
+    if(!app.globalData.userInfo.hasSharedToday){
+      app.globalData.userInfo.hasSharedToday = true
+      this.setData({ points: this.data.points + 20});
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
+      wx.showToast({ title: '分享积分 +20', icon: 'none' });
+      return {
+        title: '坦坦斯语-坦桑华人的斯语学习平台',
+        path: '/pages/index/index'
+      }
     }
   }
 })

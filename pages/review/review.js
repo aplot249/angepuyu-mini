@@ -67,9 +67,11 @@ Page({
   },
 
   onUnload(){
+    if(!app.globalData.userInfo.isLoggedIn){
+      return false
+    }
     console.log('onUnload startTime',this.data.startTime)
     app.saveStudyTime(this.data.startTime);
-
     eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
     http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
       console.log('已更新积分')
@@ -273,9 +275,9 @@ Page({
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
 
       return {
-        title: '坦桑华人学斯语，我在这里学习了30个斯语单词，，快来一起吧。',
+        title: '坦桑华人学斯语，快来一起进步吧。',
         path: '/pages/review/review',
-        imageUrl: '/images/share-cover.png', // 假设有分享图
+        // imageUrl: '/images/share-cover.png', // 假设有分享图
       }
     }
     // else{

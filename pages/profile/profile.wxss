@@ -189,7 +189,8 @@
 }
 
 .num {
-  font-size: var(--text-xl);
+  /* font-size: var(--text-xl); */
+  font-size: var(--text-sm);
   font-weight: bold;
   color: #3E2723;
 }

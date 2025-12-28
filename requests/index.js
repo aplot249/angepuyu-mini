@@ -1,8 +1,8 @@
 import { eventBus } from '../utils/eventBus.js';
 
 // const baseHOST = 'http://192.168.0.67:8000' //公司
-// const baseHOST = 'https://siyu.jsxinlingdi.com'
-const baseHOST =  'http://192.168.1.181:8000'  //住宿
+const baseHOST = 'https://siyu.jsxinlingdi.com'
+// const baseHOST =  'http://192.168.1.181:8000'  //住宿
 // const baseHOST =  'http://127.0.0.1:8000'
 const baseImgUrl = baseHOST + '/media'
 
@@ -185,7 +185,6 @@ function fileupload(url, filePath, name, formData = {}) {
             var errMsg = '禁止访问';
             const app = getApp();
             const newInfo = {
-              // ...this.data.userInfo,
               isLoggedIn: false,
               hasSharedToday: app.globalData.userInfo.hasSharedToday,
               hasSignedIn: app.globalData.userInfo.hasSignedIn,
@@ -232,6 +231,7 @@ function fileupload(url, filePath, name, formData = {}) {
                                     ...res.data.user,
                                     isLoggedIn: true,
                                   };
+                                  // 这里会把后端的point返回给前端，
                                   app.globalData.userInfo = newInfo;
                                   app.globalData.userCreated =  res.data.created
                                   eventBus.emit('userNewCreated', app.globalData.userCreated);

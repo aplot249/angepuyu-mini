@@ -66,6 +66,9 @@ Page({
   },
   // 从一个tabBar切到另一个TabBar只触发onHide，不触发onUnload
   onHide(){
+    if(!app.globalData.userInfo.isLoggedIn){
+      return false
+    }
     console.log('onUnload startTime',this.data.startTime)
     app.saveStudyTime(this.data.startTime);
     // 移除本页面的积分购买事件监听
@@ -354,9 +357,9 @@ Page({
       app.saveData()
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
       return {
-        title: '坦桑华人学斯语，快来一起吧。',
+        title: '坦桑华人学斯语，快来一起进步吧。',
         path: '/pages/quiz/quiz',
-        imageUrl: '/images/share-cover.png', // 假设有分享图
+        // imageUrl: '/images/share-cover.png', // 假设有分享图
       }
     }
     // else{

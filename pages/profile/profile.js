@@ -7,18 +7,18 @@ Page({
     fontSizeLevel: 1,
     fontSizeLabel: '标准',
     isDarkMode: false,
-
+    totalStudyTime:'',
     // 弹窗相关数据
     showFeedbackModal: false,
     feedbackContent: '',
     feedbackLen: 0,
 
-    FlipautoPlayfayin:app.globalData.userInfo.FlipautoPlayfayin || false,
-    NextautoPlayfayin:app.globalData.userInfo.NextautoPlayfayin || false,
+    FlipautoPlayfayin:app.globalData.userInfo.FlipautoPlayfayin || true,
+    NextautoPlayfayin:app.globalData.userInfo.NextautoPlayfayin || true,
 
     // [新增] 播放倍速配置相关
     playRateValue: 1.0,
-    playRateIndex: 2, // 默认对应 1.0x
+    playRateIndex: 3, // 默认对应 1.0x
     playRateOptions: ['0.5x', '0.75x', '1.0x', '1.25x', '1.5x', '2.0x'],
     
     // [新增] 发音音色配置相关
@@ -40,8 +40,9 @@ Page({
       userInfo: app.globalData.userInfo,
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
-      voiceOptions:tmp
+      voiceOptions:tmp,
     });
+    this.updateTimeDisplay()
     this.updateFontLabel(app.globalData.fontSizeLevel);
 
     // 读取本地存储的设置并同步 Picker 索引
@@ -65,6 +66,22 @@ Page({
       });
     }
 
+  },
+
+  // [新增] 格式化显示时长
+  updateTimeDisplay() {
+    const totalSeconds = app.globalData.userInfo.totalStudyTime || 0;
+    let displayStr = '';
+    if (totalSeconds < 60) {
+        displayStr = '少于1分';
+    } else if (totalSeconds < 3600) {
+        displayStr = `${Math.floor(totalSeconds / 60)}分`;
+    } else {
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        displayStr = `${h}时 ${m}分`;
+    }
+    this.setData({ studyTimeDisplay: displayStr });
   },
 
   // [修改] 处理 Picker 选择器变更
@@ -353,5 +370,24 @@ Page({
   },
   notImplemented() {
     wx.showToast({ title: '功能开发中', icon: 'none' });
-  }
+  },
+    // 分享配置
+    onShareAppMessage(res) {
+      if(!app.globalData.userInfo.hasSharedToday){
+        app.globalData.userInfo.hasSharedToday = true
+        this.setData({ points: this.data.points+20 });
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
+        wx.showToast({ title: '分享积分 +20', icon: 'none' });
+  
+        return {
+          title: '坦桑华人学斯语，快来一起进步吧。',
+          path: '/pages/review/review',
+          // imageUrl: '/images/share-cover.png', // 假设有分享图
+        }
+      }
+      // else{
+      //   wx.showToast({ title: '一天领取一次', icon: 'none' });
+      // }
+    },
 })

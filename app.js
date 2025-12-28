@@ -10,10 +10,10 @@ App({
       hasSharedToday: false, // [新增] 今日是否已分享
       favorites: []
     },
-    userCreated:null,
+    userCreated:null, //判断是不是新用户
     fontSizeLevel: 1, 
     isDarkMode: false,
-    currentTab:null
+    currentTab:null //发帖社区的当前tab
   },
 
   onLaunch() {

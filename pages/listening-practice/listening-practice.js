@@ -154,6 +154,14 @@ Page({
         this.setData({ 
           currentIndex: idx,
         })
+        if(app.globalData.userInfo.NextautoPlayfayin){    //开启了滑下一个自动发音
+          let item = this.data.questions[this.data.currentIndex]
+          let xiaohao = item.fayin ? item.xiaohao : 0    //按发音存不存在，确定消耗
+          let voiceType = wx.getStorageSync('voiceType')    //确定发音音色
+          let fayin = "fayin"+voiceType   //确定发音音色
+          console.log(fayin,item[fayin])    //输出发音音色、音色发音链接
+          app.playAudio(item[fayin],xiaohao,item.swahili) //进行发音
+        }
         if(this.data.currentIndex === this.data.questions.length-1){ 
           if(this.data.noLoad==true){ //noLoad为true就不增加
               wx.showToast({
@@ -167,9 +175,18 @@ Page({
           }
         }
       }
+    }else{
+      if(e.detail.current == 0){
+          this.setData({
+            currentIndex:0
+          })
+      }
     }
   },
   onUnload(){
+    if(!app.globalData.userInfo.isLoggedIn){
+      return false
+    }
     console.log('onUnload startTime',this.data.startTime)
     app.saveStudyTime(this.data.startTime);
     // 移除本页面的积分购买事件监听
@@ -316,6 +333,7 @@ Page({
       wx.showToast({ title: '已是最后一题', icon: 'none' });
     }
   },
+  
   onShareAppMessage(res) {
     // 关闭弹窗（如果是从弹窗点击分享）
     if (this.data.showNoPointsModal) {
@@ -328,9 +346,9 @@ Page({
       app.saveData()
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
       return {
-        title: '坦桑华人学斯语，快来一起吧。',
+        title: '坦桑华人学斯语，快来一起进步吧。',
         path: '/pages/quiz/quiz',
-        imageUrl: '/images/share-cover.png', // 假设有分享图
+        // imageUrl: '/images/share-cover.png', // 假设有分享图
       }
     }
   }

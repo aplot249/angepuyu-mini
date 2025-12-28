@@ -71,6 +71,7 @@ Page({
     app.updateThemeSkin(app.globalData.isDarkMode);
     // this.refreshFavStatus();
   },
+
   // 在客观分类页面进行纠错
   jiucuoCtitem(e){
     console.log('e',e)
@@ -83,6 +84,7 @@ Page({
       })
     })
   },
+
   // 后面加载数据操作
   fetchData() {  
     if(this.data.currentTab == 0) {  //是单词
@@ -189,7 +191,7 @@ Page({
           app.saveData()
         }
         wx.showToast({
-          title: '已取消收藏',
+          title: '移出学习',
           icon:'none'
         })
         // 处理全局变量
@@ -214,7 +216,7 @@ Page({
       // 在这里判断有没有登录，没有登录的话就要登录。登录后再执行新建操作。
       http('/web/favourite/','POST',{"ctitem":id}).then(res=>{
         wx.showToast({
-          title: '已收藏',
+          title: '已加入学习',
           icon:'none'
         })
         // 全局增加收藏的这个词条数据
@@ -240,7 +242,27 @@ Page({
         }
       })
     }
-  }
+  },
+
+    // 分享配置
+    onShareAppMessage(res) {
+      if(!app.globalData.userInfo.hasSharedToday){
+        app.globalData.userInfo.hasSharedToday = true
+        this.setData({ points: this.data.points+20 });
+        app.globalData.userInfo.points = this.data.points
+        app.saveData()
+        wx.showToast({ title: '分享积分 +20', icon: 'none' });
+  
+        return {
+          title: '坦桑华人学斯语，快来一起进步吧。',
+          path: '/pages/review/review',
+          // imageUrl: '/images/share-cover.png', // 假设有分享图
+        }
+      }
+      // else{
+      //   wx.showToast({ title: '一天领取一次', icon: 'none' });
+      // }
+    },
   
 })
 

@@ -48,7 +48,7 @@
               <!-- 左下：收藏 (大) -->
               <view class="action-fav" catchtap="toggleFav" data-isFav="{{item.isFav}}" data-id="{{item.id}}">
                 <text class="fav-icon {{item.isFav ? 'active' : ''}}">{{item.isFav ? '❤️' : '🤍'}}</text>
-                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '移出单词本' : '加入单词本'}}</text>
+                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '移出学习' : '加入学习'}}</text>
               </view>
               
               <!-- 右下：纠错 (小) -->
@@ -95,7 +95,7 @@
             <view class="card-footer phrase-footer">
               <view class="action-fav" catchtap="toggleFav" data-isFav="{{item.isFav}}" data-id="{{item.id}}">
                 <text class="fav-icon {{item.isFav ? 'active' : ''}}">{{item.isFav ? '❤️' : '🤍'}}</text>
-                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '移出单词本' : '加入单词本'}}</text>
+                <text class="fav-label {{item.isFav ? 'active' : ''}}">{{item.isFav ? '移出学习' : '加入学习'}}</text>
               </view>
               <view class="action-fix" catchtap="jiucuoCtitem" data-item="{{item}}">
                 <text catchtap="jiucuoCtitem" data-dd="{{item.id}}">纠错</text>
