@@ -133,6 +133,17 @@ App({
       // )
       return
     }else{
+      this.globalData.userInfo.points -= xiaohao
+      if(this.globalData.userInfo.points <= 0){
+        this.globalData.userInfo.points = 0
+        // 如果没有积分了，还想播放语音，那就广播弹窗，展示充值弹窗
+        eventBus.emit('OperateNoPointsModal', true);
+        return false
+      }
+      this.saveData()
+      http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
+        console.log('已同步')
+      })
       wx.showToast({
         title: mp3 == null ? '暂无发音' : '正在播放',
         icon:'none'
@@ -145,15 +156,6 @@ App({
       // 设置音速
       let playbackRate = wx.getStorageSync('playRate')
       innerAudioContext.playbackRate = playbackRate
-      this.globalData.userInfo.points -= xiaohao
-      if(this.globalData.userInfo.points < 0){
-        this.globalData.userInfo.points = 0
-      }
-      this.saveData()
-      http('/user/userinfo/','post',{'points':this.globalData.userInfo.points}).then(res=>{
-        console.log('已同步')
-        // innerAudioContext.destroy()
-      })
     } // 没登录的结尾
   },
 

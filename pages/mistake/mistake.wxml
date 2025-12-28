@@ -81,4 +81,6 @@
     <text class="empty-sub">快去每日练习挑战新题目吧</text>
   </view>
 
+  <points-modal visible="{{showNoPointsModal}}" />
+
 </view>

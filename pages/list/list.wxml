@@ -113,4 +113,7 @@
     </swiper-item>
 
   </swiper>
+
+  <points-modal visible="{{showNoPointsModal}}" />
+
 </view>

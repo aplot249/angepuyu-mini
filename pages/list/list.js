@@ -1,5 +1,6 @@
 const app = getApp();
 import { http } from '../../requests/index'
+import { eventBus } from '../../utils/eventBus.js';
 
 Page({
   data: {
@@ -62,16 +63,25 @@ Page({
         })
       })
   },
-
+  OperateNoPointsModal(value){
+    console.log(value)
+    this.setData({
+      showNoPointsModal:value
+    })
+  },
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
+    eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
+
     // this.refreshFavStatus();
   },
-
+  onUnload(){
+    eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
+  },
   // 在客观分类页面进行纠错
   jiucuoCtitem(e){
     console.log('e',e)
@@ -169,6 +179,13 @@ Page({
   },
 
   playAudio(e) {
+    if(!app.globalData.userInfo.isLoggedIn){
+      wx.showToast({
+        title:"登录后会有发音",
+        icon:"none"
+      })
+      return false
+    }
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0   //按发音存不存在，确定消耗
     let voiceType = wx.getStorageSync('voiceType')     //确定发音音色

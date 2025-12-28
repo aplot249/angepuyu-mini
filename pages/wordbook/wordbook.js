@@ -4,6 +4,7 @@ import {
 } from '../../requests/index'
 const XLSX = require('../../utils/xlsx.mini.min.js');
 const bgAudio = wx.getBackgroundAudioManager();
+import { eventBus } from '../../utils/eventBus.js';
 
 Page({
   data: {
@@ -42,7 +43,6 @@ Page({
 
     currentAudioIndex:0, //当前播放序号
   },
-  
   onLoad(){
       this.setData({isFabOpen:true})
       // 获取屏幕尺寸，初始化按钮位置到右下角
@@ -59,7 +59,6 @@ Page({
       })
       this.initAudioListener(); //播音监听
   },
-
   // --- 2. 初始化监听器 (只执行一次) ---
   initAudioListener() {
     // 监听自然播放结束 -> 核心：自动切下一首
@@ -126,7 +125,21 @@ Page({
     })
   },
 
+  // UserInfoPointsChange(value){
+  //   console.log(value)
+  //   this.setData({
+  //     points:value
+  //   })
+  // },
+  OperateNoPointsModal(value){
+    console.log(value)
+    this.setData({
+      showNoPointsModal:value
+    })
+  },
   onShow() {
+    // eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
+    eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
     this.setData({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode
@@ -437,6 +450,8 @@ Page({
     if(!app.globalData.userInfo.isLoggedIn){
       return false
     }
+    // eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+    eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
     console.log('onUnload startTime',this.data.startTime)
     app.saveStudyTime(this.data.startTime);
     this.setData({

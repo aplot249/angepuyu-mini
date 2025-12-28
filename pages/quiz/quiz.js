@@ -41,9 +41,16 @@ Page({
       points:value
     })
   },
+  OperateNoPointsModal(value){
+    console.log(value)
+    this.setData({
+      showNoPointsModal:value
+    })
+  },
   onShow() {
     // 监听本页面弹窗的积分购买事件
     eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
+    eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
@@ -73,6 +80,7 @@ Page({
     app.saveStudyTime(this.data.startTime);
     // 移除本页面的积分购买事件监听
     eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+    eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
     // 更新后端积分
     http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
       console.log('已更新积分')

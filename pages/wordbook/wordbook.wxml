@@ -208,5 +208,7 @@
     </view>
 
   </view>
+  
+  <points-modal visible="{{showNoPointsModal}}" />
 
 </view>

@@ -1,6 +1,6 @@
 const app = getApp();
 import {http} from '../../requests/index'
-
+import { eventBus } from '../../utils/eventBus.js';
 Page({
   data: {
     fontSizeLevel: 1,
@@ -20,7 +20,12 @@ Page({
     hasMore: true,
     startTime:Date.now()
   },
-
+  OperateNoPointsModal(value){
+    console.log(value)
+    this.setData({
+      showNoPointsModal:value
+    })
+  },
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
@@ -28,6 +33,7 @@ Page({
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     
+    eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
     // 每次进入页面重新加载第一页
     this.loadMistakes(true);
   },
@@ -86,7 +92,6 @@ Page({
     let fayin = "fayin"+voiceType   //确定发音音色
     console.log(fayin,item[fayin])    //输出发音音色、音色发音链接
     app.playAudio(item[fayin],xiaohao,item.swahili)
-    wx.showToast({ title: `播放: ${word}`, icon: 'none' });
   },
 
   // 标记为已学会 (移除) - 使用 catchtap 阻止冒泡
@@ -115,6 +120,7 @@ Page({
     if(!app.globalData.userInfo.isLoggedIn){
       return false
     }
+    eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
     console.log('onUnload startTime',this.data.startTime)
     app.saveStudyTime(this.data.startTime);
   },

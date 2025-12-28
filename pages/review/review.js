@@ -35,6 +35,12 @@ Page({
       points:value
     })
   },
+  OperateNoPointsModal(value){
+    console.log(value)
+    this.setData({
+      showNoPointsModal:value
+    })
+  },
   onReady(){
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -47,6 +53,7 @@ Page({
   },
   onShow() {
     eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
+    eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
       // 直接从我的收藏里取
     http('/web/randomcard/','get').then(res=>{
       this.setData({
@@ -73,6 +80,7 @@ Page({
     console.log('onUnload startTime',this.data.startTime)
     app.saveStudyTime(this.data.startTime);
     eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+    eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
     http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
       console.log('已更新积分')
     })
