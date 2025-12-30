@@ -59,7 +59,7 @@
         <view class="label">购买积分</view>
       </view> -->
       
-      <view class="stat-item" bindtap="goPurchase">
+      <view class="stat-item">
         <view class="num text-yellow">{{studyTimeDisplay}}</view>
         <view class="label">总学习时长</view>
       </view>

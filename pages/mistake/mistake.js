@@ -124,23 +124,24 @@ Page({
     console.log('onUnload startTime',this.data.startTime)
     app.saveStudyTime(this.data.startTime);
   },
-    // 分享配置
-    onShareAppMessage(res) {
-      if(!app.globalData.userInfo.hasSharedToday){
-        app.globalData.userInfo.hasSharedToday = true
-        this.setData({ points: this.data.points+20 });
-        app.globalData.userInfo.points = this.data.points
-        app.saveData()
-        wx.showToast({ title: '分享积分 +20', icon: 'none' });
+
+  onShareAppMessage(res) {
+    // 关闭弹窗（如果是从弹窗点击分享）
+    if (this.data.showNoPointsModal) {
+      this.setData({ showNoPointsModal: false });
+    }
+    if(!app.globalData.userInfo.hasSharedToday){
+      app.globalData.userInfo.hasSharedToday = true
+      this.setData({ points: this.data.points + 20});
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
+      wx.showToast({ title: '分享积分 +20', icon: 'none' });
+    }
+    return {
+      title: '坦桑华人学斯语，快来一起进步吧。',
+      path: '/pages/index/index',
+      // imageUrl: '/images/share-cover.png', // 假设有分享图
+    }
+  }
   
-        return {
-          title: '坦桑华人学斯语，快来一起进步吧。',
-          path: '/pages/review/review',
-          // imageUrl: '/images/share-cover.png', // 假设有分享图
-        }
-      }
-      // else{
-      //   wx.showToast({ title: '一天领取一次', icon: 'none' });
-      // }
-    },
 })

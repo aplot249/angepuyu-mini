@@ -345,11 +345,11 @@ Page({
       app.globalData.userInfo.points = this.data.points
       app.saveData()
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
-      return {
-        title: '坦桑华人学斯语，快来一起进步吧。',
-        path: '/pages/quiz/quiz',
-        // imageUrl: '/images/share-cover.png', // 假设有分享图
-      }
+    }
+    return {
+      title: '坦桑华人学斯语，快来一起进步吧。',
+      path: '/pages/index/index',
+      // imageUrl: '/images/share-cover.png', // 假设有分享图
     }
   }
 })

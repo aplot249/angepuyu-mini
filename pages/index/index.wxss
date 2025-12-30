@@ -134,6 +134,46 @@
   color: #D7CCC8;
 }
 
+/* [修改] Search Box */
+.search-container {
+  padding: 0 30rpx;
+  margin-bottom: 40rpx;
+}
+.search-input-box {
+  background-color: #F5F5F5;
+  height: 80rpx;
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  /* [修改] 改为左对齐并增加内边距 */
+  padding: 0 30rpx; 
+  box-shadow: inset 0 2rpx 6rpx rgba(0,0,0,0.03);
+}
+.dark-mode .search-input-box {
+  background-color: rgba(255,255,255,0.08);
+}
+
+.search-icon { 
+  margin-right: 16rpx; 
+  font-size: 32rpx; 
+  flex-shrink: 0; /* 防止图标被压缩 */
+}
+
+/* [新增] 真实输入框样式 */
+.real-search-input {
+  flex: 1;
+  height: 100%;
+  font-size: 28rpx;
+  color: var(--text-main);
+}
+
+.search-placeholder {
+  color: #999;
+}
+.dark-mode .search-placeholder {
+  color: rgba(255,255,255,0.4);
+}
+
 /* --- 核心功能区 (加大版) --- */
 .func-grid-row {
   display: flex;

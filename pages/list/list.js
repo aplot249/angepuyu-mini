@@ -28,9 +28,11 @@ Page({
         // 词库传来的客观子领域id和名字
         subid: options.subid,
         subname: options.subname,
+        keyword: options.keyword?options.keyword:''
       });
       wx.setNavigationBarTitle({ title: options.subname });
       // wp为0加载单词
+
       http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}&page=1&search=${this.data.keyword}`,'GET').then(res=>{
         // 从客观模板复刻，生成用户自己的生词本
         let favIds = app.globalData.userInfo.favorites || [] 
@@ -261,25 +263,24 @@ Page({
     }
   },
 
-    // 分享配置
-    onShareAppMessage(res) {
-      if(!app.globalData.userInfo.hasSharedToday){
-        app.globalData.userInfo.hasSharedToday = true
-        this.setData({ points: this.data.points+20 });
-        app.globalData.userInfo.points = this.data.points
-        app.saveData()
-        wx.showToast({ title: '分享积分 +20', icon: 'none' });
-  
-        return {
-          title: '坦桑华人学斯语，快来一起进步吧。',
-          path: '/pages/review/review',
-          // imageUrl: '/images/share-cover.png', // 假设有分享图
-        }
-      }
-      // else{
-      //   wx.showToast({ title: '一天领取一次', icon: 'none' });
-      // }
-    },
+  // 分享配置
+  onShareAppMessage(res) {
+    if(!app.globalData.userInfo.hasSharedToday){
+      app.globalData.userInfo.hasSharedToday = true
+      this.setData({ points: this.data.points+20 });
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
+      wx.showToast({ title: '分享积分 +20', icon: 'none' });
+    }
+    return {
+      title: '坦桑华人学斯语，快来一起进步吧。',
+      path: '/pages/index/index',
+      // imageUrl: '/images/share-cover.png', // 假设有分享图
+    }
+  // else{
+  //   wx.showToast({ title: '一天领取一次', icon: 'none' });
+  // }
+  },
   
 })
 

@@ -26,17 +26,22 @@ Page({
     }
   },
   
-  onShareAppMessage() {
+  // 分享配置
+  onShareAppMessage(res) {
     if(!app.globalData.userInfo.hasSharedToday){
       app.globalData.userInfo.hasSharedToday = true
-      this.setData({ points: this.data.points + 20});
+      this.setData({ points: this.data.points+20 });
       app.globalData.userInfo.points = this.data.points
       app.saveData()
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
-      return {
-        title: '坦坦斯语-坦桑华人的斯语学习平台',
-        path: '/pages/index/index'
-      }
     }
-  }
+    return {
+      title: '坦桑华人学斯语，快来一起进步吧。',
+      path: '/pages/index/index',
+      // imageUrl: '/images/share-cover.png', // 假设有分享图
+    }
+  // else{
+  //   wx.showToast({ title: '一天领取一次', icon: 'none' });
+  // }
+  },
 })

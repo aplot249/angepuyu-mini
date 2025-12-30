@@ -18,6 +18,7 @@ Page({
     // 顶部主轮播图 [已更新]
     banners: [],
     hh:null,
+    isLoggedIn:app.globalData.userInfo.isLoggedIn,
     // 中间小轮播图
     // middleBanners: [
     //   'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80',
@@ -31,7 +32,8 @@ Page({
     ],
     dailyWords:[],
     dailyPhrase:[],
-    fayintype:[]
+    fayintype:[],
+    searchContent:''
   },
   onLoad() {
     this.calcNavBar();
@@ -58,11 +60,26 @@ Page({
       })
     })
   },
+  onSearchInput(e) {
+    this.setData({
+      searchContent: e.detail.value
+    });
+  },
+
+  // [修改] 点击搜索框或确认搜索
+  handleSearchTap() {
+    const keyword = this.data.searchContent;
+    console.log(keyword)
+    wx.navigateTo({
+      url: `/pages/list/list?subname=全局搜索&subid=null&keyword=${keyword || ''}`, 
+    });
+  },
 
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
-      isDarkMode: app.globalData.isDarkMode
+      isDarkMode: app.globalData.isDarkMode,
+      // isLoggedIn: app.globalData.userInfo.isLoggedIn,
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
   },
@@ -139,23 +156,22 @@ Page({
   },
   onUnload(){
   },
-    // 分享配置
-    onShareAppMessage(res) {
-      if(!app.globalData.userInfo.hasSharedToday){
-        app.globalData.userInfo.hasSharedToday = true
-        this.setData({ points: this.data.points+20 });
-        app.globalData.userInfo.points = this.data.points
-        app.saveData()
-        wx.showToast({ title: '分享积分 +20', icon: 'none' });
-  
-        return {
-          title: '坦桑华人学斯语，快来一起进步吧。',
-          path: '/pages/review/review',
-          // imageUrl: '/images/share-cover.png', // 假设有分享图
-        }
-      }
-      // else{
-      //   wx.showToast({ title: '一天领取一次', icon: 'none' });
-      // }
-    },
+  // 分享配置
+  onShareAppMessage(res) {
+    if(!app.globalData.userInfo.hasSharedToday){
+      app.globalData.userInfo.hasSharedToday = true
+      this.setData({ points: this.data.points+20 });
+      app.globalData.userInfo.points = this.data.points
+      app.saveData()
+      wx.showToast({ title: '分享积分 +20', icon: 'none' });
+    }
+    return {
+      title: '坦桑华人学斯语，快来一起进步吧。',
+      path: '/pages/index/index',
+      // imageUrl: '/images/share-cover.png', // 假设有分享图
+    }
+  // else{
+  //   wx.showToast({ title: '一天领取一次', icon: 'none' });
+  // }
+  },
 })

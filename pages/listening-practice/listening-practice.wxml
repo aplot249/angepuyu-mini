@@ -22,8 +22,8 @@
     </view>
     <view class="stat-box">
       <view class="stat-content">
-        <text class="stat-num red">{{points>100?'充足':points}}</text>
-        <text class="stat-label">剩余积分</text>
+        <text class="stat-num red">{{points>100?'无限':points}}</text>
+        <text class="stat-label">使用额度</text>
       </view>
     </view>
   </view>

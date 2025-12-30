@@ -86,51 +86,14 @@ App({
   },
 
   playAudio(mp3,xiaohao,title){
+    // 仅仅针对首页推荐单词、短语的发音
     if(!this.globalData.userInfo.isLoggedIn){
-      // wx.showModal({
-      //   title: '请先登录，才能进行后续操作',
-      //   confirmText: "确认登录",
-      //   success: (res) => {
-      //     if (res.confirm) {
-      //       wx.getUserProfile({
-      //         desc: '需微信授权登录',
-      //         success: (res) => {
-      //           wx.login({
-      //             timeout: 8000,
-      //             success: r => {
-      //               wx.showToast({
-      //                 title: '正在登录...',
-      //                 icon: "none"
-      //               })
-      //               console.log(r.code)
-      //               http('/user/openid/', 'post', {
-      //                 code: r.code,
-      //                 gender: res.userInfo.gender,
-      //                 wxnickname: res.userInfo.nickName,
-      //               }).then(res => {
-      //                 console.log('登录信息：', res)
-      //                 const newInfo = {
-      //                   ...res.user,
-      //                   isLoggedIn: true,
-      //                 };
-      //                 this.globalData.userInfo = newInfo;
-      //                 this.globalData.userCreated =  res.created
-      //                 eventBus.emit('userNewCreated', this.globalData.userCreated);
-      //                 this.saveData();
-      //                 wx.showToast({
-      //                   title: '登录成功',
-      //                   icon: 'none'
-      //                 });
-      //                 wx.setStorageSync('token', res.token)
-      //               })
-      //             }
-      //           })
-      //         }
-      //       })
-      //     }
-      //   }
-      // }
-      // )
+      let innerAudioContext = wx.getBackgroundAudioManager();
+      innerAudioContext.title = title
+      let fayin = mp3 ? mp3 : baseImgUrl+'/zanwufayin.mp3'
+      innerAudioContext.src = fayin
+      let playbackRate = wx.getStorageSync('playRate')
+      innerAudioContext.playbackRate = playbackRate
       return
     }else{
       this.globalData.userInfo.points -= xiaohao

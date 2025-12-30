@@ -41,6 +41,23 @@
       </swiper>
     </view>
 
+  <!-- [修改] 搜索框 - 改为真实输入框 -->
+  <view class="search-container">
+    <view class="search-input-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="real-search-input"
+        type="text"
+        confirm-type="search"
+        placeholder="搜索单词、句子或语法..." 
+        placeholder-class="search-placeholder"
+        value="{{searchContent}}"
+        bindinput="onSearchInput"
+        bindconfirm="handleSearchTap"
+      />
+    </view>
+  </view>
+
     <!-- 3. 核心功能区 I -->
     <view class="func-grid-row">
       <view class="func-card review-style" bindtap="navigateToReview">
@@ -77,7 +94,6 @@
           <text class="f-desc">Mistakes</text>
         </view>
       </view>
-
     </view>
 
     <!-- [新增] 4.5 扩展功能区：知识库与社区 -->
@@ -122,6 +138,7 @@
       <block wx:for="{{dailyWords}}" wx:key="id">
         <view class="word-card-refined" bind:tap="playAudio" data-type="word" data-item="{{item}}">
           <!-- 顶部：发音 -->
+
           <view class="wc-header">
             <view class="wc-play-btn" catch:tap="playAudio" data-type="word" data-item="{{item}}">🔊</view>
           </view>

@@ -2,7 +2,7 @@
   
   <!-- 顶部固定区 (保持不变) -->
   <view class="fixed-header">
-    <input class="main-search" placeholder="在{{subname}}分类中查找{{currentTab==0?'单词':'短语'}}..." bindinput="onSearch" value="{{keyword}}" placeholder-class="ph-color"/>
+    <input class="main-search" placeholder="在{{subname}}中查找{{currentTab==0?'单词':'短语'}}..." bindinput="onSearch" value="{{keyword}}" placeholder-class="ph-color"/>
     
     <view class="segment-tab">
       <view class="segment-item {{currentTab === 0 ? 'active' : ''}}" bindtap="switchTab" data-idx="0">单词</view>

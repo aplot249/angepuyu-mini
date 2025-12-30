@@ -45,8 +45,8 @@
             </view> -->
             <view class="stat-line"></view>
             <view class="stat-item" bind:tap="goPurchase">
-              <text class="stat-num highlight">{{points>100?'充足':points}}</text>
-              <text class="stat-label">剩余积分</text>
+              <text class="stat-num highlight">{{points>100?'无限':points}}</text>
+              <text class="stat-label">使用额度</text>
             </view>
           </view>
         </view>
