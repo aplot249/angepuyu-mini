@@ -32,7 +32,6 @@ Page({
       });
       wx.setNavigationBarTitle({ title: options.subname });
       // wp为0加载单词
-
       http(`/web/ctiemBySub/?subid=${options.subid}&wp=${this.data.currentTab}&page=1&search=${this.data.keyword}`,'GET').then(res=>{
         // 从客观模板复刻，生成用户自己的生词本
         let favIds = app.globalData.userInfo.favorites || [] 
@@ -44,6 +43,7 @@ Page({
           wordsCount:res.count, //总数
           wordsTotalPageNum:res.totalPageNum, //总页数
           pageSize:res.page_size,
+          pageWord:this.data.pageWord+1,
           hasMoreWords:this.data.pageWord < res.totalPageNum,
           wordList:[...this.data.wordList,...list]  //这次列表.也可以用concat合并
         })
@@ -59,18 +59,21 @@ Page({
             phraseCount:res.count, //总数
             phraseTotalPageNum:res.totalPageNum, //总页数
             pageSize:res.page_size,
+            pagePhrase:this.data.pagePhrase+1,
             hasMorePhrases:this.data.pagePhrase < res.totalPageNum,
             phraseList:[...this.data.phraseList,...list]  //这次列表
           })
         })
       })
   },
+
   OperateNoPointsModal(value){
     console.log(value)
     this.setData({
       showNoPointsModal:value
     })
   },
+
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
@@ -78,12 +81,22 @@ Page({
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
-
     // this.refreshFavStatus();
   },
+
   onUnload(){
+    this.setData({ 
+      keyword: this.data.keyword,
+      wordList:[],
+      phraseList:[],
+      pageWord: 1, 
+      pagePhrase: 1,
+      hasMoreWords:true,
+      hasMorePhrases:true
+    });
     eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
   },
+
   // 在客观分类页面进行纠错
   jiucuoCtitem(e){
     console.log('e',e)
@@ -150,14 +163,23 @@ Page({
 
   switchTab(e) {
     const idx = parseInt(e.currentTarget.dataset.idx);
-    this.setData({ currentTab: idx });
-    this.fetchData()
+    this.setData({ 
+      currentTab: idx,
+      keyword: this.data.keyword,
+      wordList:[],
+      phraseList:[],
+      pageWord: 1, 
+      pagePhrase: 1,
+      hasMoreWords:true,
+      hasMorePhrases:true
+    });
+    // this.fetchData()
   },
 
   onSwiperChange(e) {
     this.setData({ 
       currentTab: e.detail.current,
-      keyword: '',
+      keyword: this.data.keyword,
       wordList:[],
       phraseList:[],
       pageWord: 1, 

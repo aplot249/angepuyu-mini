@@ -134,32 +134,36 @@
   color: #D7CCC8;
 }
 
-/* [修改] Search Box */
+/* [修改] Search Box - 增强凸显效果 */
 .search-container {
-  padding: 0 30rpx;
+  /* padding: 0 30rpx; */
   margin-bottom: 40rpx;
 }
+
 .search-input-box {
-  background-color: #F5F5F5;
-  height: 80rpx;
-  border-radius: 40rpx;
+  background-color: #FFFFFF; /* 改为白色背景 */
+  height: 90rpx; /* 稍微增高一点点 */
+  border-radius: 45rpx;
   display: flex;
   align-items: center;
-  /* [修改] 改为左对齐并增加内边距 */
   padding: 0 30rpx; 
-  box-shadow: inset 0 2rpx 6rpx rgba(0,0,0,0.03);
+  /* 增加较明显的阴影和微弱边框 */
+  box-shadow: 0 10rpx 24rpx rgba(141, 110, 99, 0.12);
+  border: 1rpx solid rgba(255, 112, 67, 0.1); 
 }
+
 .dark-mode .search-input-box {
-  background-color: rgba(255,255,255,0.08);
+  background-color: rgba(255,255,255,0.12); /* 夜间模式稍微调亮 */
+  border-color: transparent;
+  box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.2);
 }
 
 .search-icon { 
   margin-right: 16rpx; 
   font-size: 32rpx; 
-  flex-shrink: 0; /* 防止图标被压缩 */
+  flex-shrink: 0; 
 }
 
-/* [新增] 真实输入框样式 */
 .real-search-input {
   flex: 1;
   height: 100%;
@@ -172,6 +176,20 @@
 }
 .dark-mode .search-placeholder {
   color: rgba(255,255,255,0.4);
+}
+
+/* 搜索按钮样式 */
+.search-btn {
+  font-size: 28rpx;
+  color: #FF7043;
+  font-weight: bold;
+  padding-left: 24rpx;
+  margin-left: 10rpx;
+  border-left: 2rpx solid #E0E0E0; /* 竖线分割 */
+  line-height: 1.2;
+}
+.search-btn:active {
+  opacity: 0.6;
 }
 
 /* --- 核心功能区 (加大版) --- */

@@ -235,8 +235,23 @@
 .fav-label.active { color: #D84315; }
 
 .action-fix {
+  display: flex;
   padding: 10rpx;
 }
+
+/* [新增] 中间分类标签样式 */
+.category-tag {
+  font-size: var(--text-sm);
+  color: var(--text-sub);
+  background: #F0F0F0;
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+  display: flex; align-items: center;
+  opacity: 0.8;
+}
+.dark-mode .category-tag { background: rgba(255,255,255,0.1); }
+.tag-icon { margin-right: 6rpx; font-size: 20rpx; }
+
 .action-fix text {
   font-size: 22rpx; /* 小字体 */
   color: var(--text-sub); /* 弱化颜色 */
@@ -244,3 +259,34 @@
 }
 
 .loading-tip { text-align: center; padding: 30rpx; color: var(--text-sub); font-size: var(--text-xs); }
+
+
+/* [修改] 空状态样式 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120rpx;
+  opacity: 0.8;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+  filter: grayscale(100%); /* 灰色质感 */
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: var(--text-sub);
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.empty-sub {
+  font-size: 24rpx;
+  color: var(--text-sub);
+  opacity: 0.7;
+}
