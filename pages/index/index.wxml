@@ -49,7 +49,7 @@
         class="real-search-input"
         type="text"
         confirm-type="search"
-        placeholder="从词库搜索单词短语，可输入中文、英语、斯语" 
+        placeholder="词库搜索单词短语，可输入中文、英语、斯语" 
         placeholder-class="search-placeholder"
         value="{{searchContent}}"
         bindinput="onSearchInput"

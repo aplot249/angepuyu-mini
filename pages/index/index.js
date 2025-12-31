@@ -71,7 +71,7 @@ Page({
     const keyword = this.data.searchContent;
     console.log(keyword)
     wx.navigateTo({
-      url: `/pages/list/list?subname=全局搜索&subid=null&keyword=${keyword || ''}`, 
+      url: `/pages/list/list?subname=词库搜索&subid=null&keyword=${keyword || ''}`, 
     });
   },
 

@@ -1,7 +1,58 @@
 .page-container {
   height: 100vh;
   display: flex;
+  flex-direction: column; /* 垂直排列：上搜索，下内容 */
+  background-color: var(--bg-color);
+  overflow: hidden;
 }
+
+/* --- [新增] 顶部搜索框样式 --- */
+.search-section {
+  padding: 20rpx 20rpx;
+  background-color: var(--bg-color);
+  flex-shrink: 0; /* 防止被压缩 */
+  z-index: 10;
+}
+
+.search-input-box {
+  background-color: #FFFFFF; 
+  height: 80rpx; 
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx 0 30rpx;
+  /* 样式与首页保持一致：淡橙色边框 + 阴影 */
+  border: 4rpx solid rgba(255, 112, 67, 0.15);
+  box-shadow: 0 4rpx 12rpx rgba(141, 110, 99, 0.08);
+}
+.dark-mode .search-input-box {
+  background-color: rgba(255,255,255,0.1);
+  border-color: rgba(255, 112, 67, 0.2);
+}
+
+.search-icon { margin-right: 16rpx; font-size: 30rpx; flex-shrink: 0; }
+.real-search-input { flex: 1; height: 100%; font-size: 26rpx; color: var(--text-main); }
+.search-placeholder { color: #999; }
+.dark-mode .search-placeholder { color: rgba(255,255,255,0.4); }
+
+.search-btn {
+  font-size: 26rpx; color: #FF7043; font-weight: bold;
+  padding-left: 20rpx; margin-left: 10rpx;
+  border-left: 2rpx solid #F5F5F5; line-height: 1.2;
+}
+.dark-mode .search-btn { border-left-color: rgba(255,255,255,0.1); }
+.search-btn:active { opacity: 0.6; }
+
+
+/* --- [新增] 内容区域容器 (左右分栏的父容器) --- */
+.content-area {
+  flex: 1; /* 占据剩余高度 */
+  display: flex;
+  flex-direction: row; /* 左右排列 */
+  height: 0; /* 配合 flex: 1 使用，防止被子元素撑开导致无法滚动 */
+  border-top: 1rpx solid rgba(0,0,0,0.03);
+}
+
 
 .left-nav {
   width: 30%;

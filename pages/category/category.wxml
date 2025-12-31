@@ -1,39 +1,60 @@
-<view class="page-container flex-row font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
-  <!-- 左侧导航 -->
-  <scroll-view scroll-y class="left-nav">
-    <block wx:for="{{categories}}" wx:key="id">
-      <view class="nav-item {{activeIdx === index ? 'active' : ''}}" bindtap="switchCat" data-index="{{index}}">
-        <view class="indicator" wx:if="{{activeIdx === index}}"></view>
-        <text>{{item.name}}</text>
-      </view>
-    </block>
-  </scroll-view>
+<view class="page-container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
 
-  <!-- 右侧内容 -->
-  <scroll-view scroll-y class="right-content">
-    <view class="content-header">
-      <text class="header-line"></text>
-      <text class="header-title">{{categories[activeIdx].name}}({{categories[activeIdx].sum}})</text>
-      <text class="header-line"></text>
+  <!-- [新增] 顶部搜索框 (固定在顶部) -->
+  <view class="search-section">
+    <view class="search-input-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="real-search-input"
+        type="text"
+        confirm-type="search"
+        placeholder="词库搜索单词短语，可输入中文、英语、斯语" 
+        placeholder-class="search-placeholder"
+        value="{{searchContent}}"
+        bindinput="onSearchInput"
+        bindconfirm="handleSearchTap"
+      />
+      <view class="search-btn" bindtap="handleSearchTap">搜索</view>
     </view>
+  </view>
 
-    <view class="sub-grid">
-      <block wx:for="{{categories[activeIdx].sublingyu}}" wx:key="id">
-        <view class="sub-item card" bindtap="goToList" data-subid="{{item.id}}" data-subname="{{item.name}}">
-          <view class="sub-icon text-primary">📂</view>
-          <text class="sub-name">{{item.name}}({{item.count}})</text>
-          <!-- [新增] 底部圆形图标按钮 -->
-          <view class="action-row" catchtap="toggleSubFav" data-id="{{item.id}}" data-isFaved="{{item.isFaved}}">
-            <view class="circle-btn">
-              <text class="fav-icon" wx:if="{{!item.isFaved}}">🤍加入学习</text> 
-              <text class="fav-icon" wx:if="{{item.isFaved}}">❤️移出学习</text> 
-            </view>
-          </view>
+  <view class="content-area flex-row">
+    <!-- 左侧导航 -->
+    <scroll-view scroll-y class="left-nav">
+      <block wx:for="{{categories}}" wx:key="id">
+        <view class="nav-item {{activeIdx === index ? 'active' : ''}}" bindtap="switchCat" data-index="{{index}}">
+          <view class="indicator" wx:if="{{activeIdx === index}}"></view>
+          <text>{{item.name}}</text>
         </view>
       </block>
-    </view>
-  </scroll-view>
+    </scroll-view>
 
-  <welcome-modal></welcome-modal>
+    <!-- 右侧内容 -->
+    <scroll-view scroll-y class="right-content">
+      <view class="content-header">
+        <text class="header-line"></text>
+        <text class="header-title">{{categories[activeIdx].name}}({{categories[activeIdx].sum}})</text>
+        <text class="header-line"></text>
+      </view>
+
+      <view class="sub-grid">
+        <block wx:for="{{categories[activeIdx].sublingyu}}" wx:key="id">
+          <view class="sub-item card" bindtap="goToList" data-subid="{{item.id}}" data-subname="{{item.name}}">
+            <view class="sub-icon text-primary">📂</view>
+            <text class="sub-name">{{item.name}}({{item.count}})</text>
+            <!-- [新增] 底部圆形图标按钮 -->
+            <view class="action-row" catchtap="toggleSubFav" data-id="{{item.id}}" data-isFaved="{{item.isFaved}}">
+              <view class="circle-btn">
+                <text class="fav-icon" wx:if="{{!item.isFaved}}">🤍加入学习</text> 
+                <text class="fav-icon" wx:if="{{item.isFaved}}">❤️移出学习</text> 
+              </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+
+    <welcome-modal></welcome-modal>
+  </view>
 
 </view>

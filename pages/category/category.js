@@ -82,6 +82,18 @@ Page({
     if (index === this.data.activeIdx) return;
     this.setData({ activeIdx: index });
   },
+  // [新增] 监听搜索输入
+  onSearchInput(e) {
+    this.setData({ searchContent: e.detail.value });
+  },
+
+  // [新增] 执行搜索跳转
+  handleSearchTap() {
+    const keyword = this.data.searchContent;
+    wx.navigateTo({
+      url: `/pages/list/list?subname=词库搜索&subid=null&keyword=${keyword || ''}`, 
+    });
+  },
 
   // 点击跳转去list客观页面
   goToList(e) {
