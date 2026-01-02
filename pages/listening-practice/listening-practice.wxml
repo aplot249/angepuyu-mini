@@ -10,13 +10,13 @@
     </view>
     <view class="stat-box">
       <view class="stat-content">
-        <text class="stat-num green">{{rightCount}}</text>
+        <text class="stat-num green">{{rightNum}}</text>
         <text class="stat-label">正确</text>
       </view>
     </view>
     <view class="stat-box">
       <view class="stat-content">
-        <text class="stat-num red">{{wrongCount}}</text>
+        <text class="stat-num red">{{wrongNum}}</text>
         <text class="stat-label">错误</text>
       </view>
     </view>
@@ -35,7 +35,7 @@
     bindchange="onSwiperChange"
     duration="300"
   >
-    <block wx:for="{{questions}}" wx:key="id" wx:for-item="item">
+    <block wx:for="{{questions}}" wx:key="index" wx:for-item="item">
       <swiper-item class="p-swiper-item">
         <view class="main-card">
           
@@ -138,7 +138,7 @@
       <view class="result-score">{{score}}分</view>
       <view class="result-desc">
         {{score >= 80 ? '太棒了！你的斯瓦希里语水平突飞猛进！' : (score >= 60 ? '不错哦，继续保持！' : '不要灰心，多练习几次就记住了。')}}
-        <view>本次共做{{completedCount}}道题，错{{completedCount - rightCount}}道题。继续加油！</view>
+        <view>本次共做{{completedCount}}道题，错{{completedCount - correctCount}}道题。继续加油！</view>
       </view>
       <view class="result-actions">
         <button class="action-btn btn-share" open-type="share">分享成绩</button>

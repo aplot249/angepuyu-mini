@@ -34,8 +34,6 @@ Page({
     checkedIds: [], // 选中的ID集合 (跨Tab共享)
     checkedItems:[],
 
-    studyTimeDisplay: '0分钟' ,
-
     isFabOpen: false, // 悬浮按钮相关状态，菜单是否展开
     fabPos: { x: 0, y: 0 }, // 按钮位置
     windowWidth: 0,

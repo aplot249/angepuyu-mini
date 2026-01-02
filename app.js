@@ -171,9 +171,9 @@ App({
   // [新增] 计算并保存时长逻辑
   saveStudyTime(startTime) {
     // if (!this.startTime) return;
-    const now = Date.now();
+    const endTime = Date.now();
     // 计算停留秒数
-    const duration = Math.floor((now - startTime) / 1000); 
+    const duration = Math.floor((endTime - startTime) / 1000); 
     if (duration > 0) {
         // 累加到全局数据
         this.globalData.userInfo.totalStudyTime = (this.globalData.userInfo.totalStudyTime || 0) + duration;

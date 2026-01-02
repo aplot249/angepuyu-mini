@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(180deg, #FEC99D 0%, #FF8A65 80%, #FFF3E0 100%);
+  background: linear-gradient(180deg, #FEC99D 0%, #FF8A65 86%, #FFF3E0 100%);
   border-bottom-left-radius: 40% 100rpx;
   border-bottom-right-radius: 40% 100rpx;
   z-index: 0;

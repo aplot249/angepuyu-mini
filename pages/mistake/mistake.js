@@ -18,7 +18,6 @@ Page({
     totalPageNum:null,
     isLoading: false,
     hasMore: true,
-    startTime:Date.now()
   },
   OperateNoPointsModal(value){
     console.log(value)
@@ -29,7 +28,8 @@ Page({
   onShow() {
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
-      isDarkMode: app.globalData.isDarkMode
+      isDarkMode: app.globalData.isDarkMode,
+      startTime:Date.now()
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     
@@ -40,7 +40,8 @@ Page({
   onReady(){
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
-      backgroundColor: '#FFAB91',
+      // backgroundColor: '#FFAB91',
+      backgroundColor: '#FEC99D',
       animation: {
         duration: 400,
         timingFunc: 'easeIn'

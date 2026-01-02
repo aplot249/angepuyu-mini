@@ -11,9 +11,12 @@ Page({
     isPlaying: false,
     score:0,
     points:'',
-    // [新增] 统计数据
+    // 本次做题统计数据
     correctCount: 0,
     wrongCount: 0,
+    rightNum:0,
+    wrongNum:0,
+
     completedCount: 0, // 已做题数
     isFinished: false,
     showNoPointsModal: false, // 积分不足弹窗控制
@@ -63,12 +66,14 @@ Page({
       // }
     ]
   },
+
   UserInfoPointsChange(value){
     console.log(value)
     this.setData({
       points:value
     })
   },
+
   onShow() {
     eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
     this.setData({
@@ -108,8 +113,8 @@ Page({
       })
       this.setData({ 
         questions: this.data.questions.concat(initializedQuestions),
-        rightCount: res.rightCount,
-        wrongCount: res.wrongCount,
+        rightNum: res.rightNum,
+        wrongNum: res.wrongNum,
         noLoad:res.tip,
         isFinished:false
       })
@@ -183,6 +188,7 @@ Page({
       }
     }
   },
+
   onUnload(){
     if(!app.globalData.userInfo.isLoggedIn){
       return false
@@ -200,20 +206,21 @@ Page({
     this.setData({
       questions:[],
       currentIndex: 0,
-      wrongCount: 0,     // 已认识
-      rightCount: 0,    // 不认识
+      correctCount: 0,
+      wrongCount: 0,
       completedCount: 0, // 已做题数
       isFinished: false,
       showNoPointsModal: false, // 积分不足弹窗控制
       score:0,
     })
   },
+
   caculateScore(){
     console.log("每组做题结束，弹起弹窗，计算得分")
     this.setData({
       isFinished:true
     })
-    let score = Math.floor(100 / this.data.completedCount * this.data.rightCount)
+    let score = Math.floor(100 / this.data.completedCount * this.data.correctCount)
     this.setData({
       score:score
     })
@@ -284,7 +291,9 @@ Page({
         console.log('做错的',res)
         this.setData({
           completedCount:this.data.completedCount+1,
-          wrongCount:this.data.wrongCount+1
+          wrongCount:this.data.wrongCount+1,
+          rightNum:res.rightNum,
+          wrongNum:res.wrongNum,
         })
         // 完成的数量是每组数量的整数倍时候，出现弹窗计算得分。
         if(this.data.completedCount % this.data.listenPracticeCountOption === 0){
@@ -297,7 +306,9 @@ Page({
         console.log('做对的',res)
         this.setData({
           completedCount:this.data.completedCount+1,
-          rightCount:this.data.rightCount+1
+          correctCount:this.data.correctCount+1,
+          rightNum:res.rightNum,
+          wrongNum:res.wrongNum,
         })
         if(this.data.completedCount % this.data.listenPracticeCountOption === 0){
           console.log('rrrrrrrrrrrrrrr')

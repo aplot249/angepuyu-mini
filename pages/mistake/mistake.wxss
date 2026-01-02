@@ -21,7 +21,8 @@
 
 .stats-bg {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  background: linear-gradient(180deg, #FFAB91 0%, #FF7043 100%);
+  /* background: linear-gradient(180deg, #FFAB91 0%, #FF7043 100%); */
+  background: linear-gradient(180deg, #FEC99D 0%, #FF8A65 100%);
   border-bottom-left-radius: 40rpx;
   border-bottom-right-radius: 40rpx;
 }
@@ -102,7 +103,8 @@
 }
 
 .play-icon-mini {
-  font-size: 32rpx; opacity: 0.5; color: #FF7043;
+  font-size: 32rpx; 
+  color: #FF7043;
 }
 
 .card-middle {
@@ -113,7 +115,7 @@
 }
 /* 释义字体大小跟随设置 */
 .cn-hint { 
-  font-size: var(--text-base); 
+  font-size: var(--text-main); 
   color: var(--text-sub); font-weight: 500; 
   line-height: 1.5;
 }

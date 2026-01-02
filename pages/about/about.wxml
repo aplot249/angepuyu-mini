@@ -60,7 +60,7 @@
         <view class="feat-item"><text class="dot">•</text>卡片学习、做题练习</view>
         <view class="feat-item"><text class="dot">•</text>单词本收藏、错题本复习</view>
         <view class="feat-item"><text class="dot">•</text>真人发音、长辈关怀</view>
-        <view class="feat-item"><text class="dot">•</text>语音串读、导出文档打印</view>
+        <view class="feat-item"><text class="dot">•</text>语音串读、倍数播放</view>
       </view>
     </view>
 
@@ -83,10 +83,13 @@
       <text class="title">特别鸣谢</text>
     </view>
     <view class="content-text">
-      <view class="view">感谢朋友对我熬夜写代码的包容与支持；</view>
-      <!-- <view class="view">感谢坦桑尼亚**商会提供的帮助；</view>
-      <view class="view">感谢达累斯萨拉姆大学孔子学院提供的帮助；</view> -->
-      <view class="view"><b>最感谢</b>的是正在使用这款软件的<b>你</b>，你的每次反馈都是我更新的动力！</view>
+      <view class="view">感谢室友对我熬夜编程的包容；</view>
+      <view class="view">感谢领导对我编程的理解和支持；</view>
+      <view class="view">感谢朋友对我软件宣传推广提供的帮助；</view>
+      <!-- <view class="view">感谢达累斯萨拉姆大学孔子学院提供的帮助；</view> -->
+      <view class="view">感谢正在使用这款软件的<b>你</b>，你的每次反馈都是我更新的动力！</view>
+      <view class="view">......</view>
+      <view class="view">感谢身边温暖的你们！</view>
     </view>
     <view class="footer-sign">
       —— 2025.12 写于 坦桑 达累斯萨拉姆

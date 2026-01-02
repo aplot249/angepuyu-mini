@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "crypto-js": "^4.2.0",
     "wxml-to-canvas": "^1.1.1"
   },
   "scripts": {

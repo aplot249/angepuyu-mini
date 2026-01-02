@@ -33,7 +33,6 @@ Page({
       // }
     ],
     noLoad:false,
-    startTime:Date.now()
   },
   UserInfoPointsChange(value){
     console.log(value)
@@ -56,7 +55,8 @@ Page({
       isDarkMode: app.globalData.isDarkMode,
       points:app.globalData.userInfo.points,
       quizCountOption:wx.getStorageSync('quizCountOption') || 10,
-      points:app.globalData.userInfo.points
+      points:app.globalData.userInfo.points,
+      startTime:Date.now()
     });
     http('/web/randomquestion/','get').then(res=>{
       this.setData({

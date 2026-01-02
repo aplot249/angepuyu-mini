@@ -17,6 +17,23 @@
   <!-- 页面主体内容 -->
   <view class="main-content" style="margin-top: {{totalNavHeight + 20}}px;">
     
+      <!-- [修改] 搜索框 - 改为真实输入框 -->
+      <view class="search-container">
+      <view class="search-input-box">
+        <text class="search-icon">🔍</text>
+        <input 
+          class="real-search-input"
+          type="text"
+          confirm-type="search"
+          placeholder="词库搜索单词短语，可输入中文、英语、斯语" 
+          placeholder-class="search-placeholder"
+          value="{{searchContent}}"
+          bindinput="onSearchInput"
+          bindconfirm="handleSearchTap"
+        />
+      </view>
+    </view>
+
     <!-- 1. 主轮播图 -->
     <swiper class="banner-swiper main" indicator-dots="true" autoplay="true" interval="5000" circular="true" indicator-active-color="#FEC99D" indicator-color="rgba(255, 255, 255, 0.8)">
       <block wx:for="{{banners}}" wx:key="id">
@@ -40,23 +57,6 @@
         </block>
       </swiper>
     </view>
-
-  <!-- [修改] 搜索框 - 改为真实输入框 -->
-  <view class="search-container">
-    <view class="search-input-box">
-      <text class="search-icon">🔍</text>
-      <input 
-        class="real-search-input"
-        type="text"
-        confirm-type="search"
-        placeholder="词库搜索单词短语，可输入中文、英语、斯语" 
-        placeholder-class="search-placeholder"
-        value="{{searchContent}}"
-        bindinput="onSearchInput"
-        bindconfirm="handleSearchTap"
-      />
-    </view>
-  </view>
 
     <!-- 3. 核心功能区 I -->
     <view class="func-grid-row">

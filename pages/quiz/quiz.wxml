@@ -27,7 +27,7 @@
 
   <!-- 2. 题目滑动区域 -->
   <swiper class="quiz-swiper" bindchange="onSwiperChange" current="{{currentIndex}}" previous-margin="40rpx" next-margin="40rpx">
-    <block wx:for="{{quizList}}" wx:key="id" wx:for-index="qIdx" wx:for-item="quizItem">
+    <block wx:for="{{quizList}}" wx:key="index" wx:for-index="qIdx" wx:for-item="quizItem">
       <swiper-item class="quiz-swiper-item">
         <view class="quiz-card">
           <!-- 题目区域 -->
