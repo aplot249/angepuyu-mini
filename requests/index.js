@@ -1,9 +1,13 @@
 import { eventBus } from '../utils/eventBus.js';
+import {encrypt,decrypt} from '../utils/encryption.js';
 
 // const baseHOST = 'http://192.168.0.67:8000' //公司
-// const baseHOST = 'https://siyu.jsxinlingdi.com'
-const baseHOST =  'http://192.168.1.181:8000'  //住宿
+const baseHOST = 'https://siyu.jsxinlingdi.com'
+// const baseHOST =  'http://192.168.1.181:8080'  //住宿
 // const baseHOST =  'http://127.0.0.1:8000'
+
+// const isJiami = false
+const isJiami = true
 const baseImgUrl = baseHOST + '/media'
 
 function request(url, method = 'POST', data = {}) {
@@ -11,33 +15,45 @@ function request(url, method = 'POST', data = {}) {
     'Authorization': wx.getStorageSync('token') ? 'JWT ' + wx.getStorageSync('token') : {}
   }
   var URL = baseHOST + url
+  // 如果是 POST/PUT，加密整个 body
+  const encryptedData = isJiami ? encrypt(data) : data;
   // wx.showLoading()
   return new Promise((resolve, reject) => {
     wx.request({
       url: URL,
       header: header,
       method: method,
-      data: data,
+      // data: data,
+      data: isJiami ? {
+        payload: encryptedData
+      } : data,
       timeout: '8000',
       success: res => {
         const { statusCode, data } = res;
         // console.log('eeeeeeeeeee',statusCode)
+        if(isJiami){
+          const decryptedData = decrypt(data.payload);
+          var res = decryptedData; // 替换原本的密文
+        }else{
+          var res = data
+        }
+        console.log(res)
         switch(statusCode){
           case 200:
-            resolve(data)
+            resolve(res)
             break;
           case 201:
-            resolve(data)
+            resolve(res)
             break;       
           // case 87014:
           //   reject(data)
           //   break;     
           case 204:
-            resolve(data)
+            resolve(res)
             break;            
           case 401:
             var errMsg = '未授权，请重新登录';
-            reject(data); // 将错误抛出
+            reject(res); // 将错误抛出
             break;
           case 403:
             var errMsg = '禁止访问';
@@ -51,12 +67,12 @@ function request(url, method = 'POST', data = {}) {
             wx.setStorageSync('token', '')
             app.globalData.userInfo = newInfo;
             app.saveData();
-            console.log('data',data)
+            console.log('data',res)
             const pages = getCurrentPages();
             const currentPage = pages[pages.length - 1];
             const currentRoute = '/'+currentPage.route; // 例如：'pages/index/index'
             console.log('currentRoute',currentRoute)
-            if (data.detail == 'JWT Token已过期！' || data.detail == '身份认证信息未提供。' || data.detail =='用户不存在！') {
+            if (res.detail == 'JWT Token已过期！' || res.detail == '身份认证信息未提供。' || res.detail =='用户不存在！') {
               wx.showModal({
                   title: '请先登录，才能进行后续操作',
                   confirmText: "确认登录",
@@ -114,7 +130,7 @@ function request(url, method = 'POST', data = {}) {
                 }
               )
             }            
-            reject(data); // 将错误抛出
+            reject(res); // 将错误抛出
             break;  
           case 404:
             var errMsg = '资源不存在';
@@ -123,15 +139,15 @@ function request(url, method = 'POST', data = {}) {
               title: '内容不存在',
               icon: 'none'
             });
-            reject(data); // 将错误抛出
+            reject(res); // 将错误抛出
             break;           
           case 429:
             var errMsg = '频率太快';
-            reject(data); // 将错误抛出
+            reject(res); // 将错误抛出
             break;
           default:
             var errMsg = '服务器错误';
-            reject(data); // 将错误抛出
+            reject(res); // 将错误抛出
         }
       },
       fail: err => {
@@ -155,6 +171,8 @@ function fileupload(url, filePath, name, formData = {}) {
     'Authorization': wx.getStorageSync('token') ? 'JWT ' + wx.getStorageSync('token') : {}
   }
   var URL = baseHOST + url
+  const encryptedData = isJiami ? encrypt(formData) : formData;
+
   // wx.showLoading()
   return new Promise((resolve, reject) => {
     wx.uploadFile({
@@ -162,24 +180,33 @@ function fileupload(url, filePath, name, formData = {}) {
       header: header,
       filePath: filePath,
       name: name,
-      formData: formData,
+      // formData: formData,
+      formData: isJiami ? {
+        payload: encryptedData
+      } : formData,
       timeout: '5000',
       success: res => {
         const { statusCode, data } = res;
+        if(isJiami){
+          const decryptedData = decrypt(data.payload);
+          var res = decryptedData; // 替换原本的密文
+        }else{
+          var res = data
+        }
         // console.log('eeeeeeeeeee',statusCode)
         switch(statusCode){
           case 200:
-            resolve(JSON.parse(data))
+            resolve(JSON.parse(res))
             break;
           case 201:
-            resolve(JSON.parse(data))
+            resolve(JSON.parse(res))
             break;            
           case 204:
-            resolve(JSON.parse(data))
+            resolve(JSON.parse(res))
             break;            
           case 401:
             var errMsg = '未授权，请重新登录';
-            reject(JSON.parse(data)); // 将错误抛出
+            reject(JSON.parse(res)); // 将错误抛出
             break;
           case 403:
             var errMsg = '禁止访问';
@@ -192,12 +219,12 @@ function fileupload(url, filePath, name, formData = {}) {
             wx.setStorageSync('token', '')
             app.globalData.userInfo = newInfo;
             app.saveData();
-            console.log('data',data)
+            console.log('data',res)
             const pages = getCurrentPages();
             const currentPage = pages[pages.length - 1];
             const currentRoute = '/'+currentPage.route; // 例如：'pages/index/index'
             console.log('currentRoute',currentRoute)
-            if (data.detail == 'JWT Token已过期！' || data.detail == '身份认证信息未提供。' || data.detail =='用户不存在！') {
+            if (res.detail == 'JWT Token已过期！' || res.detail == '身份认证信息未提供。' || res.detail =='用户不存在！') {
               wx.showModal({
                   title: '请先登录，才能进行后续操作',
                   confirmText: "确认登录",
@@ -256,7 +283,7 @@ function fileupload(url, filePath, name, formData = {}) {
                 }
               )
             }            
-            reject(JSON.parse(data)); // 将错误抛出
+            reject(JSON.parse(res)); // 将错误抛出
             break;  
           case 404:
             var errMsg = '资源不存在';
@@ -265,15 +292,15 @@ function fileupload(url, filePath, name, formData = {}) {
               title: '内容不存在',
               icon: 'none'
             });
-            reject(JSON.parse(data)); // 将错误抛出
+            reject(JSON.parse(res)); // 将错误抛出
             break;           
           case 429:
             var errMsg = '频率太快';
-            reject(JSON.parse(data)); // 将错误抛出
+            reject(JSON.parse(res)); // 将错误抛出
             break;
           default:
             var errMsg = '服务器错误';
-            reject(JSON.parse(data)); // 将错误抛出
+            reject(JSON.parse(res)); // 将错误抛出
         }
       },
       fail: err => {
@@ -283,7 +310,7 @@ function fileupload(url, filePath, name, formData = {}) {
           title: '网络连接失败',
           icon: 'none'
         });
-        reject(JSON.parse(data)); // 将错误抛出
+        reject(JSON.parse(err)); // 将错误抛出
       },
       complete: () => {
         // wx.hideLoading();

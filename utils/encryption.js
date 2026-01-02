@@ -1,9 +1,22 @@
-const CryptoJS = require('crypto-js');
+const CryptoJS = require('../miniprogram/miniprogram_npm/crypto-js/index');
 
 // 必须与后端的 AES_SECRET_KEY 保持一致
-const KEY_HEX = CryptoJS.enc.Utf8.parse('1234567890123456'); // 16字节
+const KEY_HEX = CryptoJS.enc.Utf8.parse('Qq1788fghjm249ap'); // 16字节
 
 const Encryption = {
+  /**
+   * 生成随机 WordArray (替代 CryptoJS.lib.WordArray.random 以兼容小程序)
+   * @param {Number} nBytes - 字节数
+   */
+  _generateRandomIV: function(nBytes) {
+    const words = [];
+    // 每次生成 4 字节 (32位整数)
+    for (let i = 0; i < nBytes; i += 4) {
+      words.push((Math.random() * 0x100000000) | 0);
+    }
+    return CryptoJS.lib.WordArray.create(words, nBytes);
+  },
+
   /**
    * 加密方法
    * @param {Object} data - 需要加密的 JSON 对象
@@ -15,7 +28,8 @@ const Encryption = {
     }
     
     // 1. 生成随机 IV (16字节)
-    const iv = CryptoJS.lib.WordArray.random(16);
+    // 修复：不使用 CryptoJS.lib.WordArray.random(16)，避免小程序报错
+    const iv = Encryption._generateRandomIV(16);
     
     // 2. 加密
     const encrypted = CryptoJS.AES.encrypt(data, KEY_HEX, {
@@ -24,10 +38,7 @@ const Encryption = {
       padding: CryptoJS.pad.Pkcs7
     });
 
-    // 3. 拼接 IV + 密文 (注意：crypto-js 的 iv 和 ciphertext 都是 WordArray，需要处理)
-    // 简单的做法：手动拼接 Hex 或 Base64。
-    // 为了匹配 Python 的 base64(iv + ciphertext)，我们需要操作字节：
-    
+    // 3. 拼接 IV + 密文
     const ivConcatCiphertext = iv.clone().concat(encrypted.ciphertext);
     return CryptoJS.enc.Base64.stringify(ivConcatCiphertext);
   },
@@ -43,7 +54,6 @@ const Encryption = {
       const rawData = CryptoJS.enc.Base64.parse(encryptedBase64);
       
       // 2. 提取 IV (前 16 字节 = 4 个 32位字)
-      // clone() 很重要，否则 sigBytes 会被修改影响后续
       const iv = CryptoJS.lib.WordArray.create(rawData.words.slice(0, 4), 16);
       
       // 3. 提取密文 (从第 16 字节开始)
@@ -72,4 +82,8 @@ const Encryption = {
   }
 };
 
-export default Encryption;
+// export default Encryption;
+module.exports = {
+  encrypt:Encryption.encrypt,
+  decrypt:Encryption.decrypt
+}
