@@ -5,6 +5,7 @@ App({
   globalData: {
     userInfo: {
       nickname: "", //默认值
+      points:5,
       isRecorder:false,
       hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享

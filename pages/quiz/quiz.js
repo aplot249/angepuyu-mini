@@ -12,7 +12,7 @@ Page({
     score: 0, //总得分
     rightNum:0,
     // eachItemScore:0,
-    points:app.globalData.userInfo.points,
+    points:app.globalData.userInfo.points ? app.globalData.userInfo.points : 5,
 
     completedCount: 0, // 已做题数
     wrongCount: 0,     // 错题数
@@ -58,7 +58,7 @@ Page({
       points:app.globalData.userInfo.points,
       startTime:Date.now()
     });
-    http('/web/randomquestion/','get').then(res=>{
+    http(`/web/randomquestion/?allownologin=${!app.globalData.userInfo.isLoggedIn}`,'get').then(res=>{
       this.setData({
         noLoad:res.tip,
         quizList:res.data,
@@ -125,6 +125,9 @@ Page({
     // 以前序列小于这次积分，就是向后刷
     if (this.data.currentIndex < e.detail.current){
       // 向后刷积分小于0时候
+      if(!app.globalData.userInfo.isLoggedIn){
+        this.setData({points:5})
+      }
       if(this.data.points <= 0){
         this.setData({
           points:0,
@@ -164,7 +167,7 @@ Page({
                 icon:'none'
               })
           }else{  //否则就增加
-            http('/web/randomquestion/','get').then(res=>{
+            http(`/web/randomquestion/?allownologin=${app.globalData.userInfo.isLoggedIn}`,'get').then(res=>{
               this.data.quizList.push(...res.data)
               this.setData({
                 noLoad:res.tip,
@@ -175,6 +178,10 @@ Page({
           }
         }
       }
+    }else{
+      this.setData({
+        currentIndex:e.detail.current
+      })
     }
   },
 
@@ -246,21 +253,23 @@ Page({
       // oanswer
       // JSON.stringify(question.options)
       // 做错的题就要后端做记录
-      http('/web/mistake/','post',{'ctitemid':question.id,'answers':oanswer}).then(res=>{
-        console.log('ress9',res)
-        // 做对做错，扣1积分
-        this.setData({
-          completedCount: this.data.completedCount + 1,
-          wrongCount:res.count, //错题总数
-          points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
+      if(app.globalData.userInfo.isLoggedIn){
+        http('/web/mistake/','post',{'ctitemid':question.id,'answers':oanswer}).then(res=>{
+          console.log('ress9',res)
+          // 做对做错，扣1积分
+          this.setData({
+            completedCount: this.data.completedCount + 1,
+            wrongCount:res.count, //错题总数
+            points:this.data.points - 1 > 0 ? this.data.points - 1 : 0
+          })
+          if(this.data.completedCount % this.data.quizCountOption === 0){
+            console.log('ffffffffff')
+            that.caculateScore()
+          }
+          app.globalData.userInfo.points = this.data.points
+          app.saveData()
         })
-        if(this.data.completedCount % this.data.quizCountOption === 0){
-          console.log('ffffffffff')
-          that.caculateScore()
-        }
-        app.globalData.userInfo.points = this.data.points
-        app.saveData()
-      })
+      }
       // [修复] 如果是最后一题，答错也需要在延迟后进入结算，否则用户无路可走
       // if (qindex === this.data.quizList.length - 1) {
         // setTimeout(() => {

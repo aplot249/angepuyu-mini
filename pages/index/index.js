@@ -80,6 +80,7 @@ Page({
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
       // isLoggedIn: app.globalData.userInfo.isLoggedIn,
+      isLoggedIn:app.globalData.userInfo.isLoggedIn,
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
   },

@@ -78,7 +78,7 @@
     </view>
 
     <!-- 4. 核心功能区 II -->
-    <view class="func-grid-row">
+    <view class="func-grid-row" wx:if="{{isLoggedIn}}">
       <view class="func-card wordbook-style" bindtap="navigateToWordbook">
         <view class="f-icon-box">⭐️</view>
         <view class="f-text-box">
@@ -87,7 +87,7 @@
         </view>
       </view>
 
-      <view class="func-card mistake-style" bindtap="navigateToMistake">
+      <view class="func-card mistake-style" bindtap="navigateToMistake" wx:if="{{isLoggedIn}}">
         <view class="f-icon-box">📓</view>
         <view class="f-text-box">
           <text class="f-title">我的错题</text>

@@ -10,7 +10,7 @@ Page({
     currentIndex: 0, // 当前 Swiper 索引
     isPlaying: false,
     score:0,
-    points:'',
+    points:app.globalData.userInfo.points ? app.globalData.userInfo.points : 5,
     // 本次做题统计数据
     correctCount: 0,
     wrongCount: 0,
@@ -88,12 +88,12 @@ Page({
   },
 
   onLoad() {
-    this.initAllQuestions();
+    this.initAllQuestions('first');
   },
 
   // 初始化所有题目
   initAllQuestions() {
-    http('/web/listenpractice/','get').then(res=>{
+    http(`/web/listenpractice/?allownologin=${!app.globalData.userInfo.isLoggedIn}`,'get').then(res=>{
       console.log('ressss',res)
       const initializedQuestions = res.data.map((q, qIndex) => {
         // 生成带唯一ID的单词对象
@@ -132,9 +132,12 @@ Page({
 
   // Swiper 切换事件
   onSwiperChange(e) {
-        // 以前序列小于这次积分，就是向后刷
+      // 以前序列小于这次积分，就是向后刷
     if (this.data.currentIndex < e.detail.current){
       // 向后刷积分小于0时候
+      if(!app.globalData.userInfo.isLoggedIn){
+        this.setData({points:5})
+      }
       if(this.data.points <= 0){
         this.setData({
           points:0,
@@ -175,12 +178,41 @@ Page({
               })
           }else{  //否则就增加
             if(this.data.currentIndex == this.data.questions.length - 1){
-              this.initAllQuestions()
+              // this.initAllQuestions()
+              http(`/web/listenpractice/?allownologin=${app.globalData.userInfo.isLoggedIn}`,'get').then(res=>{
+                console.log('ressss',res)
+                const initializedQuestions = res.data.map((q, qIndex) => {
+                  // 生成带唯一ID的单词对象
+                  // console.log('q.swahili',q.swahili.split(' '))
+                  const wordObjects = q.swahili.split(' ').filter(i=>i !== "").map((word, wIndex) => ({
+                      id: `${q.id}-${wIndex}`, // 唯一ID
+                      text: word,
+                      selected: false
+                    }));
+                  const shuffled = this.shuffleArray([...wordObjects]);
+                  return {
+                    ...q,
+                    shuffledWords: shuffled,
+                    answerSlots: [],
+                    status: 'idle'
+                  }
+                })
+                this.setData({ 
+                  questions: this.data.questions.concat(initializedQuestions),
+                  rightNum: res.rightNum,
+                  wrongNum: res.wrongNum,
+                  noLoad:res.tip,
+                  isFinished:false
+                })
+              })
             }
           }
         }
       }
     }else{
+        this.setData({
+          currentIndex:e.detail.current
+        })
       if(e.detail.current == 0){
           this.setData({
             currentIndex:0

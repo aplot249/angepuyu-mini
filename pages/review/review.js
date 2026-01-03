@@ -18,29 +18,35 @@ Page({
     knownCount: 0,     // 已认识
     forgotCount: 0,    // 不认识
     completedCount: 0, // 已做题 (已学习)
-    points: app.globalData.userInfo.points,       // 当前积分
+
+    points: app.globalData.userInfo.points ? app.globalData.userInfo.points : 5,       // 当前积分
 
     showNoPointsModal: false, // 积分不足弹窗控制
-
+    allownologin:false,
     // 模拟复习卡片数据
     wordList: [],
-    startTime:Date.now()
+    startTime:Date.now(),
   },
+
   onLoad() {
+    // console.log('app.globalData.userInfo.points',app.globalData.userInfo.points)
     this.calcNavBar();
   },
+
   UserInfoPointsChange(value){
     console.log(value)
     this.setData({
       points:value
     })
   },
+
   OperateNoPointsModal(value){
     console.log(value)
     this.setData({
       showNoPointsModal:value
     })
   },
+
   onReady(){
     wx.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -51,11 +57,11 @@ Page({
       }
     })
   },
+
   onShow() {
     eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
-    eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
-      // 直接从我的收藏里取
-    http('/web/randomcard/','get').then(res=>{
+    eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal)
+    http(`/web/randomcard/?allownologin=${!app.globalData.userInfo.isLoggedIn}`,'get').then(res=>{
       this.setData({
         noLoad:res.tip,
         wordList:res.data,
@@ -118,6 +124,9 @@ Page({
       this.setData({
         completedCount: this.data.completedCount + 1,
       })
+      if(!app.globalData.userInfo.isLoggedIn){
+          this.setData({points:5})
+      }
       if(this.data.points <= 0){
         //积分不足，退回去，显示要充值
         this.setData({
@@ -142,7 +151,7 @@ Page({
                 icon:'none'
               })
           }else{
-            http('/web/randomcard/','get').then(res=>{
+            http(`/web/randomcard/?allownologin=${app.globalData.userInfo.isLoggedIn}`,'get').then(res=>{
               this.data.wordList.push(...res.data)
               this.setData({
                 noLoad:res.tip,
@@ -159,6 +168,9 @@ Page({
     }
     // 往回刷
     else{
+      this.setData({
+        currentIndex:e.detail.current
+      })
       if(e.detail.current == 0){
           this.setData({
             currentIndex:0

@@ -94,28 +94,39 @@ function request(url, method = 'POST', data = {}) {
                                 gender: res.userInfo.gender,
                                 wxnickname: res.userInfo.nickName,
                               }
+                              var encryptedData = isJiami ? encrypt(data) : data;
                               wx.request({
                                 url: baseHOST+'/user/openid/',
                                 header: header,
                                 method: 'post',
-                                data: data,
+                                // data: isJiami ? encrypt(data) : data,
+                                data: isJiami ? {
+                                  payload: encryptedData
+                                } : data,
                                 timeout: '8000',
                                 success: res => {
-                                  console.log('登录信息：', res.data)
+                                  if(isJiami){
+                                    const decryptedData = decrypt(res.data.payload);
+                                    var rr = decryptedData; // 替换原本的密文
+                                  }else{
+                                    var rr = res.data
+                                  }
+                                  console.log('rrrrrrr',rr)
+                                  console.log('登录信息：', rr)
                                   const newInfo = {
-                                    ...res.data.user,
+                                    ...rr.user,
                                     isLoggedIn: true,
                                   };
                                   app.globalData.userInfo = newInfo;
-                                  app.globalData.userCreated =  res.data.created
+                                  app.globalData.userCreated =  rr.created
                                   eventBus.emit('userNewCreated', app.globalData.userCreated);
                                   app.saveData();
                                   wx.showToast({
                                     title: '登录成功',
                                     icon: 'none'
                                   });
-                                  // wx.setStorageSync('points',res.data.user.points)
-                                  wx.setStorageSync('token', res.data.token)
+                                  // wx.setStorageSync('points',res.user.points)
+                                  wx.setStorageSync('token', rr.token)
                                   wx.reLaunch({
                                     url: currentRoute,
                                   })
@@ -186,27 +197,30 @@ function fileupload(url, filePath, name, formData = {}) {
       } : formData,
       timeout: '5000',
       success: res => {
+        console.log('333333333333333',res)
         const { statusCode, data } = res;
+        // console.log('eeeeeeeeeee',statusCode)
         if(isJiami){
-          const decryptedData = decrypt(data.payload);
+          const decryptedData = decrypt(JSON.parse(data).payload);
           var res = decryptedData; // 替换原本的密文
         }else{
-          var res = data
+          var res = JSON.parse(data)
         }
+        console.log('eeeeeeeeeee',res)
         // console.log('eeeeeeeeeee',statusCode)
         switch(statusCode){
           case 200:
-            resolve(JSON.parse(res))
+            resolve(res)
             break;
           case 201:
-            resolve(JSON.parse(res))
+            resolve(res)
             break;            
           case 204:
-            resolve(JSON.parse(res))
+            resolve(res)
             break;            
           case 401:
             var errMsg = '未授权，请重新登录';
-            reject(JSON.parse(res)); // 将错误抛出
+            reject(res); // 将错误抛出
             break;
           case 403:
             var errMsg = '禁止访问';
@@ -246,29 +260,38 @@ function fileupload(url, filePath, name, formData = {}) {
                                 gender: res.userInfo.gender,
                                 wxnickname: res.userInfo.nickName,
                               }
+                              var encryptedData = isJiami ? encrypt(data) : data;
                               wx.request({
                                 url: baseHOST+'/user/openid/',
                                 header: header,
                                 method: 'post',
-                                data: data,
+                                data: isJiami ? {
+                                    payload: encryptedData
+                                  } : data,
                                 timeout: '8000',
                                 success: res => {
-                                  console.log('登录信息：', res.data)
+                                  if(isJiami){
+                                    const decryptedData = decrypt(res.data.payload);
+                                    var rr = decryptedData; // 替换原本的密文
+                                  }else{
+                                    var rr = res.data
+                                  }
+                                  console.log('登录信息：', rr)
                                   const newInfo = {
-                                    ...res.data.user,
+                                    ...rr.user,
                                     isLoggedIn: true,
                                   };
                                   // 这里会把后端的point返回给前端，
                                   app.globalData.userInfo = newInfo;
-                                  app.globalData.userCreated =  res.data.created
+                                  app.globalData.userCreated =  rr.created
                                   eventBus.emit('userNewCreated', app.globalData.userCreated);
                                   app.saveData();
                                   wx.showToast({
                                     title: '登录成功',
                                     icon: 'none'
                                   });
-                                  wx.setStorageSync('token', res.data.token)
-                                  // wx.setStorageSync('points',res.data.user.points)
+                                  wx.setStorageSync('token', rr.token)
+                                  // wx.setStorageSync('points',rr.user.points)
                                   wx.reLaunch({
                                     url: currentRoute,
                                   })
@@ -283,7 +306,7 @@ function fileupload(url, filePath, name, formData = {}) {
                 }
               )
             }            
-            reject(JSON.parse(res)); // 将错误抛出
+            reject(res); // 将错误抛出
             break;  
           case 404:
             var errMsg = '资源不存在';
@@ -292,15 +315,15 @@ function fileupload(url, filePath, name, formData = {}) {
               title: '内容不存在',
               icon: 'none'
             });
-            reject(JSON.parse(res)); // 将错误抛出
+            reject(res); // 将错误抛出
             break;           
           case 429:
             var errMsg = '频率太快';
-            reject(JSON.parse(res)); // 将错误抛出
+            reject(res); // 将错误抛出
             break;
           default:
             var errMsg = '服务器错误';
-            reject(JSON.parse(res)); // 将错误抛出
+            reject(res); // 将错误抛出
         }
       },
       fail: err => {
@@ -310,7 +333,7 @@ function fileupload(url, filePath, name, formData = {}) {
           title: '网络连接失败',
           icon: 'none'
         });
-        reject(JSON.parse(err)); // 将错误抛出
+        reject(err); // 将错误抛出
       },
       complete: () => {
         // wx.hideLoading();
