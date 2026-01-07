@@ -26,6 +26,11 @@ Page({
     // 模拟复习卡片数据
     wordList: [],
     startTime:Date.now(),
+
+    audioConfig: {
+      voice: '',
+      speed: 1.0
+    }
   },
 
   onLoad() {
@@ -191,7 +196,7 @@ Page({
     // 查看斯语答案时候自动发音
     if(!item.isFlipped){
       let xiaohao = item.fayin ? item.xiaohao : 0
-      if(app.globalData.userInfo.FlipautoPlayfayin){
+      if(app.globalData.FlipautoPlayfayin){
         // app.playAudio(item.fayin,xiaohao,item.swahili)
         let voiceType = wx.getStorageSync('voiceType')
         let fayin = "fayin"+voiceType
@@ -211,7 +216,7 @@ Page({
     let voiceType = wx.getStorageSync('voiceType')
     let fayin = "fayin"+voiceType
     console.log(fayin,item[fayin])
-    app.playAudio(item[fayin],xiaohao,item.title)
+    app.playAudio(item[fayin],xiaohao,item.swahili)
     // app.playAudio(item.fayin,xiaohao,item.title)
     // wx.showToast({ title: `播放: ${item.swahili}`, icon: 'none' });
   },

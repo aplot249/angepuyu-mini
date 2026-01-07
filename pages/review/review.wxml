@@ -135,7 +135,6 @@
   <!-- 3. 积分不足弹窗 -->
   <points-modal visible="{{showNoPointsModal}}" />
 
-
   <!-- <vip-modal visible="{{showNoPointsModal}}" /> -->
-
+  <audio-control />
 </view>

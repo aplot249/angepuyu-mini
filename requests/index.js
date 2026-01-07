@@ -3,7 +3,7 @@ import {encrypt,decrypt} from '../utils/encryption.js';
 
 // const baseHOST = 'http://192.168.0.67:8000' //公司
 const baseHOST = 'https://siyu.jsxinlingdi.com'
-// const baseHOST =  'http://192.168.1.181:8080'  //住宿
+// const baseHOST =  'http://192.168.1.181:8000'  //住宿
 // const baseHOST =  'http://127.0.0.1:8000'
 
 // const isJiami = false
@@ -128,7 +128,8 @@ function request(url, method = 'POST', data = {}) {
                                   // wx.setStorageSync('points',res.user.points)
                                   wx.setStorageSync('token', rr.token)
                                   wx.reLaunch({
-                                    url: currentRoute,
+                                    // url: currentRoute,
+                                    url: '/pages/index/index',
                                   })
                                 }
                               })
@@ -293,7 +294,8 @@ function fileupload(url, filePath, name, formData = {}) {
                                   wx.setStorageSync('token', rr.token)
                                   // wx.setStorageSync('points',rr.user.points)
                                   wx.reLaunch({
-                                    url: currentRoute,
+                                    // url: currentRoute,
+                                    url: '/pages/index/index',
                                   })
                                 }
                               })

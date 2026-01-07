@@ -13,8 +13,8 @@ Page({
     feedbackContent: '',
     feedbackLen: 0,
 
-    FlipautoPlayfayin:app.globalData.userInfo.FlipautoPlayfayin || true,
-    NextautoPlayfayin:app.globalData.userInfo.NextautoPlayfayin || true,
+    FlipautoPlayfayin:app.globalData.FlipautoPlayfayin,
+    NextautoPlayfayin:app.globalData.NextautoPlayfayin,
 
     // [新增] 播放倍速配置相关
     playRateValue: 1.0,
@@ -169,12 +169,12 @@ Page({
   },
   SetFlipautoPlayfayin(){
     this.setData({FlipautoPlayfayin:!this.data.FlipautoPlayfayin})
-    app.globalData.userInfo.FlipautoPlayfayin = this.data.FlipautoPlayfayin
+    app.globalData.FlipautoPlayfayin = this.data.FlipautoPlayfayin
     app.saveData()
   },
   SetNextautoPlayfayin(){
     this.setData({NextautoPlayfayin:!this.data.NextautoPlayfayin})
-    app.globalData.userInfo.NextautoPlayfayin = this.data.NextautoPlayfayin
+    app.globalData.NextautoPlayfayin = this.data.NextautoPlayfayin
     app.saveData()
   },
   navigateToAbout() {

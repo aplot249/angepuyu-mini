@@ -24,11 +24,18 @@
     "miniprogram": {
       "list": [
         {
-          "name": "pages/listening-practice/listening-practice",
-          "pathName": "pages/listening-practice/listening-practice",
+          "name": "pages/book-sale/book-sale",
+          "pathName": "pages/book-sale/book-sale",
           "query": "",
           "scene": null,
           "launchMode": "default"
+        },
+        {
+          "name": "pages/listening-practice/listening-practice",
+          "pathName": "pages/listening-practice/listening-practice",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         },
         {
           "name": "pages/contribute/contribute",

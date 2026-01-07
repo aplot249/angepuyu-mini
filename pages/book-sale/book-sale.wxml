@@ -1,0 +1,131 @@
+<view class="container font-lvl-{{fontSizeLevel}} {{isDarkMode ? 'dark-mode' : ''}}">
+
+<!-- 1. 顶部书籍展示区 -->
+<view class="book-header">
+  <view class="book-cover-shadow"></view>
+  <image class="book-cover" src="{{bookInfo.coverUrl}}" mode="aspectFill"></image>
+  <view class="header-content">
+    <text class="book-title">{{bookInfo.title}}</text>
+    <text class="book-subtitle">{{bookInfo.subtitle}}</text>
+    <view class="tags-row">
+      <text class="tag" wx:for="{{bookInfo.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 2. 核心数据呈现 (卖点可视化) -->
+<view class="stats-section">
+  <view class="section-title-center">本书包含</view>
+  <view class="stats-grid">
+    <view class="stat-item">
+      <text class="stat-num text-orange">2000+</text>
+      <text class="stat-label">核心词汇</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num text-blue">50+</text>
+      <text class="stat-label">场景对话</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num text-green">10h+</text>
+      <text class="stat-label">真人音频</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-num text-purple">1对1</text>
+      <text class="stat-label">社群答疑</text>
+    </view>
+  </view>
+</view>
+
+<!-- 3. 详细介绍 -->
+<view class="detail-card">
+  <view class="card-title">📖 内容简介</view>
+  <text class="desc-text">{{bookInfo.description}}</text>
+  
+  <view class="divider"></view>
+  
+  <view class="card-title">✨ 适合人群</view>
+  <view class="feature-list">
+    <view class="feature-item" wx:for="{{bookInfo.targets}}" wx:key="*this">
+      <text class="check-icon">✅</text>
+      <text class="feature-text">{{item}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 4. 作者/推荐语 (可选) -->
+<view class="detail-card">
+  <view class="card-title">👨‍🏫 作者寄语</view>
+  <view class="author-box">
+    <image class="author-avatar" src="{{bookInfo.authorAvatar}}" mode="aspectFill"></image>
+    <view class="author-info">
+      <text class="author-name">{{bookInfo.author}}</text>
+      <text class="author-quote">"{{bookInfo.quote}}"</text>
+    </view>
+  </view>
+</view>
+
+<!-- 5. 图片详情展示 -->
+<view class="detail-images">
+  <view class="section-title-center">内页预览</view>
+  <block wx:for="{{bookInfo.detailImages}}" wx:key="*this">
+    <image class="detail-img" src="{{item}}" mode="widthFix"></image>
+  </block>
+</view>
+
+<!-- 底部占位，防止内容被遮挡 -->
+<view class="footer-spacer"></view>
+
+<!-- 6. 底部购买栏 -->
+<view class="bottom-bar">
+  <view class="price-box">
+    <text class="currency">TZS</text>
+    <text class="price">{{bookInfo.price}}</text>
+    <text class="original-price" wx:if="{{bookInfo.originalPrice}}">TZS {{bookInfo.originalPrice}}</text>
+  </view>
+  <view class="action-buttons">
+    <button class="btn-consult" open-type="contact">
+      <text class="btn-icon">💬</text>
+      <text>咨询</text>
+    </button>
+    <!-- [修改] 点击显示弹窗 -->
+    <view class="btn-buy" bindtap="showOrderModal">
+      立即下单
+    </view>
+  </view>
+</view>
+
+<!-- 7. 订单信息填写弹窗 [新增] -->
+<view class="modal-mask {{showOrderModal ? 'show' : ''}}" bindtap="closeOrderModal" catchtouchmove="preventScroll"></view>
+<view class="order-modal {{showOrderModal ? 'show' : ''}}" catchtouchmove="preventScroll">
+  <view class="modal-header">
+    <text class="modal-title">填写收货信息</text>
+    <view class="close-icon" bindtap="closeOrderModal">✕</view>
+  </view>
+  
+  <view class="form-content">
+    <view class="form-item">
+      <text class="label">姓名</text>
+      <input class="input" placeholder="请输入收货人姓名" data-field="name" value="{{orderForm.name}}" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="label">中国手机号</text>
+      <input class="input" type="number" placeholder="用于接收订单通知" data-field="cnPhone" value="{{orderForm.cnPhone}}" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="label">坦桑手机号</text>
+      <input class="input" type="number" placeholder="便于当地配送联系" data-field="tzPhone" value="{{orderForm.tzPhone}}" bindinput="onInputChange" />
+    </view>
+    <view class="form-item">
+      <text class="label">收货地址</text>
+      <textarea class="textarea" placeholder="请输入详细地址(城市/街道/门牌号)" data-field="address" value="{{orderForm.address}}" bindinput="onInputChange" disable-default-padding></textarea>
+    </view>
+  </view>
+
+  <view class="modal-footer">
+    <view class="btn-confirm-pay" bindtap="submitOrder">
+      确认支付 <text class="pay-amount">TZS {{bookInfo.price}}</text>
+    </view>
+  </view>
+</view>
+
+</view>

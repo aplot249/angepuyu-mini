@@ -118,4 +118,5 @@
   <!-- <vip-modal visible="{{showNoPointsModal}}" /> -->
   <welcome-modal></welcome-modal>
   
+  <audio-control />
 </view>

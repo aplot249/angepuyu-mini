@@ -150,7 +150,7 @@ Page({
         app.saveData()
         let lingyu = this.data.quizList[this.data.currentIndex].lingyu
         // 判断自动发音
-        if(app.globalData.userInfo.NextautoPlayfayin){    //开启了滑下一个自动发音
+        if(app.globalData.NextautoPlayfayin){    //开启了滑下一个自动发音
           let item = this.data.quizList[this.data.currentIndex]
           let xiaohao = item.fayin ? item.xiaohao : 0    //按发音存不存在，确定消耗
           let voiceType = wx.getStorageSync('voiceType')    //确定发音音色

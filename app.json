@@ -18,7 +18,8 @@
     "pages/community/community",
     "pages/community-post/community-post",
     "pages/community-detail/community-detail",
-    "pages/listening-practice/listening-practice"
+    "pages/listening-practice/listening-practice",
+    "pages/book-sale/book-sale"
   ],
   "window": {
     "backgroundTextStyle": "light",

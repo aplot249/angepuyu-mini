@@ -4,6 +4,7 @@
   "usingComponents": {
     "vip-modal": "/components/vip-modal/vip-modal",
     "points-modal": "/components/points-modal/points-modal",
-    "welcome-modal": "/components/welcome-modal/welcome-modal"
+    "welcome-modal": "/components/welcome-modal/welcome-modal",
+    "audio-control": "/components/audio-control/audio-control"
   }
 }

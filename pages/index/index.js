@@ -5,7 +5,7 @@ Page({
   data: {
     fontSizeLevel: 1,
     isDarkMode: false,
-    
+
     // 导航栏适配数据
     statusBarHeight: 20,
     navBarHeight: 44,
@@ -14,11 +14,12 @@ Page({
 
     greeting: 'Jambo!',
     exchangeRate: '385.5', 
-    
+
     // 顶部主轮播图 [已更新]
     banners: [],
     hh:null,
     isLoggedIn:app.globalData.userInfo.isLoggedIn,
+
     // 中间小轮播图
     // middleBanners: [
     //   'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80',
@@ -35,6 +36,7 @@ Page({
     fayintype:[],
     searchContent:''
   },
+
   onLoad() {
     this.calcNavBar();
     this.setGreeting();
@@ -60,6 +62,7 @@ Page({
       })
     })
   },
+
   onSearchInput(e) {
     this.setData({
       searchContent: e.detail.value
@@ -122,27 +125,28 @@ Page({
   navigateToReview() {
     wx.navigateTo({ url: '/pages/review/review' });
   },
+  
   // [新增] 跳转到每日练习
   navigateToQuiz() {
     wx.switchTab({ url: '/pages/quiz/quiz' })
   },
+
   navigateToMistake() {
     wx.navigateTo({ url: '/pages/mistake/mistake' })
   },   
+
   navigateToWordbook(){
     wx.navigateTo({ url: '/pages/wordbook/wordbook' })
   }, 
+
   navigateToListening() {
-    // wx.showToast({
-    //   title: '即将上线',
-    //   icon:"none"
-    // })
-    // return
     wx.navigateTo({ url: '/pages/listening-practice/listening-practice' });
   },
+
   navigateToCommunity() {
     wx.navigateTo({ url: '/pages/community/community' });
   },
+
   playAudio(e) {
     let item = e.currentTarget.dataset.item
     let xiaohao = item.fayin ? item.xiaohao : 0 //按发音存不存在，确定消耗
@@ -155,8 +159,10 @@ Page({
   refreshDaily() {
     this.onLoad()
   },
+
   onUnload(){
   },
+
   // 分享配置
   onShareAppMessage(res) {
     if(!app.globalData.userInfo.hasSharedToday){

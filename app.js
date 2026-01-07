@@ -9,8 +9,10 @@ App({
       isRecorder:false,
       hasSignedIn: false, //是否已签到
       hasSharedToday: false, // [新增] 今日是否已分享
-      favorites: []
+      favorites: [],
     },
+    FlipautoPlayfayin:true,
+    NextautoPlayfayin:true,
     userCreated:null, //判断是不是新用户
     fontSizeLevel: 1, 
     isDarkMode: false,
