@@ -1,4 +1,5 @@
 {
   "enablePullDownRefresh": false,
-  "welcome-modal": "/components/welcome-modal/welcome-modal"
+  "welcome-modal": "/components/welcome-modal/welcome-modal",
+  "points-modal": "/components/points-modal/points-modal"
 }

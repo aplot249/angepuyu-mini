@@ -38,11 +38,22 @@ Page({
     this.calcNavBar();
   },
 
+  goPurchase(){
+    if(this.data.isLoggedIn & !this.data.isvip){
+      this.setData({
+        showNoPointsModal:true,
+        beidong:false
+      })
+    }
+  },
+
   UserInfoPointsChange(value){
     console.log(value)
     this.setData({
-      points:value
+      points:value,
+      isvip:true
     })
+    app.globalData.userInfo.isvip = true
   },
 
   OperateNoPointsModal(value){
@@ -78,8 +89,10 @@ Page({
     this.setData({ 
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
-      points:app.globalData.userInfo.points
-    });
+      points:app.globalData.userInfo.points,
+      isLoggedIn:app.globalData.userInfo.isLoggedIn,
+      isvip:app.globalData.userInfo.isvip
+  });
     app.updateThemeSkin(app.globalData.isDarkMode);
     // wx.setNavigationBarTitle({ title: '开始学习' });
   },

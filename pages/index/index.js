@@ -113,12 +113,12 @@ Page({
 
   // [修改] 轮播图点击跳转
   onBannerTap(e) {
-    const id = e.currentTarget.dataset.id;
-    if (id) {
-      wx.navigateTo({
-        url: `/pages/article/article?id=${id}`
-      });
-    }
+    // const id = e.currentTarget.dataset.id;
+    // if (id) {
+    //   wx.navigateTo({
+    //     url: `/pages/article/article?id=${id}`
+    //   });
+    // }
   },
 
   // [新增] 跳转到卡片复习

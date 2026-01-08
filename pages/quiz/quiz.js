@@ -37,14 +37,24 @@ Page({
   UserInfoPointsChange(value){
     console.log(value)
     this.setData({
-      points:value
+      points:value,
+      isvip:true
     })
+    app.globalData.userInfo.isvip = true
   },
   OperateNoPointsModal(value){
     console.log(value)
     this.setData({
       showNoPointsModal:value
     })
+  },
+  goPurchase(){
+    if(this.data.isLoggedIn & !this.data.isvip){
+      this.setData({
+        showNoPointsModal:true,
+        beidong:false
+      })
+    }
   },
   onShow() {
     // 监听本页面弹窗的积分购买事件
@@ -56,7 +66,9 @@ Page({
       points:app.globalData.userInfo.points,
       quizCountOption:wx.getStorageSync('quizCountOption') || 10,
       points:app.globalData.userInfo.points,
-      startTime:Date.now()
+      startTime:Date.now(),
+      isLoggedIn:app.globalData.userInfo.isLoggedIn,
+      isvip:app.globalData.userInfo.isvip
     });
     http(`/web/randomquestion/?allownologin=${!app.globalData.userInfo.isLoggedIn}`,'get').then(res=>{
       this.setData({

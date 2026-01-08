@@ -301,7 +301,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24rpx;
+  /* font-size: 24rpx; */
+  font-size: var(--text-main);
   color: #FFAB91;
 }
 

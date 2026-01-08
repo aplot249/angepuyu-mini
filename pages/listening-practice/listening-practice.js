@@ -70,10 +70,19 @@ Page({
   UserInfoPointsChange(value){
     console.log(value)
     this.setData({
-      points:value
+      points:value,
+      isvip:true
     })
+    app.globalData.userInfo.isvip = true
   },
-
+  goPurchase(){
+    if(this.data.isLoggedIn & !this.data.isvip){
+      this.setData({
+        showNoPointsModal:true,
+        beidong:false
+      })
+    }
+  },
   onShow() {
     eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
     this.setData({
@@ -81,6 +90,8 @@ Page({
       isDarkMode: app.globalData.isDarkMode,
       listenPracticeCountOption:wx.getStorageSync('quizCountOption') || 10,
       points:app.globalData.userInfo.points,
+      isLoggedIn:app.globalData.userInfo.isLoggedIn,
+      isvip:app.globalData.userInfo.isvip
     });
     if (app.updateThemeSkin) {
       app.updateThemeSkin(app.globalData.isDarkMode);

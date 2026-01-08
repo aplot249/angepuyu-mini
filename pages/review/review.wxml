@@ -45,8 +45,8 @@
             </view> -->
             <view class="stat-line"></view>
             <view class="stat-item" bind:tap="goPurchase">
-              <text class="stat-num highlight">{{points>100?'无限':points}}</text>
-              <text class="stat-label">使用额度</text>
+              <text class="stat-num highlight">{{!isLoggedIn?'游客':(isvip?'尊贵会员':'购买会员')}}</text>
+              <text class="stat-label">{{!isLoggedIn?'请先登录':(isvip?'会员期限':'普通用户')}}</text>
             </view>
           </view>
         </view>
@@ -88,7 +88,7 @@
 
                   <view class="bottom-hint">
                     <text class="hint-dot"></text>
-                    <text>点击翻转，背面有斯语答案</text>
+                    <text>点击翻转，背面有答案</text>
                   </view>
                 </view>
               </view>
@@ -133,7 +133,7 @@
   </view>
 
   <!-- 3. 积分不足弹窗 -->
-  <points-modal visible="{{showNoPointsModal}}" />
+  <points-modal visible="{{showNoPointsModal}}" beidong="{{beidong}}" />
 
   <!-- <vip-modal visible="{{showNoPointsModal}}" /> -->
   <audio-control />
