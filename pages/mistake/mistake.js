@@ -86,12 +86,13 @@ Page({
 
   // 点击卡片播放音频
   playAudio(e) {
-    const item = e.currentTarget.dataset.word;
-    wx.vibrateShort(); // 轻微震动反馈
-    let xiaohao = item.fayin ? item.xiaohao : 0   //按发音存不存在，确定消耗
-    let voiceType = wx.getStorageSync('voiceType')   //确定发音音色
-    let fayin = "fayin"+voiceType   //确定发音音色
-    console.log(fayin,item[fayin])    //输出发音音色、音色发音链接
+    // const item = e.currentTarget.dataset.word;
+    // wx.vibrateShort(); // 轻微震动反馈
+    let item = e.currentTarget.dataset.item // 这个词条数据
+    let xiaohao = item.fayin ? item.xiaohao : 0 //按词条发音存不存在，确定消耗
+    let voiceType = wx.getStorageSync('voiceType')  //拿到后台给的推荐的发音频道
+    let fayin = "siyufayin"+voiceType   //拼接出发音频道，完整版
+    console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
     app.playAudio(item[fayin],xiaohao,item.swahili)
   },
 

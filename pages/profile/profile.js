@@ -126,7 +126,7 @@ Page({
     this.setData({ voiceIndex: idx });
     // 保存设置
     let voiceSet = app.globalData.fayintype.filter(i=>i.name==voice)[0].xuhao
-    wx.setStorageSync('voiceType', voiceSet ? voiceSet : '');
+    wx.setStorageSync('voiceType', voiceSet);
     if (app.globalData) { app.globalData.voiceType = voice; }
     wx.showToast({ title: `已切换为 ${voice}`, icon: 'none' });
   },
@@ -195,6 +195,7 @@ Page({
             hasSharedToday: this.data.userInfo.hasSharedToday,
             hasSignedIn: this.data.userInfo.hasSignedIn,
           };
+          wx.clearStorage()
           wx.setStorageSync('token', '')
           this.setData({ userInfo: newInfo });
           app.globalData.userInfo = newInfo;

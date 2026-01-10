@@ -21,14 +21,14 @@
     <block wx:for="{{mistakeList}}" wx:key="id">
       
       <!-- [修改] 绑定点击整个卡片播放音频 -->
-      <view class="mistake-card" bindtap="playAudio" data-word="{{item}}">
+      <view class="mistake-card" bindtap="playAudio" data-word="{{item.ctitem}}">
         
         <!-- [已移除] 左侧高亮边条 -->
 
         <view class="card-content">
           <view class="card-top">
             <view class="word-info">
-              <text class="sw-word">{{item.swahili}}</text>
+              <text class="sw-word">{{item.ctitem.swahili}}</text>
               <view class="tag-row">
                 <text class="tag-error">错误 {{item.count}} 次</text>
                 <text class="tag-time">{{item.create_time}}</text>
@@ -41,10 +41,10 @@
           <view class="card-middle">
             <!-- 正确释义 -->
             <view style="margin-bottom: 14rpx;">
-              <text class="cn-hint">✅ 正确：{{item.chinese}}</text>
+              <text class="cn-hint">✅ 正确：{{item.ctitem.chinese}}</text>
             </view>
             <!-- [新增] 混淆释义 -->
-            <view wx:for="{{item.answers}}">
+            <view wx:for="{{item.answers}}" wx:key="index">
               <text class="cn-hint" style="color: #BF360C; opacity: 0.8;">❌ 易混：{{item || '暂无记录'}}</text>
             </view>
           </view>
