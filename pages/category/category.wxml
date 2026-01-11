@@ -54,7 +54,7 @@
       </view>
     </scroll-view>
 
-    <welcome-modal></welcome-modal>
   </view>
 
 </view>
+  <welcome-modal></welcome-modal>

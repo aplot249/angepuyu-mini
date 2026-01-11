@@ -292,6 +292,6 @@
 
   <vip-modal visible="{{showVipModal}}" />
 
-  <welcome-modal></welcome-modal>
+  <!-- <welcome-modal></welcome-modal> -->
 
 </view>

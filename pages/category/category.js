@@ -182,7 +182,7 @@ Page({
     }
     return {
       title: '坦桑华人学斯语，快来一起进步吧。',
-      path: '/pages/index/index',
+      path: '/pages/category/category',
       // imageUrl: '/images/share-cover.png', // 假设有分享图
     }
   // else{

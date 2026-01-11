@@ -1,4 +1,6 @@
 {
   "enablePullDownRefresh": false,
-  "welcome-modal": "/components/welcome-modal/welcome-modal"
+  "usingComponents": {
+    "welcome-modal": "/components/welcome-modal/welcome-modal"
+  }
 }
