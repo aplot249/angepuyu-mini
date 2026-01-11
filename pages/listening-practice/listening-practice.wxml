@@ -148,9 +148,9 @@
     </view>
   </view>
 
-  <points-modal visible="{{showNoPointsModal}}" beidong="{{beidong}}" />
+  <!-- <points-modal visible="{{showNoPointsModal}}" beidong="{{beidong}}" /> -->
 
-  <!-- <vip-modal visible="{{showNoPointsModal}}" /> -->
+  <vip-modal visible="{{showNoPointsModal}}" />
   <welcome-modal></welcome-modal>
 
   <audio-control />

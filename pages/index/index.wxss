@@ -63,7 +63,7 @@
 /* 轮播图 */
 .banner-swiper.main {
   width: 100%;
-  height: 280rpx;
+  height: 300rpx;
   border-radius: 24rpx;
   overflow: hidden;
   box-shadow: 0 10rpx 20rpx rgba(141, 110, 99, 0.15);

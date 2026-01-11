@@ -52,9 +52,10 @@ Page({
       })
       wx.setStorageSync('fayintype', JSON.stringify(res.fayintype))
       let vv = res.fayintype.filter(i=>i.isTuijian==true)[0].xuhao
-      wx.setStorageSync('voiceType',vv?vv:'')
+      if (!wx.getStorageInfoSync().keys.includes('voiceType')){
+        wx.setStorageSync('voiceType',vv)
+      }
       app.globalData.fayintype = res.fayintype
-
       http('/web/sq/','get').then(res=>{
         console.log(res)
         this.setData({
@@ -150,11 +151,10 @@ Page({
 
   playAudio(e) {
     let item = e.currentTarget.dataset.item // 这个词条数据
-    let xiaohao = item.fayin ? item.xiaohao : 0 //按词条发音存不存在，确定消耗
     let voiceType = wx.getStorageSync('voiceType')  //拿到后台给的推荐的发音频道
     let fayin = "siyufayin"+voiceType   //拼接出发音频道，完整版
     console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
-    app.playAudio(item[fayin],xiaohao,item.swahili)
+    app.playAudio(item[fayin],item.swahili)
   },
 
   refreshDaily() {

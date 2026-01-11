@@ -1,5 +1,6 @@
 const app = getApp();
 import {http,fileupload } from '../../requests/index'
+import { eventBus } from '../../utils/eventBus.js';
 
 Page({
   data: {
@@ -22,7 +23,7 @@ Page({
     playRateOptions: ['0.5x', '0.75x', '1.0x', '1.25x', '1.5x', '2.0x'],
     
     // [新增] 发音音色配置相关
-    voiceIndex: '',  //做到后台推荐
+    voiceIndex:'',  //做到后台推荐
     // voiceOptions: ['标准女声', '标准男声', '温柔女声', '磁性男声'],
     // voiceOptions: ['男声1号', '男声2号', '女声1号'],
     // voiceOptionsJSON: app.globalData.fayintype,
@@ -31,16 +32,24 @@ Page({
     quizCountOption: 10,
     quizCountIndex: 0, // 默认索引
     quizOptions: ['10道', '20道', '50道'],
+
+    // 弹窗控制
+    showVipModal: false,
   },
 
   onShow() {
-    let tmp = []
+    eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
+    const tmp = []
     app.globalData.fayintype.forEach(i=>tmp.push(i.name))
+    let mm = tmp.findIndex(ii=>app.globalData.fayintype.filter(i=>i.isTuijian==true)[0].name==ii)
+    // console.log('mmm',mm)
     this.setData({ 
       userInfo: app.globalData.userInfo,
       fontSizeLevel: app.globalData.fontSizeLevel,
       isDarkMode: app.globalData.isDarkMode,
+      isvip: app.globalData.userInfo.isvip,
       voiceOptions:tmp,
+      voiceIndex:tmp.findIndex(xx=>xx==app.globalData.fayintype.filter(i=>i.xuhao==wx.getStorageSync('voiceType'))[0].name)
     });
     this.updateTimeDisplay()
     this.updateFontLabel(app.globalData.fontSizeLevel);
@@ -65,7 +74,20 @@ Page({
         playRateIndex: idx >= 0 ? idx : 2
       });
     }
+  },
 
+  onHide(){
+    eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
+  },
+
+  UserInfoPointsChange(value){
+    console.log(value)
+    app.globalData.userInfo.isvip = true
+    this.setData({
+      points:value,
+      userInfo:app.globalData.userInfo,
+      showVipModal:false
+    })
   },
 
   // [新增] 格式化显示时长
@@ -82,6 +104,11 @@ Page({
         displayStr = `${h}时 ${m}分`;
     }
     this.setData({ studyTimeDisplay: displayStr });
+  },
+
+  // 关闭会员弹窗
+  closeVipModal() {
+    this.setData({ showVipModal: false });
   },
 
   // [修改] 处理 Picker 选择器变更
@@ -122,6 +149,7 @@ Page({
   // [新增] 处理音色选择
   bindVoiceChange(e) {
     const idx = e.detail.value;
+    console.log('idx',idx)
     const voice = this.data.voiceOptions[idx];
     this.setData({ voiceIndex: idx });
     // 保存设置
@@ -133,8 +161,8 @@ Page({
 
   // --- 登录与用户信息 ---
   handleLogin() {
-      wx.showLoading({ title: '登录中...' });
-      wx.getUserProfile({
+    wx.showLoading({ title: '登录中...' });
+    wx.getUserProfile({
         desc: '需微信授权登录', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
         success: (res) => {
           wx.login({
@@ -146,37 +174,43 @@ Page({
                 gender: res.userInfo.gender,
                 wxnickname: res.userInfo.nickName,
               }).then(res => {
-                //console.log(res.user, res.token)
-                const newInfo = {
-                  ...res.user,
-                  isLoggedIn: true,
-                  hasSignedIn:wx.getStorageSync('ts_user').hasSignedIn,
-                  hasSharedToday:wx.getStorageSync('ts_user').hasSharedToday,
-                };
-                app.globalData.userInfo = newInfo;
-                app.saveData();
-                this.setData({ userInfo: newInfo });
-                wx.showToast({ title: '登录成功', icon: 'success' });
+                  //console.log(res.user, res.token)
+                  const newInfo = {
+                    ...res.user,
+                    isLoggedIn: true,
+                    hasSignedIn:wx.getStorageSync('ts_user').hasSignedIn,
+                    hasSharedToday:wx.getStorageSync('ts_user').hasSharedToday,
+                  };
+                  app.globalData.userInfo = newInfo;
+                  app.saveData();
+                  this.setData({ 
+                    userInfo: newInfo,
+                    isvip:res.user.isvip
+                  });
+                  wx.showToast({ title: '登录成功', icon: 'success' });
 //                 wx.setStorageSync('userInfo', JSON.stringify(res.user))
 //                 wx.showToast({ title: '登录成功', icon: 'success' });
 //                 wx.setStorageSync('favorites', res.user.favorites)
-                wx.setStorageSync('token', res.token)
+                  wx.setStorageSync('token', res.token)
               })
             }
           })
         }
-      })
+    })
   },
+
   SetFlipautoPlayfayin(){
     this.setData({FlipautoPlayfayin:!this.data.FlipautoPlayfayin})
     app.globalData.FlipautoPlayfayin = this.data.FlipautoPlayfayin
     app.saveData()
   },
+
   SetNextautoPlayfayin(){
     this.setData({NextautoPlayfayin:!this.data.NextautoPlayfayin})
     app.globalData.NextautoPlayfayin = this.data.NextautoPlayfayin
     app.saveData()
   },
+
   navigateToAbout() {
     wx.navigateTo({ url: '/pages/about/about' });
   },
@@ -201,6 +235,9 @@ Page({
           app.globalData.userInfo = newInfo;
           app.saveData();
           wx.showToast({ title: '已退出', icon: 'none' });
+          wx.reLaunch({
+            url: '/pages/index/index',
+          })
         }
       }
     });
@@ -281,7 +318,6 @@ Page({
   },
 
   // --- 其他功能 ---
-
   navigateToPrivacy() {
     wx.navigateTo({ url: '/pages/privacy/privacy' });
   },
@@ -307,7 +343,7 @@ Page({
   handleShareTap() {
     if (!this.data.userInfo.isLoggedIn) {
       return wx.showToast({ title: '请先登录', icon: 'none' });
-  }
+    }
     if(this.data.userInfo.hasSharedToday) return;
     wx.navigateTo({ url: '/pages/share/share' });
     app.globalData.userInfo.points += 50;
@@ -350,7 +386,10 @@ Page({
     if (!this.data.userInfo.isLoggedIn) {
       return wx.showToast({ title: '请先登录', icon: 'none' });
     }
-    wx.navigateTo({ url: '/pages/purchase/purchase' });
+    // wx.navigateTo({ url: '/pages/purchase/purchase' });
+    this.setData({
+      showVipModal:true
+    })
   },
 
   navigateToShare() {
@@ -363,12 +402,15 @@ Page({
     }
     wx.navigateTo({ url: '/pages/contribute/contribute' });
   },
+
   navigateToMistake(){
     wx.navigateTo({ url: '/pages/mistake/mistake' });
   },
+
   navigateToShare(){
     wx.navigateTo({ url: '/pages/share/share' });
   },
+
   notImplemented() {
     wx.showToast({ title: '功能开发中', icon: 'none' });
   },

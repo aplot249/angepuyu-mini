@@ -43,21 +43,21 @@
         <view class="num">{{!userInfo.isLoggedIn ? '/' : userInfo.points>10000 ?'无限' : userInfo.points }}</view>
         <view class="label">今日体验额度</view>
       </view>
-      
-      <view class="stat-item" bindtap="handleSignIn">
-        <view class="num">{{userInfo.hasSignedIn ? '已签' : '签到'}}</view>
-        <view class="label">每日+20</view>
-      </view>
 
       <button class="stat-item share-btn" open-type="share" bindtap="handleShareTap">
         <view class="num text-orange">{{userInfo.hasSharedToday ? '已享' : '分享'}}</view>
-        <view class="label">每日+50</view>
+        <view class="label" wx:if="{{!isvip}}">每日+50</view>
       </button>
 
-      <!-- <view class="stat-item" bindtap="goPurchase">
+      <view class="stat-item" bindtap="handleSignIn" wx:if="{{userInfo.isvip}}">
+        <view class="num">{{userInfo.hasSignedIn ? '已签' : '签到'}}</view>
+        <!-- <view class="label">每日+20</view> -->
+      </view>
+
+      <view class="stat-item" bindtap="goPurchase" wx:else="{{userInfo.isvip}}">
         <view class="num text-yellow">💎</view>
-        <view class="label">购买积分</view>
-      </view> -->
+        <view class="label">购买会员</view>
+      </view>
       
       <view class="stat-item">
         <view class="num text-yellow">{{studyTimeDisplay}}</view>
@@ -289,6 +289,8 @@
       </view>
     </view>
   </view>
+
+  <vip-modal visible="{{showVipModal}}" />
 
   <welcome-modal></welcome-modal>
 

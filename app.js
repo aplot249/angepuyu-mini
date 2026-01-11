@@ -88,8 +88,8 @@ App({
     wx.setStorageSync('ts_user', this.globalData.userInfo);
   },
 
-  playAudio(mp3,xiaohao,title){
-    // 仅仅针对首页推荐单词、短语的发音
+  playAudio(mp3,title){
+    // 仅仅针对首页推荐单词、短语的发音，这种情况是没有登录的
     if(!this.globalData.userInfo.isLoggedIn){
       let innerAudioContext = wx.getBackgroundAudioManager();
       innerAudioContext.title = title
@@ -97,9 +97,9 @@ App({
       innerAudioContext.src = fayin
       let playbackRate = wx.getStorageSync('playRate')
       innerAudioContext.playbackRate = playbackRate
-      return
+      return false
     }else{
-      this.globalData.userInfo.points -= xiaohao
+      this.globalData.userInfo.points -= 2
       if(this.globalData.userInfo.points <= 0){
         this.globalData.userInfo.points = 0
         // 如果没有积分了，还想播放语音，那就广播弹窗，展示充值弹窗

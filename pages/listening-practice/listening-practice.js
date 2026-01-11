@@ -174,12 +174,11 @@ Page({
           currentIndex: idx,
         })
         if(app.globalData.userInfo.NextautoPlayfayin){    //开启了滑下一个自动发音
-          let item = this.data.questions[this.data.currentIndex]
-          let xiaohao = item.fayin ? item.xiaohao : 0    //按发音存不存在，确定消耗
-          let voiceType = wx.getStorageSync('voiceType')    //确定发音音色
-          let fayin = "fayin"+voiceType   //确定发音音色
-          console.log(fayin,item[fayin])    //输出发音音色、音色发音链接
-          app.playAudio(item[fayin],xiaohao,item.swahili) //进行发音
+          let item = e.currentTarget.dataset.item // 这个词条数据
+          let voiceType = wx.getStorageSync('voiceType')  //拿到后台给的推荐的发音频道
+          let fayin = "siyufayin"+voiceType   //拼接出发音频道，完整版
+          console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
+          app.playAudio(item[fayin],item.swahili)
         }
         if(this.data.currentIndex === this.data.questions.length-1){ 
           if(this.data.noLoad==true){ //noLoad为true就不增加
@@ -277,11 +276,10 @@ Page({
     if (this.data.isPlaying) return;
     // this.setData({ isPlaying: true });
     let item = e.currentTarget.dataset.item // 这个词条数据
-    let xiaohao = item.fayin ? item.xiaohao : 0 //按词条发音存不存在，确定消耗
     let voiceType = wx.getStorageSync('voiceType')  //拿到后台给的推荐的发音频道
     let fayin = "siyufayin"+voiceType   //拼接出发音频道，完整版
     console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
-    app.playAudio(item[fayin],xiaohao,item.swahili)
+    app.playAudio(item[fayin],item.swahili)
   },
 
   // 选择单词

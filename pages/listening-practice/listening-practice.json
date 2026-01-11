@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "听音组句",
   "usingComponents": {
-    "points-modal": "/components/points-modal/points-modal",
+    "vip-modal": "/components/vip-modal/vip-modal",
     "welcome-modal": "/components/welcome-modal/welcome-modal",
     "audio-control": "/components/audio-control/audio-control"
   }

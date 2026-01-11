@@ -3,6 +3,6 @@
   "navigationBarBackgroundColor": "#ffffff",
   "navigationBarTextStyle": "black",
   "usingComponents": {
-    "points-modal": "/components/points-modal/points-modal"
+    "vip-modal": "/components/vip-modal/vip-modal"
   }
 }

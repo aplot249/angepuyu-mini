@@ -242,11 +242,17 @@
 }
 
 /* Picker 组件也作为 menu-item，需要确保宽度占满 */
-picker.menu-item { width: 100%; display: block; }
+picker.menu-item {
+  width: 100%;
+  display: block;
+}
 
 /* Picker 内部布局模拟 Flex 行 */
 .picker-inner {
-  display: flex; justify-content: space-between; align-items: center; width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .menu-item {
@@ -267,14 +273,18 @@ button.menu-item {
   border-radius: 0;
   text-align: left;
 }
-button.menu-item::after { border: none; }
+
+button.menu-item::after {
+  border: none;
+}
 
 /* [新增] 客服按钮特定样式：强制去除内边距 */
 .contact-btn {
   padding-left: 0 !important;
   padding-right: 0 !important;
   color: var(--text-main);
-  display: flex !important; /* 确保 flex 布局生效 */
+  display: flex !important;
+  /* 确保 flex 布局生效 */
   align-items: center;
   justify-content: space-between;
 }
@@ -331,12 +341,27 @@ button.menu-item::after { border: none; }
   color: #E65100;
   background: #FFE0B2;
 }
-/* [新增] 粉色图标样式 */
-.menu-icon.pink { background: #FCE4EC; color: #E91E63; }
-.menu-icon.indigo { background: #E8EAF6; color: #3F51B5; }
-.menu-icon.teal { background: #E0F2F1; color: #009688; } 
 
-.menu-right { display: flex; align-items: center; }
+/* [新增] 粉色图标样式 */
+.menu-icon.pink {
+  background: #FCE4EC;
+  color: #E91E63;
+}
+
+.menu-icon.indigo {
+  background: #E8EAF6;
+  color: #3F51B5;
+}
+
+.menu-icon.teal {
+  background: #E0F2F1;
+  color: #009688;
+}
+
+.menu-right {
+  display: flex;
+  align-items: center;
+}
 
 .status-text {
   font-size: var(--text-sm);
@@ -463,7 +488,7 @@ button.menu-item::after { border: none; }
   gap: 30rpx;
 }
 
-.btn-cancel,
+/* .btn-cancel, */
 .btn-submit {
   flex: 1;
   height: 80rpx;
@@ -475,10 +500,10 @@ button.menu-item::after { border: none; }
   font-weight: bold;
 }
 
-.btn-cancel {
+/* .btn-cancel {
   background: #EFEBE9;
   color: #8D6E63;
-}
+} */
 
 .btn-submit {
   background: linear-gradient(135deg, #FEC99D, #FF8A65);
@@ -491,6 +516,222 @@ button.menu-item::after { border: none; }
   transform: scale(0.98);
 }
 
-.btn-cancel:active {
+/* .btn-cancel:active {
   background: #D7CCC8;
+} */
+
+/* ========================================= */
+/* [新增] VIP 购买弹窗样式 */
+/* ========================================= */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
+.modal-mask.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.vip-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  width: 600rpx;
+  background: #FFF;
+  border-radius: 30rpx;
+  padding: 40rpx;
+  box-sizing: border-box;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
+.dark-mode .vip-modal {
+  background: #252525;
+}
+
+.vip-modal.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.dark-mode .modal-title {
+  color: #FFF;
+}
+
+.modal-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 套餐列表 (垂直排列) */
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.plan-item {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #F8F8F8;
+  border: 4rpx solid transparent;
+  border-radius: 20rpx;
+  padding: 24rpx 30rpx;
+  transition: all 0.2s;
+}
+
+.dark-mode .plan-item {
+  background: #333;
+}
+
+/* 选中态 */
+.plan-item.active {
+  background: #FFF8E1;
+  border-color: #FFC107;
+  box-shadow: 0 4rpx 12rpx rgba(255, 193, 7, 0.15);
+}
+
+.dark-mode .plan-item.active {
+  background: #443300;
+  border-color: #FFD54F;
+}
+
+.plan-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+
+.dark-mode .plan-name {
+  color: #DDD;
+}
+
+.plan-intro {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.plan-price-box {
+  text-align: right;
+}
+
+.symbol {
+  font-size: 24rpx;
+  color: #FF6F00;
+  font-weight: bold;
+}
+
+.amount {
+  font-size: 38rpx;
+  color: #FF6F00;
+  font-weight: 900;
+}
+
+.original {
+  font-size: 22rpx;
+  color: #CCC;
+  text-decoration: line-through;
+  margin-left: 8rpx;
+}
+
+.dark-mode .symbol,
+.dark-mode .amount {
+  color: #FFD54F;
+}
+
+/* 推荐角标 */
+.recommend-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(90deg, #FF7043, #FF5722);
+  color: #FFF;
+  font-size: 18rpx;
+  padding: 2rpx 10rpx;
+  border-top-left-radius: 16rpx;
+  border-bottom-right-radius: 16rpx;
+}
+
+/* 选中对勾 */
+.check-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #FFC107;
+  color: #FFF;
+  width: 32rpx;
+  height: 32rpx;
+  border-top-left-radius: 16rpx;
+  border-bottom-right-radius: 16rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 32rpx;
+}
+
+/* 按钮区 */
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.btn-confirm {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #FFC107, #FF9800);
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #FFF;
+  box-shadow: 0 8rpx 20rpx rgba(255, 193, 7, 0.3);
+}
+
+.btn-confirm:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.btn-cancel {
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+  padding: 10rpx;
 }

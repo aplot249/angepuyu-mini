@@ -1,5 +1,7 @@
 {
   "enablePullDownRefresh": false,
-  "welcome-modal": "/components/welcome-modal/welcome-modal",
-  "points-modal": "/components/points-modal/points-modal"
+  "usingComponents": {
+    "welcome-modal": "/components/welcome-modal/welcome-modal",
+    "vip-modal": "/components/vip-modal/vip-modal"
+  }
 }

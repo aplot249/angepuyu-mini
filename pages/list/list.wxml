@@ -137,6 +137,6 @@
 
   </swiper>
 
-  <points-modal visible="{{showNoPointsModal}}" />
+  <vip-modal visible="{{showNoPointsModal}}" />
 
 </view>
