@@ -173,8 +173,9 @@ Page({
         this.setData({ 
           currentIndex: idx,
         })
-        if(app.globalData.userInfo.NextautoPlayfayin){    //开启了滑下一个自动发音
-          let item = e.currentTarget.dataset.item // 这个词条数据
+        if(app.globalData.NextautoPlayfayin){    //开启了滑下一个自动发音
+          let item = this.data.questions[this.data.currentIndex] // 这个词条数据
+          console.log('item',item)
           let voiceType = wx.getStorageSync('voiceType')  //拿到后台给的推荐的发音频道
           let fayin = "siyufayin"+voiceType   //拼接出发音频道，完整版
           console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接

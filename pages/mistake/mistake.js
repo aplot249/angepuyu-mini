@@ -86,7 +86,7 @@ Page({
 
   // 点击卡片播放音频
   playAudio(e) {
-    let item = e.currentTarget.dataset.item // 这个词条数据
+    let item = e.currentTarget.dataset.word; // 这个词条数据
     let voiceType = wx.getStorageSync('voiceType')  //拿到后台给的推荐的发音频道
     let fayin = "siyufayin"+voiceType   //拼接出发音频道，完整版
     console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
