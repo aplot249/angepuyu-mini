@@ -59,7 +59,8 @@ Page({
       http('/web/sq/','get').then(res=>{
         console.log(res)
         this.setData({
-          hh:res.status
+          hh:res.status,
+          exchangeRate:res.huillv
         })
       })
     })

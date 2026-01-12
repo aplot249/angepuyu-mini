@@ -6,10 +6,10 @@
     <view class="nav-content" style="height: {{navBarHeight}}px;">
       <view class="greeting-container">
         <view class="greeting-text">{{greeting}} 👋</view>
-        <!-- <view class="rate-badge">
+        <view class="rate-badge">
           <text class="rate-icon">💱</text>
-          <text>1 CNY ≈ {{exchangeRate}} TZS</text>
-        </view> -->
+          <text>今日汇率：1 人民币 ≈ {{exchangeRate}} 坦先令</text>
+        </view>
       </view>
     </view>
   </view>

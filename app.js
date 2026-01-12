@@ -92,6 +92,23 @@ App({
     // 仅仅针对首页推荐单词、短语的发音，这种情况是没有登录的
     if(!this.globalData.userInfo.isLoggedIn){
       let innerAudioContext = wx.getBackgroundAudioManager();
+
+      innerAudioContext.onError((res) => {
+        console.error('播放失败，详细信息：', res);
+        // res.errCode 常见错误：
+        // 10001: 系统错误（通常是格式不支持）
+        // 10002: 网络错误
+        // 10003: 文件错误
+        // 10004: 格式错误
+        
+        if (res.errCode === 10001 || res.errCode === 10004) {
+          wx.showModal({
+            title: '播放失败',
+            content: '音频格式在当前设备不兼容，建议转码为 MP3',
+            showCancel: false
+          });
+        }
+      });
       innerAudioContext.title = title
       let fayin = mp3 ? mp3 : baseImgUrl+'/zanwufayin.mp3'
       innerAudioContext.src = fayin
