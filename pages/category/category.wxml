@@ -33,7 +33,7 @@
     <scroll-view scroll-y class="right-content">
       <view class="content-header">
         <text class="header-line"></text>
-        <text class="header-title">{{categories[activeIdx].name}}({{categories[activeIdx].sum}})</text>
+        <text class="header-title" wx:if="{{categories[activeIdx].sum}}">{{categories[activeIdx].name}}({{categories[activeIdx].sum}})</text>
         <text class="header-line"></text>
       </view>
 
@@ -57,4 +57,4 @@
   </view>
 
 </view>
-  <welcome-modal></welcome-modal>
+<welcome-modal></welcome-modal>

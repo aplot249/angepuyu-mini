@@ -31,7 +31,7 @@
         </view>
         <view class="login-info">
           <text class="login-title">点击登录账户</text>
-          <text class="login-desc">同步学习进度与收藏</text>
+          <text class="login-desc">同步学习数据</text>
         </view>
         <view class="login-arrow">></view>
       </view>

@@ -3,8 +3,7 @@ import {encrypt,decrypt} from '../utils/encryption.js';
 
 // const baseHOST = 'http://192.168.0.67:8000' //公司
 // const baseHOST = 'https://siyu.jsxinlingdi.com'
-const baseHOST = 'http://172.27.80.1:8080'
-// const baseHOST =  'http://192.168.1.182:8000'  //住宿
+const baseHOST =  'http://192.168.1.182:8000'  //住宿
 // const baseHOST =  'http://127.0.0.1:8000'
 
 // const isJiami = false
