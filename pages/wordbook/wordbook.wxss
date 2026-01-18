@@ -240,12 +240,15 @@
   font-weight: 900;
   color: var(--secondary);
   margin-bottom: 4rpx;
+  width: fit-content;
 }
 
 .en-text {
+  margin-top: 25rpx;
   font-size: var(--text-sm);
   color: var(--text-sub);
   font-style: italic;
+  width: fit-content;
 }
 
 .phrase-layout {
@@ -303,11 +306,14 @@
   font-weight: bold;
   color: var(--secondary);
   margin-bottom: 8rpx;
+  width: fit-content;
 }
 
 .en-sentence {
+  margin-top: 25rpx;
   font-size: var(--text-sm);
   color: var(--text-sub);
+  width: fit-content;
 }
 
 .card-footer {

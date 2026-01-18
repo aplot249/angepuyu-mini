@@ -79,10 +79,10 @@
                   </view>
                   
                   <view class="main-content-box">
-                    <image class="clue-img-large" src="{{item.portrait}}" mode="aspectFill" wx:if="{{item.portrait}}"></image>
+                    <!-- <image class="clue-img-large" src="{{item.portrait}}" mode="aspectFill" wx:if="{{item.portrait}}"></image> -->
                     <view class="text-group">
-                      <text class="cn-text-large">{{item.chinese}}</text>
-                      <text class="en-text-sub">{{item.english}}</text>
+                      <text class="cn-text-large" catch:tap="hanplayAudio" data-item="{{item}}">{{item.chinese}}</text>
+                      <text class="en-text-sub" catch:tap="engplayAudio" data-item="{{item}}">{{item.english}} 🔊</text>
                     </view>
                   </view>
 

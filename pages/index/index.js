@@ -50,6 +50,7 @@ Page({
         dailyPhrase:res.tuijianPhrases,
         // fayintype:res.fayintype
       })
+      console.log('fayinType',res.fayintype)
       wx.setStorageSync('fayintype', JSON.stringify(res.fayintype))
       let vv = res.fayintype.filter(i=>i.isTuijian==true)[0].xuhao
       if (!wx.getStorageInfoSync().keys.includes('voiceType')){

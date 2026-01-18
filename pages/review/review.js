@@ -228,7 +228,16 @@ Page({
     console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
     app.playAudio(item[fayin],item.swahili)
   },
-
+  engplayAudio(e){
+    let item = e.currentTarget.dataset.item // 这个词条数据
+    console.log('engfayin',item["engfayin"])  //输出发音音色完整名称、并输出对应的发音链接
+    app.playAudio(item["engfayin"],item.swahili)
+  },
+  hanplayAudio(e){
+    let item = e.currentTarget.dataset.item // 这个词条数据
+    console.log('hanfayin',item["hanfayin"])  //输出发音音色完整名称、并输出对应的发音链接
+    app.playAudio(item["hanfayin"],item.swahili)
+  },
   // 标记为已认识 (消耗积分)
   markKnown(e) {
     // 1. 检查积分

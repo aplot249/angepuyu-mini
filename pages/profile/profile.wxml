@@ -123,7 +123,7 @@
       <view class="picker-inner">
         <view class="menu-left">
           <view class="menu-icon indigo">🗣️</view>
-          <text>不同口音切换</text>
+          <text>不同斯语口音切换</text>
         </view>
         <view class="menu-right">
           <text class="status-text">{{voiceOptions[voiceIndex]}}</text>
@@ -169,7 +169,7 @@
     <view class="menu-item" bindtap="SetFlipautoPlayfayin">
       <view class="menu-left">
         <view class="menu-icon blue">🔊</view>
-        <text>卡片翻转自动发音</text>
+        <text>卡片翻转自动播放斯语</text>
       </view>
       <view class="menu-right">
         <view class="toggle-switch {{FlipautoPlayfayin ? 'on' : 'off'}}">
@@ -181,7 +181,7 @@
     <view class="menu-item" bindtap="SetNextautoPlayfayin">
       <view class="menu-left">
         <view class="menu-icon blue">🔊</view>
-        <text>滑下一题自动发音</text>
+        <text>滑下一题自动播放斯语</text>
       </view>
       <view class="menu-right">
         <view class="toggle-switch {{NextautoPlayfayin ? 'on' : 'off'}}">
