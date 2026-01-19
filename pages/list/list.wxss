@@ -96,6 +96,32 @@
   line-height: 1.2;
 }
 
+/* 右侧操作区布局 */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 20rpx; /* 图标间距 */
+}
+
+/* 图标按钮样式 */
+.icon-btn {
+  /* width: 60rpx; height: 60rpx; */
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  background: #F9F9F9; 
+  /* border-radius: 50%; */
+  font-size: 32rpx;
+  transition: all 0.2s;
+}
+
+.dark-mode .icon-btn { background: rgba(255,255,255,0.1); }
+
+.icon-btn:active { transform: scale(0.9); background: #EEE; }
+
+.copy-btn { color: #555; width: 150rpx; height: 60rpx;border-radius: 30rpx;}
+.speaker-btn { color: #555; width: 60rpx; height: 60rpx;border-radius: 50%;}
+
 /* 播放按钮 */
 .play-btn {
   width: 70rpx;
