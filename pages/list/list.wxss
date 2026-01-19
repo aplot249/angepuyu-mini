@@ -96,6 +96,32 @@
   line-height: 1.2;
 }
 
+/* 右侧操作区布局 */
+.right-actions {
+  display: flex;
+  align-items: center;
+  gap: 20rpx; /* 图标间距 */
+}
+
+/* 图标按钮样式 */
+.icon-btn {
+  /* width: 60rpx; height: 60rpx; */
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  background: #F9F9F9; 
+  /* border-radius: 50%; */
+  font-size: 32rpx;
+  transition: all 0.2s;
+}
+
+.dark-mode .icon-btn { background: rgba(255,255,255,0.1); }
+
+.icon-btn:active { transform: scale(0.9); background: #EEE; }
+
+.copy-btn { color: #555; width: 150rpx; height: 60rpx;border-radius: 30rpx;}
+.speaker-btn { color: #555; width: 60rpx; height: 60rpx;border-radius: 50%;}
+
 /* 播放按钮 */
 .play-btn {
   width: 70rpx;
@@ -136,16 +162,21 @@
 }
 
 .trans-box { display: flex; flex-direction: column; }
+
 .cn-text {
   font-size: var(--text-lg); /* 大字体 */
   font-weight: 900;
   color: var(--secondary); /* 暖色强调 */
   margin-bottom: 4rpx;
+  width: fit-content;
 }
+
 .en-text {
+  margin-top: 25rpx;
   font-size: var(--text-sm);
   color: var(--text-sub);
   font-style: italic;
+  width: fit-content;
 }
 
 /* --- 2. 短语卡片样式 (Phrase Layout) --- */
@@ -195,15 +226,20 @@
   border-bottom: 2rpx dashed rgba(141, 110, 99, 0.1);
   margin-bottom: 20rpx;
 }
+
 .cn-sentence {
   font-size: var(--text-lg); /* 大字体 */
   font-weight: bold;
   color: var(--secondary);
   margin-bottom: 8rpx;
+  width: fit-content;
 }
+
 .en-sentence {
+  margin-top: 25rpx;
   font-size: var(--text-sm);
   color: var(--text-sub);
+  width: fit-content;
 }
 
 /* --- 底部操作栏 (Actions) --- */

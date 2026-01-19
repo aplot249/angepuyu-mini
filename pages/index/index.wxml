@@ -38,7 +38,7 @@
     <swiper class="banner-swiper main" indicator-dots="true" autoplay="true" interval="5000" circular="true" indicator-active-color="#FEC99D" indicator-color="rgba(255, 255, 255, 0.8)">
       <block wx:for="{{banners}}" wx:key="id">
         <swiper-item bindtap="onBannerTap" data-id="{{item.id}}">
-          <image src="{{item.image_url}}" class="slide-image" mode="aspectFill"/>
+          <image src="{{item.image_url}}" class="slide-image" mode="{{item.mode}}"/>
           <view class="banner-title-mask">
             <text class="banner-title">{{item.name}}</text>
           </view>

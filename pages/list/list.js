@@ -66,7 +66,17 @@ Page({
         })
       })
   },
-
+  onCopy(e) {
+    const text = e.currentTarget.dataset.text;
+    if (text) {
+      wx.setClipboardData({
+        data: text,
+        success: () => {
+          wx.showToast({ title: '斯语已复制，可在别处粘贴', icon: 'none' });
+        }
+      });
+    }
+  },
   OperateNoPointsModal(value){
     console.log(value)
     this.setData({
@@ -216,7 +226,16 @@ Page({
     console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
     app.playAudio(item[fayin],item.swahili)
   },
-
+  engplayAudio(e){
+    let item = e.currentTarget.dataset.item // 这个词条数据
+    console.log('engfayin',item["engfayin"])  //输出发音音色完整名称、并输出对应的发音链接
+    app.playAudio(item["engfayin"],item.swahili)
+  },
+  hanplayAudio(e){
+    let item = e.currentTarget.dataset.item // 这个词条数据
+    console.log('hanfayin',item["hanfayin"])  //输出发音音色完整名称、并输出对应的发音链接
+    app.playAudio(item["hanfayin"],item.swahili)
+  },
   toggleFav(e) {
     const id = e.currentTarget.dataset.id;
     let op =  e.currentTarget.dataset.isfav;

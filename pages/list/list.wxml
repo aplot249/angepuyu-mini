@@ -25,7 +25,18 @@
                 <view class="row-flex">
                   <text class="sw-text">{{item.swahili}}</text>
                   <!-- 语音播放按钮 (大) -->
-                  <view class="play-btn" catchtap="playAudio" data-type="word" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">🔊</view>
+                  <!-- <view class="play-btn" catchtap="playAudio" data-type="word" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">🔊</view> -->
+                              <!-- 右侧操作组：复制 + 发音 -->
+                  <view class="right-actions">
+                    <!-- [新增] 复制按钮 -->
+                    <view class="icon-btn copy-btn" catchtap="onCopy" data-text="{{item.swahili}}">
+                      复制 📋
+                    </view>
+                    <!-- 发音按钮 -->
+                    <view class="icon-btn speaker-btn" catchtap="playAudio" data-type="word" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">
+                      🔊
+                    </view>
+                  </view>
                 </view>
                 
                 <view class="homonym-box">
@@ -34,13 +45,14 @@
                 </view>
 
                 <view class="trans-box">
-                  <text class="cn-text">{{item.chinese}}</text>
-                  <text class="en-text">{{item.english}}</text>
+                  <text class="cn-text" catch:tap="hanplayAudio" data-item="{{item}}">{{item.chinese}} 🔊</text>
+                  <text class="en-text" catch:tap="engplayAudio" data-item="{{item}}">{{item.english}} 🔊</text>
                 </view>
               </view>
 
+
               <!-- [修改] 图片放右侧，且非必须 (wx:if) -->
-              <image wx:if="{{item.portrait}}" class="word-img" src="{{item.portrait}}" mode="aspectFill" lazy-load></image>
+              <!-- <image wx:if="{{item.portrait}}" class="word-img" src="{{item.portrait}}" mode="aspectFill" lazy-load></image> -->
             </view>
 
             <!-- 底部操作栏 -->
@@ -86,7 +98,17 @@
           <view class="card item-card phrase-layout" bind:tap="playAudio" data-type="phrase" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">
             <view class="phrase-header">
               <text class="sw-sentence">{{item.swahili}}</text>
-              <view class="play-btn large" catchtap="playAudio" data-item="{{item}}">🔊</view>
+              <!-- <view class="play-btn large" catchtap="playAudio" data-item="{{item}}">🔊</view> -->
+              <view class="right-actions">
+                <!-- [新增] 复制按钮 -->
+                <view class="icon-btn copy-btn" catchtap="onCopy" data-text="{{item.swahili}}">
+                  复制📋
+                </view>
+                <!-- 发音按钮 -->
+                <view class="icon-btn speaker-btn" catchtap="playAudio" data-type="word" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">
+                  🔊
+                </view>
+              </view>
             </view>
 
             <!-- 中部：谐音 -->
@@ -97,8 +119,8 @@
 
             <!-- 中部：释义 -->
             <view class="meaning-col">
-              <text class="cn-sentence">{{item.chinese}}</text>
-              <text class="en-sentence">{{item.english}}</text>
+              <text class="cn-sentence" catch:tap="hanplayAudio" data-item="{{item}}">{{item.chinese}} 🔊</text>
+              <text class="en-sentence" catch:tap="engplayAudio" data-item="{{item}}">{{item.english}} 🔊</text>
             </view>
 
             <!-- 底部操作栏 -->
