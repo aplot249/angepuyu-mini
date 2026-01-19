@@ -80,7 +80,7 @@
       <view class="result-title">{{score >= 80 ? '水平不错' : (score >= 60 ? '给你点赞' : '要继续努力')}}</view>
       <view class="result-score">{{score}}分</view>
       <view class="result-desc">
-        {{score >= 80 ? '太棒了！你的斯瓦希里语水平突飞猛进！' : (score >= 60 ? '不错哦，继续保持！' : '不要灰心，多练习几次就记住了。')}}
+        {{score >= 80 ? '太棒了！你的葡语水平突飞猛进！' : (score >= 60 ? '不错哦，继续保持！' : '不要灰心，多练习几次就记住了。')}}
         <view>本次共做{{completedCount}}道题，错{{completedCount - rightNum}}道题。继续加油！</view>
       </view>
       <view class="result-actions">

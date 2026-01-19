@@ -107,10 +107,10 @@ Page({
 
   setGreeting() {
     const hour = new Date().getHours();
-    let text = 'Jambo!';
-    if (hour >= 5 && hour < 12) text = 'Habari za asubuhi!'; 
-    else if (hour >= 12 && hour < 18) text = 'Habari za mchana!'; 
-    else text = 'Habari za jioni!'; 
+    let text = 'Olá!';
+    if (hour >= 5 && hour < 12) text = 'Bom dia!'; 
+    else if (hour >= 12 && hour < 18) text = 'Boa tarde!'; 
+    else text = 'Boa noite!'; 
     this.setData({ greeting: text });
   },
 
@@ -175,7 +175,7 @@ Page({
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
     }
     return {
-      title: '坦桑华人学斯语，快来一起进步吧。',
+      title: '安哥拉华人学葡语，快来一起进步吧。',
       path: '/pages/index/index',
       // imageUrl: '/images/share-cover.png', // 假设有分享图
     }

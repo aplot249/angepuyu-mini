@@ -108,7 +108,7 @@
             </view>
             
             <view class="card-content-wrapper">
-              <!-- 顶部：斯语长句 + 播放 -->
+              <!-- 顶部：葡语长句 + 播放 -->
               <view class="phrase-header">
                 <text class="sw-sentence">{{item.swahili}}</text>
                 <view class="play-btn large" catchtap="playAudio" data-item="{{item}}">🔊</view>

@@ -20,7 +20,7 @@ Page({
     bookInfo: {
       id: 'book_001',
       title: '坦坦斯语：基础入门到精通',
-      subtitle: '专为华人打造的斯瓦西里语学习宝典',
+      subtitle: '专为华人打造的斯瓦希里语学习宝典',
       coverUrl: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=600&q=80', // 示例封面
       author: '李老师 & Juma',
       authorAvatar: 'https://placehold.co/100x100/FF7043/ffffff?text=L',

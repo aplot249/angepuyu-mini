@@ -358,7 +358,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '我正在用坦坦斯语学习斯瓦希里语，快来一起吧！',
+      title: '我正在用“安哥葡语”学习葡萄牙语，快来一起进步吧！',
       path: '/pages/index/index',
       // imageUrl: 'https://images.unsplash.com/photo-1547471080-7541e89a43ca?w=600&q=80'
     }
@@ -428,7 +428,7 @@ Page({
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
     }
     return {
-      title: '坦桑华人学斯语，快来一起进步吧。',
+      title: '安哥拉华人学葡语，快来一起进步吧。',
       path: '/pages/index/index',
       // imageUrl: '/images/share-cover.png', // 假设有分享图
     }

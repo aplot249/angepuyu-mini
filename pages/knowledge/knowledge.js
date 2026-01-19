@@ -96,7 +96,7 @@ Page({
   // getTitle(tab, page, index) {
   //   const types = ['语法', '文化', '旅游', '商务'];
   //   const type = types[tab] || '资讯';
-  //   return `【${type}】第${page}期：斯瓦希里语${type}详解指南 ${index + 1}`;
+  //   return `【${type}】第${page}期：葡瓦希里语${type}详解指南 ${index + 1}`;
   // },
 
   // 辅助：生成模拟封面
@@ -126,7 +126,7 @@ Page({
         wx.showToast({ title: '分享积分 +20', icon: 'none' });
   
         return {
-          title: '坦桑华人学斯语，快来一起进步吧。',
+          title: '安哥拉华人学葡语，快来一起进步吧。',
           path: '/pages/review/review',
           // imageUrl: '/images/share-cover.png', // 假设有分享图
         }

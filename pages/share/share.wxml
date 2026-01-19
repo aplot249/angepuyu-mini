@@ -11,14 +11,14 @@
       <view class="app-branding">
         <!-- Logo -->
         <image class="logo-box" src="{{assets.logo}}"></image>
-        <view class="app-name">坦坦斯语Swahili</view>
-        <view class="app-slogan">沟通无界 · 闯荡坦桑更轻松</view>
+        <view class="app-name">安哥葡语</view>
+        <view class="app-slogan">沟通无界 · 闯荡安哥拉更轻松</view>
       </view>
     </view>
 
     <view class="intro-section">
-      <text class="highlight-text">专为坦桑尼亚华人打造</text>
-      <text class="sub-text">无论你做工程建设、商务考察还是日常生活，“坦坦斯语”都是你贴心的语言助手。</text>
+      <text class="highlight-text">专为安哥拉华人打造</text>
+      <text class="sub-text">无论你做工程建设、商务考察还是日常生活，“安哥葡语”都是你贴心的语言助手。</text>
     </view>
 
     <view class="features-grid">
@@ -30,7 +30,7 @@
       <view class="feature-item">
         <view class="icon-circle orange">🗣️</view>
         <view class="feat-title">真人发音</view>
-        <view class="feat-desc">地道斯语发音、语音切换、倍速播放</view>
+        <view class="feat-desc">地道葡语发音、语音切换、倍速播放</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle purple">👓</view>
@@ -45,7 +45,7 @@
       <view class="feature-item">
         <view class="icon-circle blue">💾</view>
         <view class="feat-title">知识库</view>
-        <view class="feat-desc">了解更多斯语语法、文化</view>
+        <view class="feat-desc">了解更多葡语语法、文化</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle purple">👓</view>
@@ -60,7 +60,7 @@
       </view>
       <view class="scan-tip">
         <text class="tip-bold">长按识别小程序码</text>
-        <text class="tip-small">即刻开启斯瓦希里语学习之旅</text>
+        <text class="tip-small">即刻开启葡语学习之旅</text>
       </view>
     </view>
   </view>

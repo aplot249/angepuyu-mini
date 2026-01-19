@@ -8,7 +8,7 @@
         <view class="greeting-text">{{greeting}} 👋</view>
         <view class="rate-badge">
           <text class="rate-icon">💱</text>
-          <text>今日汇率：1 人民币 ≈ {{exchangeRate}} 坦先令</text>
+          <text>今日汇率：1 人民币 ≈ {{exchangeRate}} 宽扎</text>
         </view>
       </view>
     </view>
@@ -25,7 +25,7 @@
           class="real-search-input"
           type="text"
           confirm-type="search"
-          placeholder="词库搜索单词短语，可输入中文、英语、斯语" 
+          placeholder="词库搜索单词短语，可输入中文、英语、葡语" 
           placeholder-class="search-placeholder"
           value="{{searchContent}}"
           bindinput="onSearchInput"

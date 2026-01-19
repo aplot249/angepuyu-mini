@@ -8,12 +8,12 @@
   <view class="doc-content">
     
     <view class="section">
-      <view class="p">欢迎您使用“坦坦斯语 Swahili”（以下简称“本小程序”）。我们非常重视您的隐私保护和个人信息安全。本指引将帮助您了解我们如何收集、使用和存储您的个人信息。</view>
+      <view class="p">欢迎您使用“安哥葡语”（以下简称“本小程序”）。我们非常重视您的隐私保护和个人信息安全。本指引将帮助您了解我们如何收集、使用和存储您的个人信息。</view>
     </view>
 
     <view class="section">
       <view class="h3">1. 我们收集的信息</view>
-      <view class="p">为了向您提供完整的斯瓦希里语学习服务，我们需要收集以下类型的信息：</view>
+      <view class="p">为了向您提供完整的葡语学习服务，我们需要收集以下类型的信息：</view>
       
       <view class="li">
         <text class="dot">●</text>

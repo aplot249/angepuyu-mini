@@ -15,11 +15,11 @@ Page({
     // 功能点数据 (用于 Canvas 绘图循环，内容与 WXML 保持一致)
     canvasFeatures: [
       { icon: '📚', bg: '#E0F2F1', color: '#009688', title: '行业词库', desc: '覆盖华人多种从事行业' },
-      { icon: '🗣️', bg: '#FFF3E0', color: '#FF9800', title: '真人发音', desc: '地道斯语发音、音色切换、倍速播放' },
+      { icon: '🗣️', bg: '#FFF3E0', color: '#FF9800', title: '真人发音', desc: '地道葡语发音、音色切换、倍速播放' },
       { icon: '🧩', bg: '#E8EAF6', color: '#3F51B5', title: '学习方式多样', desc: '卡片学习、做题练习、串联听音' },
       { icon: '👓', bg: '#F3E5F5', color: '#9C27B0', title: '长辈关怀', desc: '超大字体、夜间模式，护眼更清晰' },
-      { icon: '💾', bg: '#E3F2FD', color: '#2196F3', title: '知识库', desc: '了解更多斯语语法、文化' },
-      { icon: '💬', bg: '#E8F5E9', color: '#4CAF50', title: '交流社区', desc: '斯语方面求助、讨论更便捷' }
+      { icon: '💾', bg: '#E3F2FD', color: '#2196F3', title: '知识库', desc: '了解更多葡语语法、文化' },
+      { icon: '💬', bg: '#E8F5E9', color: '#4CAF50', title: '交流社区', desc: '葡语方面求助、讨论更便捷' }
     ]
   },
 
@@ -33,7 +33,7 @@ Page({
 
   onShareAppMessage() {
     return {
-      title: '坦坦斯语：沟通无界 · 闯荡坦桑更轻松',
+      title: '安哥拉华人学葡语，快来一起进步吧。',
       path: '/pages/index/index',
       imageUrl: this.data.assets.bg
     }
@@ -142,22 +142,22 @@ Page({
     ctx.fillStyle = '#FFFFFF';
     ctx.textBaseline = 'alphabetic'; // 确保基线一致
     ctx.font = 'bold 26px sans-serif';
-    ctx.fillText('坦坦斯语Swahili', w / 2, logoY + logoSize + 30);
+    ctx.fillText('安哥葡语', w / 2, logoY + logoSize + 30);
 
     // Slogan
     ctx.font = '10px sans-serif';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-    ctx.fillText('沟通无界 · 闯荡坦桑更轻松', w / 2, logoY + logoSize + 52);
+    ctx.fillText('沟通无界 · 闯荡安哥拉更轻松', w / 2, logoY + logoSize + 52);
 
     // 5. 简介区域
     const introY = headerH + 30;
     ctx.fillStyle = '#009688'; // Teal color
     ctx.font = 'bold 18px sans-serif';
-    ctx.fillText('专为坦桑尼亚华人打造', w / 2, introY);
+    ctx.fillText('专为安哥拉华人打造', w / 2, introY);
 
     ctx.fillStyle = '#666666';
     ctx.font = '13px sans-serif';
-    const subText = '无论你做工程建设、商务考察还是日常生活，\n“坦坦斯语”都是你贴心的语言助手。';
+    const subText = '无论你做工程建设、商务考察还是日常生活，\n“安哥葡语”都是你贴心的语言助手。';
     this.drawTextWrapped(ctx, subText, w / 2, introY + 25, 320, 20);
 
     // 6. 功能网格区域 (绘制 2列 x 3行)
@@ -238,7 +238,7 @@ Page({
 
     ctx.fillStyle = '#999999';
     ctx.font = '11px sans-serif';
-    ctx.fillText('即刻开启斯瓦希里语学习之旅', textX, footerY + 67);
+    ctx.fillText('即刻开启葡语学习之旅', textX, footerY + 67);
   },
 
   // --- 工具函数 ---

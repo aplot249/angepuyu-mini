@@ -206,7 +206,7 @@ Page({
     const key = `wordList[${index}].isFlipped`;
     // 在这里播放声音
     let item = this.data.wordList[index]
-    // 查看斯语答案时候自动发音
+    // 查看葡语答案时候自动发音
     if(!item.isFlipped){
       let xiaohao = item.fayin ? item.xiaohao : 0
       if(app.globalData.FlipautoPlayfayin){
@@ -307,7 +307,7 @@ Page({
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
     }
     return {
-      title: '坦桑华人学斯语，快来一起进步吧。',
+      title: '安哥拉华人学葡语，快来一起进步吧。',
       path: '/pages/index/index',
       // imageUrl: '/images/share-cover.png', // 假设有分享图
     }

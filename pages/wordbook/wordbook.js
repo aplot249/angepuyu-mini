@@ -567,7 +567,7 @@ Page({
   // 5. 准备Excel数据 (将对象数组转换为二维数组)
   prepareExcelData(list) {
     // 表头 (Excel第一行)
-    const header = ['中文', '英语', '斯语','中文谐音'];
+    const header = ['中文', '英语', '葡语','中文谐音'];
     // 数据行
     const rows = list.map(item => [item.chinese, item.english, item.swahili,item.xieyin]);
     // 合并表头和数据行
@@ -661,7 +661,7 @@ Page({
       wx.showToast({ title: '分享积分 +20', icon: 'none' });
     }
     return {
-      title: '坦桑华人学斯语，快来一起进步吧。',
+      title: '安哥拉华人学葡语，快来一起进步吧。',
       path: '/pages/index/index',
       // imageUrl: '/images/share-cover.png', // 假设有分享图
     }

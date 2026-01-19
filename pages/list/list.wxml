@@ -84,7 +84,6 @@
         
         <block wx:for="{{phraseList}}" wx:key="id">
           <view class="card item-card phrase-layout" bind:tap="playAudio" data-type="phrase" data-item="{{item}}" data-xiaohao="{{item.xiaohao}}">
-            <!-- 顶部：斯语长句 + 播放 -->
             <view class="phrase-header">
               <text class="sw-sentence">{{item.swahili}}</text>
               <view class="play-btn large" catchtap="playAudio" data-item="{{item}}">🔊</view>
