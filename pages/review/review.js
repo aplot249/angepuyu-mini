@@ -106,6 +106,9 @@ Page({
     eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
     eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
     http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
+      console.log('res',res)
+      app.globalData.userInfo.points = res.points
+      app.saveData()
       console.log('已更新积分')
     })
     // app.globalData.userInfo.points = this.data.points

@@ -96,6 +96,8 @@ Page({
     // 更新后端积分
     http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
       console.log('已更新积分')
+      app.globalData.userInfo.points = res.points
+      app.saveData()
     })
     app.globalData.userInfo.points = this.data.points
     app.saveData()
@@ -151,6 +153,8 @@ Page({
         // 为0 ，更新积分
         http('/user/userinfo/','post',{'points':app.globalData.userInfo.points}).then(res=>{
           console.log('已更新积分')
+          app.globalData.userInfo.points = res.points
+          app.saveData()
         })
       }else{
         // 遍历题，扣2积分

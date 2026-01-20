@@ -13,7 +13,7 @@ Component({
   },
 
   data: {
-    selectedPlanId: 'year', // 默认选中年卡
+    selectedPlanId: '', // 默认选中年卡
     prepay_id:'',
     isLoop: false, // 控制轮询开关
     waitTimes: 0, // 记录轮询次数
@@ -53,7 +53,13 @@ Component({
       http('/user/price/','get').then(res=>{
           console.log('price',res)
           this.setData({
+<<<<<<< HEAD
             vipPlans:res
+=======
+            vipPlans:res,
+            // selectedPlanId:res[res.length-1]['id']
+            selectedPlanId:res.filter(item=>item.isTuijian==true)[0]['id']
+>>>>>>> 14c6bad965ecc8c0d23cda5cfc66898b8cc7bbcb
           })
       })
     },
@@ -121,6 +127,12 @@ Component({
           app.saveData()
           http('/user/userinfo/','post',{'points':app.globalData.userInfo.points,'isvip':true}).then(res=>{
             console.log('已更新points')
+<<<<<<< HEAD
+=======
+            app.globalData.userInfo.points = res.points
+            app.globalData.userInfo.isvip = true
+            app.saveData()
+>>>>>>> 14c6bad965ecc8c0d23cda5cfc66898b8cc7bbcb
             eventBus.emit('UserInfoPointsChange', app.globalData.userInfo.points)
           })
         }else{
