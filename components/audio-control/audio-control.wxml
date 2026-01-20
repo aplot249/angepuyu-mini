@@ -1,0 +1,56 @@
+<view class="audio-ctrl-container">
+  
+  <!-- 悬浮按钮 (默认显示) -->
+  <view class="fab-btn" catchtap="toggleModal">
+    <!-- [修改] 更换图标为耳机，更符合发音设置的语境 -->
+    <text class="fab-icon">🎧</text>
+    <!-- [修改] 更改文字为 发音设置 -->
+    <text class="fab-text">发音设置</text>
+  </view>
+
+  <!-- 设置面板弹窗 -->
+  <view class="modal-mask {{visible ? 'show' : ''}}" bindtap="closeModal" catchtouchmove="preventScroll"></view>
+  
+  <view class="settings-panel {{visible ? 'show' : ''}}" catchtouchmove="preventScroll">
+    <view class="panel-header">
+      <text class="panel-title">发音设置</text>
+      <view class="close-btn" bindtap="closeModal">✕</view>
+    </view>
+
+    <!-- 音色选择 -->
+    <view class="section">
+      <view class="section-title">选择音色</view>
+      <view class="options-grid">
+        <block wx:for="{{voiceOptions}}" wx:key="id">
+          <view 
+            class="option-pill {{settings.voice === item.id ? 'active' : ''}}" 
+            bindtap="changeVoice" 
+            data-id="{{item.id}}"
+          >
+            <text class="opt-icon">{{item.icon}}</text>
+            <text class="opt-name">{{item.name}}</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 倍速选择 -->
+    <view class="section">
+      <view class="section-title">播放倍速</view>
+      <view class="options-row">
+        <block wx:for="{{speedOptions}}" wx:key="value">
+          <view 
+            class="circle-opt {{settings.speed === item.value ? 'active' : ''}}" 
+            bindtap="changeSpeed" 
+            data-val="{{item.value}}"
+          >
+            {{item.label}}
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 试听按钮 (可选) -->
+    <!-- <view class="preview-btn" bindtap="previewSound">🔊 试听当前效果</view> -->
+  </view>
+</view>

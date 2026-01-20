@@ -1,0 +1,48 @@
+<!-- 遮罩层 -->
+<view class="mask {{visible ? 'show' : ''}}" bindtap="onClose"  catchtouchmove="preventTouchMove"></view>
+
+<!-- 弹窗主体 -->
+<view class="modal-box {{visible ? 'show' : ''}}">
+  
+  <!-- 顶部装饰区 -->
+  <view class="modal-header">
+    <view class="icon-bg-circle"></view>
+    <view class="icon-wrapper">
+      <text class="icon">👋</text>
+    </view>
+  </view>
+
+  <!-- 内容区 -->
+  <view class="modal-content">
+    <view class="title">Olá！软件学葡语方法：</view>
+    <view class="message-container">
+      <text class="message">欢迎使用“安哥葡语”学习葡萄牙语。
+      1、软件已为你默认分配了葡语常用基本单词、短语来学习。
+
+      2、你还可以在词库中选择你需要的行业分类，加入学习。
+
+      3、学习方式有“卡片学习”，“做题练习”，“听音组句”，过程中产生的生词和错题软件会有记录，能反复学。单词、短语具备葡语发音。
+
+      4、软件还具有全局查询单词、短语功能，搜索需要的内容，加入学习。
+      </text>
+    </view>
+
+    <!-- 装饰点缀 -->
+    <!-- <view class="decoration-dots">
+      <view class="dot d1"></view>
+      <view class="dot d2"></view>
+      <view class="dot d3"></view>
+    </view> -->
+
+    <!-- <button class="confirm-btn" hover-class="btn-hover" bindtap="onConfirm">
+      <text>开启学习之旅</text>
+      <text class="btn-arrow">→</text>
+    </button> -->
+    <text bind:tap="onlongerShow">我已明白，不再提示</text>
+  </view>
+
+  <!-- 关闭按钮 (可选) -->
+  <view class="close-area" bindtap="onClose">
+    <text class="close-icon">✕</text>
+  </view>
+</view>

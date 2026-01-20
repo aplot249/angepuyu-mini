@@ -1,0 +1,37 @@
+<view class="modal-mask {{visible ? 'show' : ''}}" bindtap="closeModal" catchtouchmove="preventScroll"></view>
+<view class="vip-modal {{visible ? 'show' : ''}}" catchtouchmove="preventScroll">
+  <view class="modal-header">
+    <text class="modal-title">开通 VIP 会员</text>
+    <text class="modal-desc">解锁使用权益</text>
+  </view>
+  <!-- 3种会员类型选择 -->
+  <view class="plan-list">
+    <block wx:for="{{vipPlans}}" wx:key="id">
+      <view 
+        class="plan-item {{selectedPlanId === item.id ? 'active' : ''}}" 
+        bindtap="selectPlan" 
+        data-id="{{item.id}}"
+      >
+        <!-- 推荐角标 -->
+        <view class="recommend-badge" wx:if="{{item.recommend}}">推荐</view>
+        <view class="plan-info">
+          <text class="plan-name">{{item.name}}</text>
+          <text class="plan-intro">{{item.intro}}</text>
+        </view>
+        <view class="plan-price-box">
+          <text class="symbol">¥</text>
+          <text class="amount">{{item.price}}</text>
+          <text class="original" wx:if="{{item.originalPrice}}">¥{{item.originalPrice}}</text>
+        </view>
+        <!-- 选中时的对勾 -->
+        <view class="check-icon" wx:if="{{selectedPlanId === item.id}}">✓</view>
+      </view>
+    </block>
+  </view>
+  <view class="modal-footer">
+    <view class="btn-confirm" bindtap="handleBuyVip">
+      立即开通
+    </view>
+    <view class="btn-cancel" bindtap="closeModal">暂不需要</view>
+  </view>
+</view>

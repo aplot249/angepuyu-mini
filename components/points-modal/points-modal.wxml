@@ -1,0 +1,21 @@
+<view class="modal-mask {{visible ? 'show' : ''}}" bindtap="onClose">
+    <view class="modal-box">
+      <view class="modal-header">
+        <text class="modal-icon">💎</text>
+      </view>
+      <view class="modal-content">
+        <view class="modal-title" wx:if="{{beidong}}">今日体验额度已用完</view>
+        <view class="modal-title" wx:else="{{beidong}}">购买会员：</view>
+        <view class="modal-desc" wx:if="{{beidong}}">您的今日体验额度已用完，<text style="color:red;">或直接购买永久使用权限。</text></view>
+        <view class="modal-btns">
+          <button class="m-btn share-btn" open-type="share" wx:if="{{beidong}}">
+            <text>分享他人奖励体验额度</text>
+          </button>
+          <view class="m-btn buy-btn" style="background-color: {{item.color}}" bindtap="buyPoints" wx:for="{{plans}}" wx:key="id" data-item="{{item}}">
+            <text>{{item.price}}元{{item.name}}</text>
+          </view>
+        </view>
+        <!-- <view class="modal-close" bindtap="closeNoPointsModal">暂不学习</view> -->
+      </view>
+    </view>
+  </view>
