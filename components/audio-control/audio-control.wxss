@@ -1,0 +1,94 @@
+/* 悬浮按钮 */
+.fab-btn {
+  position: fixed;
+  right: 30rpx;
+  bottom: 420rpx; /* 放在原有 Fab 上方，避免遮挡 */
+  /* [修改] 稍微加大尺寸以容纳4个字 (90rpx -> 110rpx) */
+  width: 110rpx;
+  height: 110rpx;
+  background: #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 6rpx 20rpx rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 900;
+  transition: transform 0.1s;
+}
+.fab-btn:active { transform: scale(0.95); }
+
+.fab-icon { font-size: 36rpx; line-height: 1; margin-bottom: 6rpx; }
+/* [修改] 调整字体大小，使其排版更美观 */
+.fab-text { font-size: 20rpx; color: #666; font-weight: bold; line-height: 1.1; text-align: center; }
+
+/* 遮罩层 */
+.modal-mask {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 998;
+  opacity: 0; visibility: hidden;
+  transition: all 0.3s;
+}
+.modal-mask.show { opacity: 1; visibility: visible; }
+
+/* 设置面板 (底部弹出) */
+.settings-panel {
+  position: fixed; left: 0; bottom: 0; width: 100%;
+  background: #FFF;
+  border-top-left-radius: 30rpx;
+  border-top-right-radius: 30rpx;
+  padding: 40rpx 40rpx 60rpx; /* 底部留白适配 iPhone X */
+  box-sizing: border-box;
+  z-index: 999;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 -4rpx 20rpx rgba(0,0,0,0.1);
+}
+.settings-panel.show { transform: translateY(0); }
+
+/* 面板头部 */
+.panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 40rpx;
+}
+.panel-title { font-size: 32rpx; font-weight: bold; color: #333; }
+.close-btn { font-size: 36rpx; color: #999; padding: 10rpx; }
+
+/* 分区样式 */
+.section { margin-bottom: 40rpx; }
+.section-title { font-size: 26rpx; color: #999; margin-bottom: 20rpx; font-weight: 500; }
+
+/* 音色网格 */
+.options-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 20rpx;
+}
+.option-pill {
+  background: #F5F5F5;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  display: flex; align-items: center; justify-content: center;
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+}
+.option-pill.active {
+  background: #FFF3E0; border-color: #FF7043; color: #FF7043;
+}
+.opt-icon { margin-right: 12rpx; font-size: 32rpx; }
+.opt-name { font-size: 28rpx; font-weight: bold; }
+
+/* 倍速行 */
+.options-row {
+  display: flex; justify-content: space-between;
+}
+.circle-opt {
+  width: 100rpx; height: 60rpx;
+  border-radius: 30rpx;
+  background: #F5F5F5;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26rpx; color: #666; font-weight: 500;
+  border: 2rpx solid transparent;
+}
+.circle-opt.active {
+  background: #FFF3E0; border-color: #FF7043; color: #FF7043; font-weight: bold;
+}

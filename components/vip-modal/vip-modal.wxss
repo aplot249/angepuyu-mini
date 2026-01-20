@@ -1,0 +1,194 @@
+/* 遮罩层 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 998;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
+.modal-mask.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 弹窗主体 */
+.vip-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  width: 600rpx;
+  background: #FFF;
+  border-radius: 30rpx;
+  padding: 40rpx;
+  box-sizing: border-box;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
+/* 这里需要根据项目情况适配 Dark Mode，组件内通常建议使用 CSS 变量或通过父级类名传递 */
+/* 假设父级有 dark-mode 类，但在组件隔离样式下不生效，这里简单处理为默认白底，如需适配可使用 page 选择器或 externalClasses */
+.vip-modal {
+  background: #FFF;
+}
+
+.vip-modal.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.modal-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 套餐列表 */
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.plan-item {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #F8F8F8;
+  border: 4rpx solid transparent;
+  border-radius: 20rpx;
+  padding: 24rpx 30rpx;
+  transition: all 0.2s;
+}
+
+/* 选中态 */
+.plan-item.active {
+  background: #FFF8E1;
+  border-color: #FFC107;
+  box-shadow: 0 4rpx 12rpx rgba(255, 193, 7, 0.15);
+}
+
+.plan-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.plan-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+
+.plan-intro {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.plan-price-box {
+  text-align: right;
+}
+
+.symbol {
+  font-size: 24rpx;
+  color: #FF6F00;
+  font-weight: bold;
+}
+
+.amount {
+  font-size: 38rpx;
+  color: #FF6F00;
+  font-weight: 900;
+}
+
+.original {
+  font-size: 22rpx;
+  color: #CCC;
+  text-decoration: line-through;
+  margin-left: 8rpx;
+}
+
+/* 推荐角标 */
+.recommend-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(90deg, #FF7043, #FF5722);
+  color: #FFF;
+  font-size: 18rpx;
+  padding: 2rpx 10rpx;
+  border-top-left-radius: 16rpx;
+  border-bottom-right-radius: 16rpx;
+}
+
+/* 选中对勾 */
+.check-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #FFC107;
+  color: #FFF;
+  width: 32rpx;
+  height: 32rpx;
+  border-top-left-radius: 16rpx;
+  border-bottom-right-radius: 16rpx;
+  font-size: 20rpx;
+  text-align: center;
+  line-height: 32rpx;
+}
+
+/* 按钮区 */
+.modal-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.btn-confirm {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #FFC107, #FF9800);
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #FFF;
+  box-shadow: 0 8rpx 20rpx rgba(255, 193, 7, 0.3);
+}
+
+.btn-confirm:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.btn-cancel {
+  text-align: center;
+  font-size: 26rpx;
+  color: #999;
+  padding: 10rpx;
+}
