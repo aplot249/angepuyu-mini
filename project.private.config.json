@@ -24,11 +24,18 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pages/category/category",
+          "pathName": "pages/category/category",
+          "query": "",
+          "scene": null,
+          "launchMode": "default"
+        },
+        {
           "name": "pages/list/list",
           "pathName": "pages/list/list",
           "query": "subid=3&subname=%E9%97%AE%E5%80%99%E4%B8%8E%E7%A4%BC%E4%BB%AA",
-          "scene": null,
-          "launchMode": "default"
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

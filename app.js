@@ -95,12 +95,6 @@ App({
 
       innerAudioContext.onError((res) => {
         console.error('播放失败，详细信息：', res);
-        // res.errCode 常见错误：
-        // 10001: 系统错误（通常是格式不支持）
-        // 10002: 网络错误
-        // 10003: 文件错误
-        // 10004: 格式错误
-        
         if (res.errCode === 10001 || res.errCode === 10004) {
           wx.showModal({
             title: '播放失败',

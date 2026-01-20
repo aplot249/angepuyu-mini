@@ -66,6 +66,7 @@ Page({
         })
       })
   },
+
   onCopy(e) {
     const text = e.currentTarget.dataset.text;
     if (text) {
@@ -77,6 +78,7 @@ Page({
       });
     }
   },
+
   OperateNoPointsModal(value){
     console.log(value)
     this.setData({
@@ -91,6 +93,8 @@ Page({
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
     eventBus.on('OperateNoPointsModal', this.OperateNoPointsModal);
+    eventBus.on('UserInfoPointsChange', this.UserInfoPointsChange);
+
     // this.refreshFavStatus();
   },
 
@@ -105,6 +109,7 @@ Page({
       hasMorePhrases:true
     });
     eventBus.off('OperateNoPointsModal', this.OperateNoPointsModal);
+    eventBus.off('UserInfoPointsChange', this.UserInfoPointsChange);
   },
 
   // 在客观分类页面进行纠错
@@ -211,7 +216,15 @@ Page({
       this.fetchData();
     }
   },
-
+  UserInfoPointsChange(value){
+    console.log(value)
+    // this.setData({
+      // points:value,
+      // isvip:true
+    // })
+    app.globalData.userInfo.isvip = true
+    console.log('app.globalData.userInfo：',app.globalData.userInfo)
+  },
   playAudio(e) {
     if(!app.globalData.userInfo.isLoggedIn){
       wx.showToast({
@@ -226,16 +239,19 @@ Page({
     console.log(fayin,item[fayin])  //输出发音音色完整名称、并输出对应的发音链接
     app.playAudio(item[fayin],item.swahili)
   },
+
   engplayAudio(e){
     let item = e.currentTarget.dataset.item // 这个词条数据
     console.log('engfayin',item["engfayin"])  //输出发音音色完整名称、并输出对应的发音链接
     app.playAudio(item["engfayin"],item.swahili)
   },
+
   hanplayAudio(e){
     let item = e.currentTarget.dataset.item // 这个词条数据
     console.log('hanfayin',item["hanfayin"])  //输出发音音色完整名称、并输出对应的发音链接
     app.playAudio(item["hanfayin"],item.swahili)
   },
+
   toggleFav(e) {
     const id = e.currentTarget.dataset.id;
     let op =  e.currentTarget.dataset.isfav;
