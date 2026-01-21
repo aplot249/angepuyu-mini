@@ -33,12 +33,6 @@ Component({
   // 组件生命周期
   lifetimes: {
     attached() {
-<<<<<<< HEAD
-      // 初始化时读取缓存配置
-      const cached = wx.getStorageSync('audioSettings');
-      if (cached) {
-        this.setData({ settings: cached });
-=======
       console.log('dddddddddddddddddd')
       let fayintype = JSON.parse(wx.getStorageSync('fayintype'));
       console.log('fayintype',fayintype);
@@ -51,7 +45,6 @@ Component({
         this.setData({ 
           settings: cached,
         });
->>>>>>> 14c6bad965ecc8c0d23cda5cfc66898b8cc7bbcb
         // 触发一次事件确保父页面同步
         // this.triggerEvent('change', cached);
       }

@@ -42,7 +42,7 @@ Page({
     const tmp = []
     app.globalData.fayintype.forEach(i=>tmp.push(i.name))
     let mm = tmp.findIndex(ii=>app.globalData.fayintype.filter(i=>i.isTuijian==true)[0].name==ii)
-    // console.log('mmm',mm)
+    console.log('mmm',tmp,mm)
     this.setData({ 
       userInfo: app.globalData.userInfo,
       fontSizeLevel: app.globalData.fontSizeLevel,

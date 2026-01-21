@@ -6,7 +6,7 @@
     <view class="banner-overlay"></view>
     <view class="banner-content">
       <view class="app-logo">🇹🇿</view>
-      <text class="banner-title">用编程助力坦桑华人发展</text>
+      <text class="banner-title">用编程助力安哥拉华人发展</text>
       <!-- <text class="banner-subtitle">Connecting Cultures with Code</text> -->
     </view>
   </view>
@@ -18,7 +18,7 @@
       <text class="title">开发初心</text>
     </view>
     <view class="content-text tid">
-      你好，我是这款软件的开发者Three。目前在坦桑尼亚工作，我深知葡语交流障碍给华人工作、生活带来的不便。作为一名热爱软件编程的海外华人，我利用业余时间开发了这款“安哥葡语”小程序，希望能为你在安哥拉的工作、生活带来些便利。
+      你好，我是这款软件的开发者Three。曾在安哥拉工作，我深知葡语交流障碍给华人工作、生活带来的不便。作为一名热爱软件编程的海外华人，我利用业余时间开发了这款“安哥葡语”小程序，希望能为你在安哥拉的工作、生活带来些便利。
     </view>
   </view>
 

@@ -73,7 +73,7 @@ Page({
       wx.setClipboardData({
         data: text,
         success: () => {
-          wx.showToast({ title: '斯语已复制，可在别处粘贴', icon: 'none' });
+          wx.showToast({ title: '葡语已复制，可在别处粘贴', icon: 'none' });
         }
       });
     }
