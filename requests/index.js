@@ -4,7 +4,7 @@ import {encrypt,decrypt} from '../utils/encryption.js';
 // const baseHOST = 'http://192.168.0.67:8000' //公司
 const baseHOST = 'https://siyu.jsxinlingdi.com'
 // const baseHOST =  'http://192.168.1.181:8000' //住宿
-// const baseHOST =  'http://127.0.0.1:8000'
+// const baseHOST =  'http://192.168.100.71:8000'
 
 // const isJiami = false
 const isJiami = true
@@ -85,6 +85,7 @@ function request(url, method = 'POST', data = {}) {
                             title: '正在登录...',
                             icon: "none"
                           })
+                          let inviterID = wx.getStorageInfoSync().keys.includes('inviterID')?wx.getStorageSync('inviterID'):''
                           wx.login({
                             timeout: 8000,
                             success: r => {
@@ -92,6 +93,7 @@ function request(url, method = 'POST', data = {}) {
                               let data = {
                                 code: r.code,
                                 gender: res.userInfo.gender,
+                                inviterID:inviterID,
                                 wxnickname: res.userInfo.nickName,
                               }
                               var encryptedData = isJiami ? encrypt(data) : data;

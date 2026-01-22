@@ -9,17 +9,18 @@ Page({
     assets: {
       bg: 'https://siyu.jsxinlingdi.com/static/bg.png',
       logo: 'https://siyu.jsxinlingdi.com/static/logo.jpg',
-      qr: 'https://siyu.jsxinlingdi.com/static/mini.png'
+//       qr: 'https://siyu.jsxinlingdi.com/static/mini.png'
+      qr: app.globalData.userInfo.qr_code
     },
 
     // 功能点数据 (用于 Canvas 绘图循环，内容与 WXML 保持一致)
     canvasFeatures: [
-      { icon: '📚', bg: '#E0F2F1', color: '#009688', title: '行业词库', desc: '覆盖华人多种从事行业' },
-      { icon: '🗣️', bg: '#FFF3E0', color: '#FF9800', title: '真人发音', desc: '地道斯语发音、音色切换、倍速播放' },
-      { icon: '🧩', bg: '#E8EAF6', color: '#3F51B5', title: '学习方式多样', desc: '卡片学习、做题练习、串联听音' },
+      { icon: '📚', bg: '#E0F2F1', color: '#009688', title: '行业词库', desc: '覆盖华人多种行业词库' },
+      { icon: '🗣️', bg: '#FFF3E0', color: '#FF9800', title: '真人发音', desc: '地道斯语发音、语音切换、倍速播放' },
+      { icon: '🧩', bg: '#E8EAF6', color: '#3F51B5', title: '学习方式多样', desc: '卡片学习、做题练习、听音组句' },
       { icon: '👓', bg: '#F3E5F5', color: '#9C27B0', title: '长辈关怀', desc: '超大字体、夜间模式，护眼更清晰' },
       { icon: '💾', bg: '#E3F2FD', color: '#2196F3', title: '知识库', desc: '了解更多斯语语法、文化' },
-      { icon: '💬', bg: '#E8F5E9', color: '#4CAF50', title: '交流社区', desc: '斯语方面求助、讨论更便捷' }
+      { icon: '💬', bg: '#E8F5E9', color: '#4CAF50', title: '交流社区', desc: '求助、讨论更简单' }
     ]
   },
 
@@ -234,7 +235,7 @@ Page({
     ctx.textAlign = 'left';
     ctx.fillStyle = '#333333';
     ctx.font = 'bold 15px sans-serif';
-    ctx.fillText('长按识别小程序码', textX, footerY + 45);
+    ctx.fillText('长按识别微信小程序', textX, footerY + 45);
 
     ctx.fillStyle = '#999999';
     ctx.font = '11px sans-serif';

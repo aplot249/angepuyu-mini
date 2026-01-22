@@ -169,10 +169,12 @@ Page({
             timeout: 8000,
             success: r => {
               console.log(r.code)
+              let inviterID = wx.getStorageInfoSync().keys.includes('inviterID')?wx.getStorageSync('inviterID'):''
               http('/user/openid/', 'POST', {
                 code: r.code,
                 gender: res.userInfo.gender,
                 wxnickname: res.userInfo.nickName,
+                inviterID:inviterID
               }).then(res => {
                   //console.log(res.user, res.token)
                   const newInfo = {

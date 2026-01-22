@@ -25,7 +25,7 @@
       <view class="feature-item">
         <view class="icon-circle teal">📚</view>
         <view class="feat-title">行业词库</view>
-        <view class="feat-desc">覆盖华人多种从事行业</view>
+        <view class="feat-desc">覆盖华人多种行业词库</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle orange">🗣️</view>
@@ -35,7 +35,7 @@
       <view class="feature-item">
         <view class="icon-circle purple">👓</view>
         <view class="feat-title">学习方式多样</view>
-        <view class="feat-desc">卡片学习、做题练习、串联听音</view>
+        <view class="feat-desc">卡片学习、做题练习、听音组句</view>
       </view>
       <view class="feature-item">
         <view class="icon-circle purple">👓</view>
@@ -59,7 +59,7 @@
         <image src="{{assets.qr}}" class="qr-img"></image>
       </view>
       <view class="scan-tip">
-        <text class="tip-bold">长按识别小程序码</text>
+        <text class="tip-bold">长按识别微信小程序</text>
         <text class="tip-small">即刻开启斯瓦希里语学习之旅</text>
       </view>
     </view>

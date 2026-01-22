@@ -2,7 +2,7 @@
 <view class="vip-modal {{visible ? 'show' : ''}}" catchtouchmove="preventScroll">
   <view class="modal-header">
     <text class="modal-title">开通 VIP 会员</text>
-    <text class="modal-desc">解锁使用权益</text>
+    <text class="modal-desc">解锁无限使用权益</text>
   </view>
   <!-- 3种会员类型选择 -->
   <view class="plan-list">
