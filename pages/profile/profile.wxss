@@ -12,7 +12,7 @@
 /* [新增] 退出按钮样式 */
 .logout-btn {
   position: absolute;
-  top: 30rpx;
+  top: 72rpx;
   right: 30rpx;
   font-size: 22rpx;
   color: #5D4037;
