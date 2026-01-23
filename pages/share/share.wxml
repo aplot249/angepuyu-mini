@@ -66,9 +66,9 @@
   </view>
 
   <view class="action-bar">
-    <button class="btn share-friend" open-type="share">
+    <!-- <button class="btn share-friend" open-type="share">
       <text>转发给朋友</text>
-    </button>
+    </button> -->
     <button class="btn save-img" bindtap="savePoster">
       <text>保存海报图</text>
     </button>

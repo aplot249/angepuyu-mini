@@ -395,22 +395,23 @@ Page({
   },
 
   navigateToShare() {
-    wx.navigateTo({ url: '/pages/share/share' });
+    if (!this.data.userInfo.isLoggedIn) {
+      return wx.showToast({ title: '请先登录', icon: 'none' });
+    }else{
+      wx.navigateTo({ url: '/pages/share/share' });
+    }
   },
 
   navigateToContribute() {
     if (!this.data.userInfo.isLoggedIn) {
       return wx.showToast({ title: '请先登录', icon: 'none' });
+    }else{
+      wx.navigateTo({ url: '/pages/contribute/contribute' });
     }
-    wx.navigateTo({ url: '/pages/contribute/contribute' });
   },
 
   navigateToMistake(){
     wx.navigateTo({ url: '/pages/mistake/mistake' });
-  },
-
-  navigateToShare(){
-    wx.navigateTo({ url: '/pages/share/share' });
   },
 
   notImplemented() {

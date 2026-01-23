@@ -30,6 +30,13 @@ Page({
       isDarkMode: app.globalData.isDarkMode
     });
     app.updateThemeSkin(app.globalData.isDarkMode);
+    this.setData({
+      assets: {
+              bg: 'https://siyu.jsxinlingdi.com/static/bg.png',
+              logo: 'https://siyu.jsxinlingdi.com/static/logo.jpg',
+              qr: app.globalData.userInfo.qr_code
+            },
+    })
   },
 
   onShareAppMessage() {
