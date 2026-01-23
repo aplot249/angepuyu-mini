@@ -169,10 +169,12 @@ Page({
             timeout: 8000,
             success: r => {
               console.log(r.code)
+              let inviterID = wx.getStorageInfoSync().keys.includes('inviterID')?wx.getStorageSync('inviterID'):''
               http('/user/openid/', 'POST', {
                 code: r.code,
                 gender: res.userInfo.gender,
                 wxnickname: res.userInfo.nickName,
+                inviterID:inviterID
               }).then(res => {
                   //console.log(res.user, res.token)
                   const newInfo = {
@@ -393,22 +395,23 @@ Page({
   },
 
   navigateToShare() {
-    wx.navigateTo({ url: '/pages/share/share' });
+    if (!this.data.userInfo.isLoggedIn) {
+      return wx.showToast({ title: '请先登录', icon: 'none' });
+    }else{
+      wx.navigateTo({ url: '/pages/share/share' });
+    }
   },
 
   navigateToContribute() {
     if (!this.data.userInfo.isLoggedIn) {
       return wx.showToast({ title: '请先登录', icon: 'none' });
+    }else{
+      wx.navigateTo({ url: '/pages/contribute/contribute' });
     }
-    wx.navigateTo({ url: '/pages/contribute/contribute' });
   },
 
   navigateToMistake(){
     wx.navigateTo({ url: '/pages/mistake/mistake' });
-  },
-
-  navigateToShare(){
-    wx.navigateTo({ url: '/pages/share/share' });
   },
 
   notImplemented() {

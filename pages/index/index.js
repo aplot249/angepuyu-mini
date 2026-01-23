@@ -35,8 +35,26 @@ Page({
     fayintype:[],
     searchContent:''
   },
+  analysisUrlParam(url) {
+    var queryParts = url.slice(url.indexOf("?") + 1).split('&');
+    var params = queryParts.length > 0 ? {} : null;
+    queryParts.map(function (item) {
+      var a = item.split('=')
+      params[a[0]] = a[1]
+    })
+    return params
+  },
+  onLoad(query) {
+    if (query.q){
+      console.log('query',query)
+      const q = decodeURIComponent(query.q) // 获取到二维码原始链接内容
+      const scancode_time = parseInt(query.scancode_time) // 获取用户扫码时间 UNIX 时间戳
+      let urlDict = this.analysisUrlParam(q)
+      let id = urlDict['id']
+      console.log('iddddddddd',id)
+      wx.setStorageSync('inviterID', id)
+    }
 
-  onLoad() {
   // onShow() {
     this.calcNavBar();
     this.setGreeting();

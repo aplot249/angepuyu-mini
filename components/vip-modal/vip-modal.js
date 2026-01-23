@@ -166,7 +166,8 @@ Component({
     doWXpay(price,title){
       wx.showToast({'title':'正在处理...','icon':'none'})
       let that = this
-      http('/user/pay/', 'post',{"price":price,"title":title}).then(res => {
+      let inviterID = wx.getStorageInfoSync().keys.includes('inviterID')?wx.getStorageSync('inviterID'):''
+      http('/user/pay/', 'post',{"price":price,"title":title,'inviterID':inviterID}).then(res => {
         if (res.code === 0) {
           const payment = res.payment;
           this.setData({"prepay_id":payment.prepay_id})

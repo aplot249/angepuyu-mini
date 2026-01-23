@@ -85,6 +85,7 @@ function request(url, method = 'POST', data = {}) {
                             title: '正在登录...',
                             icon: "none"
                           })
+                          let inviterID = wx.getStorageInfoSync().keys.includes('inviterID')?wx.getStorageSync('inviterID'):''
                           wx.login({
                             timeout: 8000,
                             success: r => {
@@ -92,6 +93,7 @@ function request(url, method = 'POST', data = {}) {
                               let data = {
                                 code: r.code,
                                 gender: res.userInfo.gender,
+                                inviterID:inviterID,
                                 wxnickname: res.userInfo.nickName,
                               }
                               var encryptedData = isJiami ? encrypt(data) : data;
